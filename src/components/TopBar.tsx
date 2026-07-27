@@ -21,17 +21,17 @@ export function TopBar() {
   const tabs = tabsByViewOption[viewBy];
 
   return (
-    <div className="flex items-stretch border-b border-gray-200 bg-white py-2 dark:border-neutral-700 dark:bg-neutral-950">
-      <div className="flex flex-1 overflow-x-auto">
+    <div className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-2.5 dark:border-neutral-700 dark:bg-neutral-950">
+      <div className="flex items-center gap-5 overflow-x-auto">
         {tabs.map((tab) => (
           <button
             key={tab}
             type="button"
             onClick={() => setActiveTab(tab)}
-            className={`border-r border-b-2 border-gray-200 px-3 py-1.5 text-sm font-medium whitespace-nowrap transition-colors dark:border-neutral-700 ${
+            className={`shrink-0 border-b-2 py-1 text-sm whitespace-nowrap transition-colors ${
               activeTab === tab
-                ? "border-b-blue-600 bg-white text-gray-900 dark:bg-neutral-900 dark:text-neutral-50"
-                : "border-b-transparent bg-gray-50 text-gray-500 hover:bg-gray-100 dark:bg-neutral-900/40 dark:text-neutral-400 dark:hover:bg-neutral-800"
+                ? "border-blue-600 font-semibold text-gray-900 dark:border-blue-500 dark:text-neutral-50"
+                : "border-transparent font-medium text-gray-500 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-100"
             }`}
           >
             {tab}
@@ -39,17 +39,14 @@ export function TopBar() {
         ))}
       </div>
 
-      <div
-        ref={menuRef}
-        className="relative flex shrink-0 items-center gap-2 border-l border-gray-200 px-3 dark:border-neutral-700"
-      >
+      <div ref={menuRef} className="relative flex shrink-0 items-center gap-2">
         <span className="text-sm text-gray-500 dark:text-neutral-400">
           View by:
         </span>
         <button
           type="button"
           onClick={() => setMenuOpen((v) => !v)}
-          className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
+          className="flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
         >
           {viewBy}
           <ChevronDown
@@ -60,7 +57,7 @@ export function TopBar() {
         </button>
 
         {menuOpen && (
-          <div className="absolute top-full right-4 z-20 mt-1 w-40 rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-neutral-700 dark:bg-neutral-800">
+          <div className="absolute top-full right-0 z-20 mt-1 w-40 rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-neutral-700 dark:bg-neutral-800">
             {viewByOptions.map((option) => (
               <button
                 key={option}

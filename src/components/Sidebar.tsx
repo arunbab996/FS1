@@ -1,7 +1,7 @@
 import { ChevronDown, Command, LogOut, Moon, Search, Sun } from "lucide-react";
 import { navItems } from "../data/nav";
+import { personPhotoUrl } from "../utils/avatars";
 import { LogoMark } from "./icons/LogoMark";
-import { PeterGregoryAvatar } from "./icons/PeterGregoryAvatar";
 
 export function Sidebar({
   isDark,
@@ -81,7 +81,11 @@ export function Sidebar({
       </nav>
 
       <div className="flex items-center gap-2.5 border-t border-gray-200 px-4 py-3 dark:border-neutral-700">
-        <PeterGregoryAvatar className="h-8 w-8 shrink-0 rounded-full overflow-hidden" />
+        <img
+          src={personPhotoUrl("peter-gregory")}
+          alt="AB"
+          className="h-8 w-8 shrink-0 rounded-full object-cover"
+        />
         <span className="flex-1 truncate text-sm font-medium text-gray-800 dark:text-neutral-100">
           Arun Baburaj
         </span>
