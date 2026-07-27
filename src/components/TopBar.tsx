@@ -21,7 +21,7 @@ export function TopBar() {
   const tabs = tabsByViewOption[viewBy];
 
   return (
-    <div className="flex items-stretch border-b border-gray-200 bg-white pt-2 dark:border-neutral-700 dark:bg-neutral-950">
+    <div className="flex items-stretch border-b border-gray-200 bg-white py-2 dark:border-neutral-700 dark:bg-neutral-950">
       <div className="flex flex-1 overflow-x-auto">
         {tabs.map((tab) => (
           <button
