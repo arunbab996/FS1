@@ -1,9 +1,7 @@
-import { ChevronDown, Mail, Rss, Trash2 } from "lucide-react";
-import { useState } from "react";
+import { Mail, Rss, Trash2 } from "lucide-react";
 import type { Signal } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
 import { countryFlag } from "../utils/flags";
-import { scoreColorClasses } from "../utils/score";
 import { signalStatusColorClasses } from "../utils/signalStatus";
 import { tagColorClasses } from "../utils/tags";
 import { AiSummaryBubble } from "./AiSummaryBubble";
@@ -12,11 +10,10 @@ import { ExperienceColumn } from "./ExperienceColumn";
 import { Highlight } from "./Highlight";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
+import { ScoreReasoningBubble } from "./ScoreReasoningBubble";
 import { Tooltip } from "./Tooltip";
 
 export function SignalTile({ signal }: { signal: Signal }) {
-  const [showReasoning, setShowReasoning] = useState(false);
-
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-3 transition-[box-shadow,border-color] hover:border-gray-300 hover:shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] dark:hover:border-neutral-600">
 
@@ -44,18 +41,7 @@ export function SignalTile({ signal }: { signal: Signal }) {
               aria-label={signal.status}
             />
           </Tooltip>
-          <button
-            type="button"
-            onClick={() => setShowReasoning((v) => !v)}
-            className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-sm font-semibold transition-colors ${scoreColorClasses(signal.score)}`}
-          >
-            {signal.score.toFixed(1)}
-            <ChevronDown
-              className={`h-3.5 w-3.5 transition-transform ${
-                showReasoning ? "rotate-180" : ""
-              }`}
-            />
-          </button>
+          <ScoreReasoningBubble score={signal.score} reasoning={signal.reasoning} />
         </div>
       </div>
 
@@ -75,33 +61,6 @@ export function SignalTile({ signal }: { signal: Signal }) {
           </p>
         </div>
       </div>
-
-      {/* Score reasoning panel */}
-      {showReasoning && (
-        <div className="mt-2 rounded-lg bg-gray-50 p-2 dark:bg-neutral-800">
-          <p className="text-xs font-medium text-gray-500 dark:text-neutral-300">
-            Why {signal.score.toFixed(1)}
-          </p>
-          <div className="mt-1.5 flex flex-wrap gap-1.5">
-            {signal.reasoning.positives.map((point) => (
-              <span
-                key={point}
-                className="rounded-full bg-teal-50 px-2 py-0.5 text-xs font-medium text-teal-700 dark:bg-teal-500/15 dark:text-teal-400"
-              >
-                + {point}
-              </span>
-            ))}
-            {signal.reasoning.negatives.map((point) => (
-              <span
-                key={point}
-                className="rounded-full bg-amber-50 px-2 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-500/15 dark:text-amber-400"
-              >
-                − {point}
-              </span>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Row 3 — Current / Past / Education */}
       <div className="mt-2 flex gap-1.5">

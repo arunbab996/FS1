@@ -14,8 +14,7 @@ export const signals: Signal[] = [
     avatarInitials: "DP",
     headline:
       "**Darshan P.**, founder of **FinishKit**, updated his profile and resurfaced in your tracked network",
-    contextLine:
-      "Via Raynard Lao's network · Featured 5x in 90 days · Sydney, Australia",
+    contextLine: "Sydney, Australia · 5 yrs experience",
     aiSummary:
       "Building FinishKit, a fintech app that helps freelancers close out invoices and get paid faster, with automated reconciliation built for small teams.",
     current: [{ company: "FinishKit", role: "Founder" }],
@@ -46,7 +45,7 @@ export const signals: Signal[] = [
     avatarInitials: "ZH",
     headline:
       "**Zhipeng (Zippo) H.** is actively building an open-source developer tool on GitHub",
-    contextLine: "GitHub commit spike this week · Brisbane, Australia",
+    contextLine: "Brisbane, Australia · 4 yrs experience",
     aiSummary:
       "Building an open-source CLI for streamlining local development environments, focused on fast, reproducible builds for small engineering teams.",
     current: [{ company: "QUT", role: "PhD candidate" }],
@@ -70,7 +69,7 @@ export const signals: Signal[] = [
     avatarInitials: "PV",
     headline:
       "**Paulyn V.** left **Qantas** and might be searching for a new opportunity",
-    contextLine: "Headline changed 2 days ago · Sydney, Australia",
+    contextLine: "Sydney, Australia · 9 yrs experience",
     aiSummary:
       "Recently left Qantas after 4 years as a quality engineer. No public venture yet, but her network activity suggests she's exploring opportunities in aviation and logistics.",
     current: [{ company: "—", role: "Exploring" }],
@@ -100,7 +99,7 @@ export const signals: Signal[] = [
     avatarInitials: "LW",
     headline:
       "**Loong W.** left **QDX** and started a new company **Metal** as CEO and Founder",
-    contextLine: "Company registered this week · Singapore",
+    contextLine: "Singapore · 13 yrs experience",
     aiSummary:
       "Building Metal, developer infrastructure for deploying and scaling AI inference workloads across cloud providers, drawing on his experience scaling QDX.",
     current: [{ company: "Metal", role: "CEO and Founder" }],
@@ -130,7 +129,7 @@ export const signals: Signal[] = [
     avatarInitials: "AK",
     headline:
       "**Aayush K.** left his role and might be searching for a new opportunity",
-    contextLine: "Via tracked network · Mumbai, India",
+    contextLine: "Mumbai, India · 8 yrs experience",
     aiSummary:
       "Recently left Razorpay after leading product for SMB lending. Exploring new opportunities in fintech and consumer credit, per recent network activity.",
     current: [{ company: "—", role: "Exploring" }],
@@ -162,8 +161,7 @@ export const signals: Signal[] = [
     avatarInitials: "ML",
     headline:
       "**Mei L.**, co-founder of **Vitalis Health**, was featured in TechCrunch's 'Ones to Watch' list",
-    contextLine:
-      "Via tracked network · Featured 3x in 30 days · Singapore",
+    contextLine: "Singapore · 15 yrs experience",
     aiSummary:
       "Building Vitalis Health, a preventive-care platform combining wearable data with clinician-led coaching for early detection of chronic disease.",
     current: [{ company: "Vitalis Health", role: "Co-founder & CEO" }],

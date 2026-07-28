@@ -6,7 +6,7 @@ export function FooterBar() {
   return (
     <div className="sticky bottom-0 flex items-center justify-between border-t border-gray-200 bg-white px-6 py-3 dark:border-neutral-700 dark:bg-neutral-950">
       <span className="text-sm text-gray-500 dark:text-neutral-400">
-        1 - 10 of 45,672 signals
+        1 - 25 of 45,672 signals
       </span>
 
       <div className="flex items-center gap-1">

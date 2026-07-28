@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import type { ExperienceEntry } from "../types";
 import { companyLogoUrl } from "../utils/avatars";
 
@@ -39,6 +39,54 @@ function EntryRow({
   );
 }
 
+function MoreEntriesBubble({ entries }: { entries: ExperienceEntry[] }) {
+  const [show, setShow] = useState(false);
+  const [placement, setPlacement] = useState<"top" | "bottom">("bottom");
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  function handleEnter() {
+    const rect = triggerRef.current?.getBoundingClientRect();
+    setPlacement(rect && rect.top < 260 ? "bottom" : "top");
+    setShow(true);
+  }
+
+  return (
+    <span
+      className="relative inline-flex"
+      onMouseEnter={handleEnter}
+      onMouseLeave={() => setShow(false)}
+    >
+      <button
+        ref={triggerRef}
+        type="button"
+        className="shrink-0 text-xs font-medium whitespace-nowrap text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+      >
+        (+{entries.length} more)
+      </button>
+
+      <div
+        className={`absolute left-0 z-30 w-64 rounded-xl border border-gray-200 bg-white p-3 shadow-xl transition-all duration-200 ease-out dark:border-neutral-700 dark:bg-neutral-800 ${
+          placement === "top"
+            ? "bottom-full mb-2 origin-bottom-left"
+            : "top-full mt-2 origin-top-left"
+        } ${
+          show
+            ? "translate-y-0 scale-100 opacity-100"
+            : `pointer-events-none scale-95 opacity-0 ${
+                placement === "top" ? "translate-y-1" : "-translate-y-1"
+              }`
+        }`}
+      >
+        <div className="flex flex-col gap-2">
+          {entries.map((entry, i) => (
+            <EntryRow key={i} entry={entry} />
+          ))}
+        </div>
+      </div>
+    </span>
+  );
+}
+
 export function ExperienceColumn({
   label,
   entries,
@@ -46,7 +94,6 @@ export function ExperienceColumn({
   label: string;
   entries: ExperienceEntry[];
 }) {
-  const [expanded, setExpanded] = useState(false);
   const [primary, ...rest] = entries;
 
   return (
@@ -58,26 +105,10 @@ export function ExperienceColumn({
         <EntryRow
           entry={primary}
           trailing={
-            rest.length > 0 && !expanded ? (
-              <button
-                type="button"
-                onClick={() => setExpanded(true)}
-                className="shrink-0 text-xs font-medium whitespace-nowrap text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-              >
-                (+{rest.length} more)
-              </button>
-            ) : undefined
+            rest.length > 0 ? <MoreEntriesBubble entries={rest} /> : undefined
           }
         />
       </div>
-
-      {expanded && (
-        <div className="mt-1 flex flex-col gap-1">
-          {rest.map((entry, i) => (
-            <EntryRow key={i} entry={entry} />
-          ))}
-        </div>
-      )}
     </div>
   );
 }
