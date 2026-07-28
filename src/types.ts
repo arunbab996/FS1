@@ -33,6 +33,11 @@ export interface Signal {
   headline: string;
   contextLine: string;
   aiSummary: string;
+  /** Who originally sourced/surfaced this signal, e.g. a network contact. */
+  sourcedBy?: string;
+  /** Pre-filled investor assignment, if this signal already has one. */
+  assignedInvestor?: string;
+  assignedStage?: string;
   current: ExperienceEntry[];
   past: ExperienceEntry[];
   education: ExperienceEntry[];

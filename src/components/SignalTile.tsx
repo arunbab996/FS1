@@ -35,6 +35,11 @@ export function SignalTile({ signal }: { signal: Signal }) {
         </div>
 
         <div className="flex shrink-0 items-center gap-1.5">
+          {signal.sourcedBy && (
+            <span className="rounded-full border border-gray-200 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-gray-600 dark:border-neutral-600 dark:text-neutral-300">
+              Sourced by {signal.sourcedBy}
+            </span>
+          )}
           <Tooltip label={signal.status}>
             <Rss
               className={`h-3.5 w-3.5 ${signalStatusColorClasses(signal.status)}`}

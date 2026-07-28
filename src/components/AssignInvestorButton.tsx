@@ -9,8 +9,12 @@ import { InlineSelect } from "./InlineSelect";
 
 export function AssignInvestorButton({ signal }: { signal: Signal }) {
   const [modalOpen, setModalOpen] = useState(false);
-  const [assignedInvestor, setAssignedInvestor] = useState<string | null>(null);
-  const [assignedStage, setAssignedStage] = useState<InvestorStage | null>(null);
+  const [assignedInvestor, setAssignedInvestor] = useState<string | null>(
+    signal.assignedInvestor ?? null,
+  );
+  const [assignedStage, setAssignedStage] = useState<InvestorStage | null>(
+    (signal.assignedStage as InvestorStage) ?? null,
+  );
   const [draftInvestor, setDraftInvestor] = useState<string | null>(null);
   const [draftStage, setDraftStage] = useState<string>("Prospecting");
 
