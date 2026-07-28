@@ -36,7 +36,7 @@ export function SignalTile({ signal }: { signal: Signal }) {
 
         <div className="flex shrink-0 items-center gap-1.5">
           {signal.sourcedBy && (
-            <span className="rounded-full border border-gray-200 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-gray-600 dark:border-neutral-600 dark:text-neutral-300">
+            <span className="rounded-full bg-yellow-50 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-yellow-700 dark:bg-yellow-500/15 dark:text-yellow-400">
               Sourced by {signal.sourcedBy}
             </span>
           )}

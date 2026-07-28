@@ -17,7 +17,7 @@ export const signals: Signal[] = [
     contextLine: "Sydney, Australia · 5.5 yrs experience",
     aiSummary:
       "Building FinishKit, an AI-powered code quality tool for engineering teams — solving reliability and review problems in AI-generated code.",
-    sourcedBy: "Raynard",
+    sourcedBy: "Raynard Lao",
     assignedInvestor: "Raynard Lao",
     assignedStage: "Prospecting",
     current: [{ company: "FinishKit", role: "Founder" }],
