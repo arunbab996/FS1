@@ -56,7 +56,7 @@ export function SignalTile({ signal }: { signal: Signal }) {
           <p className="text-sm leading-snug text-gray-700 dark:text-neutral-200">
             <Highlight text={signal.headline} />
           </p>
-          <p className="mt-0.5 text-xs text-gray-400 dark:text-neutral-400">
+          <p className="mt-0.5 text-xs text-gray-500 dark:text-neutral-400">
             {signal.contextLine}
           </p>
         </div>

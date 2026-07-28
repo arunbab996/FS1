@@ -26,7 +26,7 @@ function App() {
 
   return (
     <div className={isDark ? "dark" : ""}>
-      <div className="flex h-screen bg-gray-50 text-gray-900 dark:bg-neutral-950 dark:text-neutral-100">
+      <div className="flex h-screen bg-[#eceef1] text-gray-900 dark:bg-neutral-950 dark:text-neutral-100">
         <Sidebar isDark={isDark} onToggleDark={() => setIsDark((v) => !v)} />
 
         <div className="flex min-w-0 flex-1 flex-col">

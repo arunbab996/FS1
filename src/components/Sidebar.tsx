@@ -45,10 +45,10 @@ export function Sidebar({
       </div>
 
       <div className="px-3 pb-3">
-        <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-2.5 py-2 text-sm text-gray-400 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400">
+        <div className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 px-2.5 py-2 text-sm text-gray-500 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400">
           <Search className="h-4 w-4 shrink-0" />
           <span className="flex-1 truncate text-left">Search for anything</span>
-          <span className="flex items-center gap-0.5 rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[11px] font-medium text-gray-400 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+          <span className="flex items-center gap-0.5 rounded border border-gray-200 bg-white px-1.5 py-0.5 text-[11px] font-medium text-gray-500 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
             <Command className="h-3 w-3" />K
           </span>
         </div>
@@ -65,18 +65,18 @@ export function Sidebar({
                   className={`flex w-full items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-left text-sm transition-colors ${
                     item.active
                       ? "bg-gray-100 font-medium text-gray-900 dark:bg-neutral-800 dark:text-neutral-50"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-50"
+                      : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-50"
                   }`}
                 >
-                  <Icon className="h-4 w-4 shrink-0 text-gray-500 dark:text-neutral-400" />
+                  <Icon className="h-4 w-4 shrink-0 text-gray-600 dark:text-neutral-400" />
                   <span className="flex-1 truncate">{item.label}</span>
                   {item.badge && (
-                    <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-[11px] font-medium text-gray-500 dark:bg-neutral-700 dark:text-neutral-200">
+                    <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-[11px] font-medium text-gray-700 dark:bg-neutral-700 dark:text-neutral-200">
                       {item.badge}
                     </span>
                   )}
                   {item.collapsible && (
-                    <ChevronDown className="h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-neutral-400" />
+                    <ChevronDown className="h-3.5 w-3.5 shrink-0 text-gray-500 dark:text-neutral-400" />
                   )}
                 </button>
               </li>
@@ -96,7 +96,7 @@ export function Sidebar({
         </span>
         <button
           type="button"
-          className="text-gray-400 transition-colors hover:text-gray-700 dark:text-neutral-400 dark:hover:text-neutral-100"
+          className="text-gray-500 transition-colors hover:text-gray-700 dark:text-neutral-400 dark:hover:text-neutral-100"
           aria-label="Log out"
         >
           <LogOut className="h-4 w-4" />
