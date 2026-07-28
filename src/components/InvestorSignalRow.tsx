@@ -4,7 +4,7 @@ import { companyLogoUrl } from "../utils/avatars";
 export function InvestorInterestBox({ investor }: { investor: string }) {
   return (
     <div className="min-w-0 max-w-56 flex-1 rounded-lg border border-pink-200 bg-pink-50/50 px-1.5 py-1 dark:border-pink-500/20 dark:bg-pink-500/5">
-      <p className="text-[11px] font-semibold tracking-wider text-pink-600 uppercase dark:text-pink-400">
+      <p className="text-[10px] font-semibold tracking-wide text-pink-600 uppercase dark:text-pink-400">
         Investor interest
       </p>
       <div className="mt-0.5 flex items-center gap-1.5">
@@ -35,7 +35,7 @@ export function FeaturedBox({
 }) {
   return (
     <div className="min-w-0 max-w-56 flex-1 rounded-lg border border-amber-200 bg-amber-50/50 px-1.5 py-1 dark:border-amber-500/20 dark:bg-amber-500/5">
-      <p className="text-[11px] font-semibold tracking-wider text-amber-600 uppercase dark:text-amber-400">
+      <p className="text-[10px] font-semibold tracking-wide text-amber-600 uppercase dark:text-amber-400">
         Featured
       </p>
       <div className="mt-0.5 flex items-center gap-1.5">

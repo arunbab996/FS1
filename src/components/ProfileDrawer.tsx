@@ -48,7 +48,7 @@ function TabButton({
     <button
       type="button"
       onClick={onClick}
-      className={`shrink-0 border-b-2 px-1 py-2.5 text-xs font-semibold tracking-wide uppercase whitespace-nowrap transition-colors ${
+      className={`shrink-0 cursor-pointer border-b-2 px-1 py-2.5 text-xs font-semibold tracking-wide uppercase whitespace-nowrap transition-colors ${
         active
           ? "border-blue-600 text-blue-600 dark:border-blue-500 dark:text-blue-400"
           : "border-transparent text-gray-500 hover:text-gray-800 dark:text-neutral-400 dark:hover:text-neutral-100"
@@ -213,7 +213,7 @@ export function ProfileDrawer({
                 type="button"
                 onClick={onClose}
                 aria-label="Close"
-                className="shrink-0 rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+                className="shrink-0 cursor-pointer rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -404,7 +404,7 @@ export function ProfileDrawer({
                     <button
                       type="button"
                       onClick={() => setShowEarlier((v) => !v)}
-                      className="flex items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                      className="flex cursor-pointer items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
                     >
                       {showEarlier ? "Show less" : `Show more (${earlierGroup.positions.length})`}
                       <ChevronDown

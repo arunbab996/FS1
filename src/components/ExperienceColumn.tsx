@@ -98,7 +98,7 @@ export function ExperienceColumn({
 
   return (
     <div className="min-w-0 max-w-56 flex-1 rounded-lg border border-gray-200 bg-gray-50 px-1.5 py-1 dark:border-neutral-700 dark:bg-neutral-800">
-      <p className="text-[11px] font-semibold tracking-wider text-gray-400 uppercase dark:text-neutral-400">
+      <p className="text-[10px] font-semibold tracking-wide text-gray-500 uppercase dark:text-neutral-400">
         {label}
       </p>
       <div className="mt-0.5">
