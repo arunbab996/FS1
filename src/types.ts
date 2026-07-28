@@ -22,6 +22,68 @@ export interface SignalReasoning {
   negatives: string[];
 }
 
+export type PositionCategory = "corporate" | "academia" | "founder" | "consulting";
+
+export interface ProfilePosition {
+  company: string;
+  title: string;
+  period: string;
+  months: number;
+  category: PositionCategory;
+  tag?: string;
+  description?: string;
+  companyMeta?: string[];
+}
+
+export interface ProfileEducationEntry {
+  school: string;
+  badge?: string;
+  degree: string;
+  period: string;
+}
+
+export interface ProfileActivityItem {
+  kind:
+    | "sourced"
+    | "connected"
+    | "linkedin-sent"
+    | "linkedin-replied"
+    | "linkedin-opened"
+    | "meeting"
+    | "status";
+  text: string;
+  date: string;
+  direction?: "Outbound" | "Inbound";
+  tags?: string[];
+}
+
+export interface TalentProfile {
+  titleLine: string;
+  connections: number;
+  followers: number;
+  rolesHeld: number;
+  avgTenureMonths: number;
+  location: string;
+  overview: string;
+  aiSummaryGenerated: string;
+  positions: ProfilePosition[];
+  education: ProfileEducationEntry[];
+  skills: string[];
+  insights: {
+    totalMonths: number;
+    avgMonths: number;
+    longestMonths: number;
+    shortestMonths: number;
+    roles: number;
+    companies: number;
+    earlierRolesCount: number;
+  };
+  lastAnalystConnection: string;
+  lastConnectedDate: string;
+  lastStatus: string;
+  activity: ProfileActivityItem[];
+}
+
 export interface Signal {
   id: string;
   dateGroup: "Today · Jul 27" | "Yesterday · Jul 26";
@@ -43,4 +105,6 @@ export interface Signal {
   past: ExperienceEntry[];
   education: ExperienceEntry[];
   reasoning: SignalReasoning;
+  /** Rich profile detail shown in the slide-in profile drawer. */
+  profile?: TalentProfile;
 }

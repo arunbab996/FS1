@@ -1,4 +1,5 @@
 import { Mail, Rss, Trash2 } from "lucide-react";
+import { useState } from "react";
 import type { Signal } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
 import { countryFlag } from "../utils/flags";
@@ -10,12 +11,24 @@ import { ExperienceColumn } from "./ExperienceColumn";
 import { Highlight } from "./Highlight";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
+import { ProfileDrawer } from "./ProfileDrawer";
 import { ScoreReasoningBubble } from "./ScoreReasoningBubble";
 import { Tooltip } from "./Tooltip";
 
 export function SignalTile({ signal }: { signal: Signal }) {
+  const [profileOpen, setProfileOpen] = useState(false);
+
+  function handleTileClick(event: React.MouseEvent<HTMLDivElement>) {
+    const target = event.target as HTMLElement;
+    if (target.closest("button, a")) return;
+    setProfileOpen(true);
+  }
+
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-3 transition-[box-shadow,border-color] hover:border-gray-300 hover:shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] dark:hover:border-neutral-600">
+    <>
+    <div
+      onClick={handleTileClick}
+      className="cursor-pointer rounded-xl border border-gray-200 bg-white p-3 transition-[box-shadow,border-color] hover:border-gray-300 hover:shadow-sm dark:border-neutral-700 dark:bg-neutral-900 dark:shadow-[inset_0_1px_0_0_rgba(255,255,255,0.06)] dark:hover:border-neutral-600">
 
       {/* Row 1 — tags + score */}
       <div className="flex items-start justify-between gap-3">
@@ -123,5 +136,12 @@ export function SignalTile({ signal }: { signal: Signal }) {
         </div>
       </div>
     </div>
+
+    <ProfileDrawer
+      signal={signal}
+      open={profileOpen}
+      onClose={() => setProfileOpen(false)}
+    />
+    </>
   );
 }

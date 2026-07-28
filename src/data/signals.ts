@@ -1,4 +1,5 @@
 import type { Signal } from "../types";
+import { darshanProfile } from "./darshanProfile";
 
 export const signals: Signal[] = [
   {
@@ -21,6 +22,7 @@ export const signals: Signal[] = [
     assignedInvestor: "Raynard Lao",
     assignedStage: "Prospecting",
     linkedinUrl: "https://www.linkedin.com/in/darshan-patel-au/",
+    profile: darshanProfile,
     current: [{ company: "FinishKit", role: "Founder" }],
     past: [
       { company: "ASX", role: "Quant Data Engineer" },
