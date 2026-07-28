@@ -127,9 +127,14 @@ export function ProfileDrawer({
     }
     document.addEventListener("keydown", handleKeyDown);
     document.body.style.overflow = "hidden";
+    // The main list keeps its own scroll container, so hiding body overflow
+    // alone doesn't stop its native scrollbar from painting over the drawer.
+    const mainScroll = document.getElementById("main-scroll");
+    if (mainScroll) mainScroll.style.overflow = "hidden";
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = "";
+      if (mainScroll) mainScroll.style.overflow = "";
     };
   }, [open, onClose]);
 
@@ -140,7 +145,7 @@ export function ProfileDrawer({
     }
   }, [open]);
 
-  const name = extractPersonName(signal.headline);
+  const name = signal.personName ?? extractPersonName(signal.headline);
   const [location, yearsText] = signal.contextLine.split(" · ");
 
   const tabs: { id: Tab; label: string }[] = [
@@ -270,7 +275,10 @@ export function ProfileDrawer({
                   </div>
                 )}
 
-                {profile ? (
+                {profile &&
+                (profile.lastAnalystConnection ||
+                  profile.lastConnectedDate ||
+                  profile.lastStatus) ? (
                   <div>
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
                       Sourcing
@@ -281,7 +289,7 @@ export function ProfileDrawer({
                           Last analyst
                         </p>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-neutral-50">
-                          {profile.lastAnalystConnection}
+                          {profile.lastAnalystConnection ?? "—"}
                         </p>
                       </div>
                       <div className="rounded-xl border border-gray-200 bg-gray-50 p-3 dark:border-neutral-700 dark:bg-neutral-800">
@@ -289,7 +297,7 @@ export function ProfileDrawer({
                           Last connected
                         </p>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-neutral-50">
-                          {profile.lastConnectedDate}
+                          {profile.lastConnectedDate ?? "—"}
                         </p>
                       </div>
                       <div className="rounded-xl border border-gray-200 bg-gray-50 p-3 dark:border-neutral-700 dark:bg-neutral-800">
@@ -297,19 +305,21 @@ export function ProfileDrawer({
                           Last status
                         </p>
                         <p className="mt-1 text-sm font-medium text-gray-900 dark:text-neutral-50">
-                          {profile.lastStatus}
+                          {profile.lastStatus ?? "—"}
                         </p>
                       </div>
                     </div>
                   </div>
                 ) : (
-                  signal.sourcedBy && (
+                  (signal.sourcedBy || signal.sourcedVia) && (
                     <div>
                       <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
                         Sourcing
                       </h3>
                       <p className="mt-1.5 text-sm text-gray-700 dark:text-neutral-300">
-                        Sourced by {signal.sourcedBy}
+                        {signal.sourcedBy
+                          ? `Sourced by ${signal.sourcedBy}`
+                          : `Sourced via ${signal.sourcedVia}`}
                       </p>
                     </div>
                   )

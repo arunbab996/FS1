@@ -32,7 +32,7 @@ function App() {
         <div className="flex min-w-0 flex-1 flex-col">
           <TopBar />
 
-          <main className="flex-1 overflow-y-auto px-6 py-4">
+          <main id="main-scroll" className="flex-1 overflow-y-auto px-6 py-4">
             <div className="flex flex-col gap-4">
               {groups.map((group) => (
                 <div key={group.label} className="flex flex-col gap-2">

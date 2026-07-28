@@ -25,11 +25,11 @@ function EntryRow({
         />
       )}
       <div className="min-w-0 flex-1">
-        <p className="text-[13px] leading-snug font-medium break-words text-gray-900 dark:text-neutral-50">
+        <p className="truncate text-[13px] leading-snug font-medium text-gray-900 dark:text-neutral-50">
           {entry.company}
         </p>
         <div className="flex items-center justify-between gap-1.5">
-          <p className="text-xs leading-snug break-words text-gray-500 dark:text-neutral-400">
+          <p className="min-w-0 flex-1 truncate text-xs leading-snug text-gray-500 dark:text-neutral-400">
             {entry.role}
           </p>
           {trailing}

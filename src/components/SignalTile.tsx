@@ -1,9 +1,10 @@
-import { Mail, Rss, Trash2 } from "lucide-react";
+import { Building2, Mail, Rss, Tag, Trash2 } from "lucide-react";
 import { useState } from "react";
-import type { Signal } from "../types";
+import type { Signal, SignalTag } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
 import { countryFlag } from "../utils/flags";
 import { signalStatusColorClasses } from "../utils/signalStatus";
+import { sourcedViaColorClasses } from "../utils/sourcedVia";
 import { tagColorClasses } from "../utils/tags";
 import { AiSummaryBubble } from "./AiSummaryBubble";
 import { AssignInvestorButton } from "./AssignInvestorButton";
@@ -11,9 +12,16 @@ import { ExperienceColumn } from "./ExperienceColumn";
 import { Highlight } from "./Highlight";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
+import { FeaturedBox, InvestorInterestBox } from "./InvestorSignalRow";
 import { ProfileDrawer } from "./ProfileDrawer";
 import { ScoreReasoningBubble } from "./ScoreReasoningBubble";
 import { Tooltip } from "./Tooltip";
+
+function tagIcon(tag: SignalTag) {
+  if (tag.category === "investor-interest") return Tag;
+  if (tag.label === "New Company") return Building2;
+  return undefined;
+}
 
 export function SignalTile({ signal }: { signal: Signal }) {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -33,17 +41,21 @@ export function SignalTile({ signal }: { signal: Signal }) {
       {/* Row 1 — tags + score */}
       <div className="flex items-start justify-between gap-3">
         <div className="flex flex-wrap items-center gap-1">
-          {signal.tags.map((tag) => (
-            <span
-              key={tag.label}
-              className={`rounded-full px-2 py-0.5 text-xs font-medium ${tagColorClasses(tag.category)}`}
-            >
-              {tag.label}
-              {tag.category === "geography" && countryFlag(tag.label) && (
-                <span className="ml-1">{countryFlag(tag.label)}</span>
-              )}
-            </span>
-          ))}
+          {signal.tags.map((tag) => {
+            const Icon = tagIcon(tag);
+            return (
+              <span
+                key={tag.label}
+                className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${tagColorClasses(tag.category)}`}
+              >
+                {Icon && <Icon className="h-3 w-3" />}
+                {tag.label}
+                {tag.category === "geography" && countryFlag(tag.label) && (
+                  <span className="ml-1">{countryFlag(tag.label)}</span>
+                )}
+              </span>
+            );
+          })}
           <AiSummaryBubble summary={signal.aiSummary} />
         </div>
 
@@ -51,6 +63,13 @@ export function SignalTile({ signal }: { signal: Signal }) {
           {signal.sourcedBy && (
             <span className="rounded-full bg-yellow-50 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-yellow-700 dark:bg-yellow-500/15 dark:text-yellow-400">
               Sourced by {signal.sourcedBy}
+            </span>
+          )}
+          {signal.sourcedVia && (
+            <span
+              className={`rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${sourcedViaColorClasses(signal.sourcedVia)}`}
+            >
+              Sourced via {signal.sourcedVia}
             </span>
           )}
           <Tooltip label={signal.status}>
@@ -80,11 +99,17 @@ export function SignalTile({ signal }: { signal: Signal }) {
         </div>
       </div>
 
-      {/* Row 3 — Current / Past / Education */}
+      {/* Row 3 — Current / Past / Education (+ Investor interest / Featured, if present) */}
       <div className="mt-2 flex gap-1.5">
         <ExperienceColumn label="Current" entries={signal.current} />
         <ExperienceColumn label="Past" entries={signal.past} />
         <ExperienceColumn label="Education" entries={signal.education} />
+        {signal.investorInterest && (
+          <InvestorInterestBox investor={signal.investorInterest} />
+        )}
+        {signal.investorInterest && signal.featuredCount !== undefined && (
+          <FeaturedBox count={signal.featuredCount} windowDays={signal.featuredWindowDays} />
+        )}
       </div>
 
       {/* Row 4 — action bar */}

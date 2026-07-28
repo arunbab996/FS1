@@ -1,5 +1,7 @@
 import type { Signal } from "../types";
+import { achintyaProfile } from "./achintyaProfile";
 import { darshanProfile } from "./darshanProfile";
+import { skyProfile } from "./skyProfile";
 
 export const signals: Signal[] = [
   {
@@ -7,14 +9,14 @@ export const signals: Signal[] = [
     dateGroup: "Today · Jul 27",
     status: "New Signal",
     tags: [
-      { label: "New company", category: "momentum" },
+      { label: "New Company", category: "momentum" },
       { label: "Software", category: "industry" },
       { label: "Australia", category: "geography" },
     ],
     score: 7.7,
     avatarInitials: "DP",
     headline:
-      "**Darshan P.** left **ASX** and started a new company **FinishKit** as 'Founder'",
+      "**Darshan P.** left **ASX** and started a new company **FinishKit** as **'Founder'**",
     contextLine: "Sydney, Australia · 5.5 yrs experience",
     aiSummary:
       "Building FinishKit, an AI-powered code quality tool for engineering teams — solving reliability and review problems in AI-generated code.",
@@ -40,6 +42,97 @@ export const signals: Signal[] = [
         "Technical, AI-focused product",
       ],
       negatives: ["No public traction yet"],
+    },
+  },
+  {
+    id: "sig-sky",
+    dateGroup: "Today · Jul 27",
+    status: "New Signal",
+    tags: [
+      { label: "Investor interest", category: "investor-interest" },
+      { label: "Repeat Founder", category: "momentum" },
+      { label: "Software", category: "industry" },
+      { label: "Singapore", category: "geography" },
+    ],
+    score: 6.6,
+    avatarInitials: "SW",
+    headline: "**Accel** is interested in **Sky Wee**",
+    personName: "Sky Wee",
+    contextLine: "Singapore · 13 yrs experience",
+    aiSummary:
+      "Building a stealth-mode venture after years as a top crypto KOL and Web3 operator — already drawing investor interest from Accel, and featured twice on the network's radar in the past two weeks.",
+    sourcedVia: "Specter",
+    linkedinUrl: "https://www.linkedin.com/in/skywee97",
+    investorInterest: "Accel",
+    featuredCount: 2,
+    featuredWindowDays: 15,
+    profile: skyProfile,
+    current: [
+      { company: "Stealth Startup", role: "Co-Founder" },
+      { company: "Nexawork AI", role: "Co-Founder" },
+      { company: "Mars Growth Capital", role: "Strategic Partner" },
+    ],
+    past: [
+      { company: "Premier Pure Pte Ltd", role: "Business Development Manager" },
+      { company: "Metahunter", role: "Chief Influencer Officer" },
+      { company: "APBA Pte Ltd", role: "Human Resources" },
+    ],
+    education: [
+      { company: "Republic Polytechnic", role: "Diploma of Education" },
+      { company: "National University of Singapore", role: "Non-degree program" },
+    ],
+    reasoning: {
+      positives: [
+        "Investor interest from Accel",
+        "Massive audience (4M+ followers across TikTok, Instagram, YouTube)",
+        "Serial co-founder across multiple ventures",
+      ],
+      negatives: [
+        "Stealth-mode, limited public product info",
+        "Extremely high role turnover (29 roles across 35 companies)",
+      ],
+    },
+  },
+  {
+    id: "sig-achintya",
+    dateGroup: "Today · Jul 27",
+    status: "New Signal",
+    tags: [
+      { label: "Investor interest", category: "investor-interest" },
+      { label: "Repeat Founder", category: "momentum" },
+      { label: "Essentials", category: "industry" },
+      { label: "India", category: "geography" },
+    ],
+    score: 8,
+    avatarInitials: "AG",
+    headline: "**3one4** is interested in **Achintya Gupta**",
+    personName: "Achintya Gupta",
+    contextLine: "Bengaluru, India · 15.7 yrs experience",
+    aiSummary:
+      "Repeat founder (Phyllo, now Reo.Dev) with deep BFSI/fintech GTM experience — already drawing investor interest from 3one4 Capital.",
+    sourcedVia: "January Capital",
+    linkedinUrl: "https://www.linkedin.com/in/achintyagupta",
+    investorInterest: "3one4",
+    profile: achintyaProfile,
+    current: [{ company: "Reo.Dev", role: "Co-Founder and CEO" }],
+    past: [
+      { company: "Phyllo", role: "Co-Founder" },
+      { company: "Finvolv", role: "Chief Business Officer" },
+      { company: "Finvolv", role: "Director of Sales and Marketing" },
+    ],
+    education: [
+      { company: "Indian Institute of Technology, Delhi", role: "B.Tech (dual degree), Chemical Engineering" },
+      { company: "Indian School of Business", role: "MBA, Marketing & IT Management" },
+      { company: "Indian Business School of Advanced Management Studies", role: "Marketing and Tech" },
+    ],
+    reasoning: {
+      positives: [
+        "Investor interest from 3one4 Capital",
+        "Repeat founder (Phyllo, Reo.Dev)",
+        "Deep GTM/BFSI operating experience (Finvolv, 6+ years)",
+        "IIT Delhi + ISB pedigree",
+      ],
+      negatives: ["Fundraise stage/timing not yet public"],
     },
   },
   {
@@ -101,7 +194,7 @@ export const signals: Signal[] = [
     dateGroup: "Yesterday · Jul 26",
     status: "New Signal",
     tags: [
-      { label: "New company", category: "momentum" },
+      { label: "New Company", category: "momentum" },
       { label: "Serial founder", category: "momentum" },
       { label: "VC backed", category: "background" },
     ],
