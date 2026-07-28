@@ -10,7 +10,7 @@ export function Sidebar({
   onToggleDark: () => void;
 }) {
   return (
-    <aside className="flex h-full w-[280px] shrink-0 flex-col border-r border-gray-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+    <aside className="flex h-full w-[256px] shrink-0 flex-col border-r border-gray-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
       <div className="flex items-center justify-between px-5 pt-5 pb-4">
         <div className="flex items-center">
           <img
