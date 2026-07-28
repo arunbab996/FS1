@@ -1,7 +1,6 @@
 import { ChevronDown, Command, LogOut, Moon, Search, Sun } from "lucide-react";
 import { navItems } from "../data/nav";
 import { personPhotoUrl } from "../utils/avatars";
-import { LogoMark } from "./icons/LogoMark";
 
 export function Sidebar({
   isDark,
@@ -13,11 +12,17 @@ export function Sidebar({
   return (
     <aside className="flex h-full w-[280px] shrink-0 flex-col border-r border-gray-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
       <div className="flex items-center justify-between px-5 pt-5 pb-4">
-        <div className="flex items-center gap-2">
-          <LogoMark className="h-7 w-7" />
-          <span className="text-[15px] font-semibold text-gray-900 dark:text-neutral-50">
-            FirstSignal
-          </span>
+        <div className="flex items-center">
+          <img
+            src="/firstsignal-logo.png"
+            alt="FirstSignal"
+            className="h-6 w-auto dark:hidden"
+          />
+          <img
+            src="/firstsignal-logo-dark.png"
+            alt="FirstSignal"
+            className="hidden h-6 w-auto dark:block"
+          />
         </div>
         <button
           type="button"
