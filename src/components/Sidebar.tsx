@@ -16,12 +16,12 @@ export function Sidebar({
           <img
             src="/firstsignal-logo.png"
             alt="FirstSignal"
-            className="h-6 w-auto dark:hidden"
+            className="h-9 w-auto dark:hidden"
           />
           <img
             src="/firstsignal-logo-dark.png"
             alt="FirstSignal"
-            className="hidden h-6 w-auto dark:block"
+            className="hidden h-9 w-auto dark:block"
           />
         </div>
         <button
