@@ -1,15 +1,18 @@
-import { ChevronDown, Mail, Trash2 } from "lucide-react";
+import { ChevronDown, Mail, Rss, Trash2 } from "lucide-react";
 import { useState } from "react";
 import type { Signal } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
 import { countryFlag } from "../utils/flags";
 import { scoreColorClasses } from "../utils/score";
+import { signalStatusColorClasses } from "../utils/signalStatus";
 import { tagColorClasses } from "../utils/tags";
+import { AiSummaryBubble } from "./AiSummaryBubble";
 import { AssignInvestorButton } from "./AssignInvestorButton";
 import { ExperienceColumn } from "./ExperienceColumn";
 import { Highlight } from "./Highlight";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
+import { Tooltip } from "./Tooltip";
 
 export function SignalTile({ signal }: { signal: Signal }) {
   const [showReasoning, setShowReasoning] = useState(false);
@@ -19,7 +22,7 @@ export function SignalTile({ signal }: { signal: Signal }) {
 
       {/* Row 1 — tags + score */}
       <div className="flex items-start justify-between gap-3">
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap items-center gap-1">
           {signal.tags.map((tag) => (
             <span
               key={tag.label}
@@ -31,20 +34,29 @@ export function SignalTile({ signal }: { signal: Signal }) {
               )}
             </span>
           ))}
+          <AiSummaryBubble summary={signal.aiSummary} />
         </div>
 
-        <button
-          type="button"
-          onClick={() => setShowReasoning((v) => !v)}
-          className={`flex shrink-0 items-center gap-1 rounded-full px-2 py-0.5 text-sm font-semibold transition-colors ${scoreColorClasses(signal.score)}`}
-        >
-          {signal.score.toFixed(1)}
-          <ChevronDown
-            className={`h-3.5 w-3.5 transition-transform ${
-              showReasoning ? "rotate-180" : ""
-            }`}
-          />
-        </button>
+        <div className="flex shrink-0 items-center gap-1.5">
+          <Tooltip label={signal.status}>
+            <Rss
+              className={`h-3.5 w-3.5 ${signalStatusColorClasses(signal.status)}`}
+              aria-label={signal.status}
+            />
+          </Tooltip>
+          <button
+            type="button"
+            onClick={() => setShowReasoning((v) => !v)}
+            className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-sm font-semibold transition-colors ${scoreColorClasses(signal.score)}`}
+          >
+            {signal.score.toFixed(1)}
+            <ChevronDown
+              className={`h-3.5 w-3.5 transition-transform ${
+                showReasoning ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+        </div>
       </div>
 
       {/* Row 2 — event headline */}
@@ -100,7 +112,7 @@ export function SignalTile({ signal }: { signal: Signal }) {
 
       {/* Row 4 — action bar */}
       <div className="mt-2 flex items-center justify-between border-t border-gray-100 pt-2 dark:border-neutral-700">
-        <AssignInvestorButton />
+        <AssignInvestorButton signal={signal} />
 
         <div className="flex items-center gap-1">
           <button

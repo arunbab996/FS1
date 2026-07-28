@@ -4,6 +4,7 @@ export const signals: Signal[] = [
   {
     id: "sig-darshan",
     dateGroup: "Today · Jul 27",
+    status: "Repeat Signal",
     tags: [
       { label: "Repeat founder", category: "momentum" },
       { label: "Fintech", category: "industry" },
@@ -15,6 +16,8 @@ export const signals: Signal[] = [
       "**Darshan P.**, founder of **FinishKit**, updated his profile and resurfaced in your tracked network",
     contextLine:
       "Via Raynard Lao's network · Featured 5x in 90 days · Sydney, Australia",
+    aiSummary:
+      "Building FinishKit, a fintech app that helps freelancers close out invoices and get paid faster, with automated reconciliation built for small teams.",
     current: [{ company: "FinishKit", role: "Founder" }],
     past: [
       { company: "ASX", role: "Quant data analyst" },
@@ -33,6 +36,7 @@ export const signals: Signal[] = [
   {
     id: "sig-zippo",
     dateGroup: "Today · Jul 27",
+    status: "New Signal",
     tags: [
       { label: "Open source", category: "momentum" },
       { label: "Software", category: "industry" },
@@ -43,6 +47,8 @@ export const signals: Signal[] = [
     headline:
       "**Zhipeng (Zippo) H.** is actively building an open-source developer tool on GitHub",
     contextLine: "GitHub commit spike this week · Brisbane, Australia",
+    aiSummary:
+      "Building an open-source CLI for streamlining local development environments, focused on fast, reproducible builds for small engineering teams.",
     current: [{ company: "QUT", role: "PhD candidate" }],
     past: [{ company: "QUT", role: "Research assistant" }],
     education: [{ company: "QUT", role: "BInfTech" }],
@@ -54,6 +60,7 @@ export const signals: Signal[] = [
   {
     id: "sig-paulyn",
     dateGroup: "Today · Jul 27",
+    status: "Active Duplicate Signal",
     tags: [
       { label: "New opportunity", category: "momentum" },
       { label: "Big tech experience", category: "background" },
@@ -64,6 +71,8 @@ export const signals: Signal[] = [
     headline:
       "**Paulyn V.** left **Qantas** and might be searching for a new opportunity",
     contextLine: "Headline changed 2 days ago · Sydney, Australia",
+    aiSummary:
+      "Recently left Qantas after 4 years as a quality engineer. No public venture yet, but her network activity suggests she's exploring opportunities in aviation and logistics.",
     current: [{ company: "—", role: "Exploring" }],
     past: [
       { company: "Qantas", role: "Quality engineer" },
@@ -81,6 +90,7 @@ export const signals: Signal[] = [
   {
     id: "sig-loong",
     dateGroup: "Yesterday · Jul 26",
+    status: "New Signal",
     tags: [
       { label: "New company", category: "momentum" },
       { label: "Serial founder", category: "momentum" },
@@ -91,6 +101,8 @@ export const signals: Signal[] = [
     headline:
       "**Loong W.** left **QDX** and started a new company **Metal** as CEO and Founder",
     contextLine: "Company registered this week · Singapore",
+    aiSummary:
+      "Building Metal, developer infrastructure for deploying and scaling AI inference workloads across cloud providers, drawing on his experience scaling QDX.",
     current: [{ company: "Metal", role: "CEO and Founder" }],
     past: [
       { company: "QDX", role: "CEO and Founder" },
@@ -109,6 +121,7 @@ export const signals: Signal[] = [
   {
     id: "sig-aayush",
     dateGroup: "Yesterday · Jul 26",
+    status: "Dormant Duplicate Signal",
     tags: [
       { label: "New opportunity", category: "momentum" },
       { label: "India", category: "geography" },
@@ -118,6 +131,8 @@ export const signals: Signal[] = [
     headline:
       "**Aayush K.** left his role and might be searching for a new opportunity",
     contextLine: "Via tracked network · Mumbai, India",
+    aiSummary:
+      "Recently left Razorpay after leading product for SMB lending. Exploring new opportunities in fintech and consumer credit, per recent network activity.",
     current: [{ company: "—", role: "Exploring" }],
     past: [
       { company: "Razorpay", role: "Product manager" },
@@ -137,6 +152,7 @@ export const signals: Signal[] = [
   {
     id: "sig-mei",
     dateGroup: "Yesterday · Jul 26",
+    status: "Passed Repeat Signal",
     tags: [
       { label: "Repeat founder", category: "momentum" },
       { label: "Health tech", category: "industry" },
@@ -148,6 +164,8 @@ export const signals: Signal[] = [
       "**Mei L.**, co-founder of **Vitalis Health**, was featured in TechCrunch's 'Ones to Watch' list",
     contextLine:
       "Via tracked network · Featured 3x in 30 days · Singapore",
+    aiSummary:
+      "Building Vitalis Health, a preventive-care platform combining wearable data with clinician-led coaching for early detection of chronic disease.",
     current: [{ company: "Vitalis Health", role: "Co-founder & CEO" }],
     past: [
       { company: "Grab", role: "Senior product manager" },

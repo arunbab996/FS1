@@ -1,5 +1,12 @@
 export type TagCategory = "momentum" | "industry" | "geography" | "background";
 
+export type SignalStatus =
+  | "New Signal"
+  | "Repeat Signal"
+  | "Active Duplicate Signal"
+  | "Dormant Duplicate Signal"
+  | "Passed Repeat Signal";
+
 export interface SignalTag {
   label: string;
   category: TagCategory;
@@ -18,12 +25,14 @@ export interface SignalReasoning {
 export interface Signal {
   id: string;
   dateGroup: "Today · Jul 27" | "Yesterday · Jul 26";
+  status: SignalStatus;
   tags: SignalTag[];
   score: number;
   avatarInitials: string;
   /** Headline text. Wrap entities in **double asterisks** to bold them. */
   headline: string;
   contextLine: string;
+  aiSummary: string;
   current: ExperienceEntry[];
   past: ExperienceEntry[];
   education: ExperienceEntry[];
