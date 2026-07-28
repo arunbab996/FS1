@@ -79,13 +79,25 @@ export function SignalTile({ signal }: { signal: Signal }) {
         <AssignInvestorButton signal={signal} />
 
         <div className="flex items-center gap-1">
-          <button
-            type="button"
-            aria-label="View LinkedIn"
-            className="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
-          >
-            <LinkedinIcon className="h-4 w-4" />
-          </button>
+          {signal.linkedinUrl ? (
+            <a
+              href={signal.linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View LinkedIn"
+              className="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+            >
+              <LinkedinIcon className="h-4 w-4" />
+            </a>
+          ) : (
+            <button
+              type="button"
+              aria-label="View LinkedIn"
+              className="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+            >
+              <LinkedinIcon className="h-4 w-4" />
+            </button>
+          )}
           <button
             type="button"
             aria-label="View on Twitter/X"

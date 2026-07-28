@@ -38,6 +38,7 @@ export interface Signal {
   /** Pre-filled investor assignment, if this signal already has one. */
   assignedInvestor?: string;
   assignedStage?: string;
+  linkedinUrl?: string;
   current: ExperienceEntry[];
   past: ExperienceEntry[];
   education: ExperienceEntry[];

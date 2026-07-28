@@ -20,6 +20,7 @@ export const signals: Signal[] = [
     sourcedBy: "Raynard Lao",
     assignedInvestor: "Raynard Lao",
     assignedStage: "Prospecting",
+    linkedinUrl: "https://www.linkedin.com/in/darshan-patel-au/",
     current: [{ company: "FinishKit", role: "Founder" }],
     past: [
       { company: "ASX", role: "Quant Data Engineer" },
