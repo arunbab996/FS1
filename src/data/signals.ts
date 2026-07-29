@@ -315,6 +315,7 @@ export const signals: Signal[] = [
   },
   {
     id: "sig-aayush",
+    hidden: true,
     dateGroup: "Yesterday · Jul 26",
     status: "Dormant Duplicate Signal",
     tags: [
@@ -346,6 +347,7 @@ export const signals: Signal[] = [
   },
   {
     id: "sig-mei",
+    hidden: true,
     dateGroup: "Yesterday · Jul 26",
     status: "Passed Repeat Signal",
     tags: [

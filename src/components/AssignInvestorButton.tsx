@@ -1,4 +1,4 @@
-import { CircleUser, UserPlus, X } from "lucide-react";
+import { CircleUser, User, UserPlus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { fakeInvestors } from "../data/investors";
 import { investorStages, type InvestorStage } from "../data/investorStages";
@@ -90,11 +90,17 @@ export function AssignInvestorButton({ signal }: { signal: Signal }) {
             </div>
 
             <div className="mt-4 flex items-start gap-3 rounded-lg bg-gray-50 p-3 dark:bg-neutral-800">
-              <img
-                src={personPhotoUrl(signal.id)}
-                alt={signal.avatarInitials}
-                className="h-9 w-9 shrink-0 rounded-full object-cover"
-              />
+              {signal.useGenericAvatar ? (
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-700">
+                  <User className="h-5 w-5 text-gray-400 dark:text-neutral-400" />
+                </div>
+              ) : (
+                <img
+                  src={signal.photoUrl ?? personPhotoUrl(signal.id)}
+                  alt={signal.avatarInitials}
+                  className="h-9 w-9 shrink-0 rounded-full object-cover"
+                />
+              )}
               <p className="text-sm leading-snug text-gray-700 dark:text-neutral-300">
                 <Highlight text={signal.headline} />
               </p>

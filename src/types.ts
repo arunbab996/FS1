@@ -97,6 +97,8 @@ export interface Signal {
   id: string;
   dateGroup: "Today · Jul 27" | "Yesterday · Jul 26";
   status: SignalStatus;
+  /** Temporarily exclude from the list (e.g. mid-edit signals ahead of a demo) without deleting the data. */
+  hidden?: boolean;
   tags: SignalTag[];
   score: number;
   avatarInitials: string;

@@ -21,7 +21,7 @@ function groupByDate(items: Signal[]) {
 }
 
 function App() {
-  const groups = groupByDate(signals);
+  const groups = groupByDate(signals.filter((signal) => !signal.hidden));
   const [isDark, setIsDark] = useState(false);
 
   return (
