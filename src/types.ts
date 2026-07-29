@@ -3,7 +3,8 @@ export type TagCategory =
   | "industry"
   | "geography"
   | "background"
-  | "investor-interest";
+  | "investor-interest"
+  | "stealth";
 
 export type SignalStatus =
   | "New Signal"
@@ -44,7 +45,8 @@ export interface ProfileEducationEntry {
   school: string;
   badge?: string;
   degree: string;
-  period: string;
+  /** Omit when the source profile doesn't list dates for this entry. */
+  period?: string;
 }
 
 export interface ProfileActivityItem {
@@ -65,7 +67,8 @@ export interface ProfileActivityItem {
 export interface TalentProfile {
   titleLine: string;
   connections: number;
-  followers: number;
+  /** Omit when the source profile has no follower count. */
+  followers?: number;
   rolesHeld: number;
   avgTenureMonths: number;
   location: string;
@@ -97,6 +100,8 @@ export interface Signal {
   tags: SignalTag[];
   score: number;
   avatarInitials: string;
+  /** Real photo path/URL (e.g. "/avatars/darshan.jpg"). Falls back to a placeholder when omitted. */
+  photoUrl?: string;
   /** Headline text. Wrap entities in **double asterisks** to bold them. */
   headline: string;
   /**
@@ -115,6 +120,8 @@ export interface Signal {
   assignedInvestor?: string;
   assignedStage?: string;
   linkedinUrl?: string;
+  /** Show a generic silhouette instead of a photo, e.g. for anonymized stealth signals. */
+  useGenericAvatar?: boolean;
   /** Name of the external investor/fund shown to be interested in this person. */
   investorInterest?: string;
   /** How many times this signal has been featured recently. */

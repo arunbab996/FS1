@@ -10,6 +10,7 @@ import {
   Search,
   Send,
   Sparkles,
+  User,
   Users,
   X,
 } from "lucide-react";
@@ -181,11 +182,17 @@ export function ProfileDrawer({
           <div className="shrink-0 border-b border-gray-200 p-5 dark:border-neutral-700">
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
-                <img
-                  src={personPhotoUrl(signal.id)}
-                  alt={signal.avatarInitials}
-                  className="h-16 w-16 shrink-0 rounded-full object-cover"
-                />
+                {signal.useGenericAvatar ? (
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-700">
+                    <User className="h-8 w-8 text-gray-400 dark:text-neutral-400" />
+                  </div>
+                ) : (
+                  <img
+                    src={signal.photoUrl ?? personPhotoUrl(signal.id)}
+                    alt={signal.avatarInitials}
+                    className="h-16 w-16 shrink-0 rounded-full object-cover"
+                  />
+                )}
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <h2 className="text-xl font-bold text-gray-900 dark:text-neutral-50">
@@ -222,7 +229,9 @@ export function ProfileDrawer({
             <div className="mt-4 flex flex-wrap gap-2">
               <StatChip icon={Briefcase} label={yearsText ?? "Experience"} />
               {profile && <StatChip icon={Users} label={`${profile.connections} Connections`} />}
-              {profile && <StatChip icon={Eye} label={`${profile.followers} Followers`} />}
+              {profile?.followers !== undefined && (
+                <StatChip icon={Eye} label={`${profile.followers} Followers`} />
+              )}
               <StatChip icon={MapPin} label={profile?.location ?? location} />
             </div>
           </div>
@@ -271,7 +280,7 @@ export function ProfileDrawer({
                     <StatTile label="Years experience" value={yearsText?.replace(" yrs experience", "") ?? "—"} />
                     <StatTile label="Roles held" value={profile.rolesHeld} />
                     <StatTile label="Avg tenure" value={`${profile.avgTenureMonths}mo`} />
-                    <StatTile label="Followers" value={profile.followers} />
+                    <StatTile label="Followers" value={profile.followers ?? "—"} />
                   </div>
                 )}
 
@@ -499,9 +508,11 @@ export function ProfileDrawer({
                           <p className="text-sm text-gray-600 dark:text-neutral-300">
                             {edu.degree}
                           </p>
-                          <p className="mt-0.5 text-xs text-gray-400 dark:text-neutral-500">
-                            {edu.period}
-                          </p>
+                          {edu.period && (
+                            <p className="mt-0.5 text-xs text-gray-400 dark:text-neutral-500">
+                              {edu.period}
+                            </p>
+                          )}
                         </div>
                       </div>
                     ))

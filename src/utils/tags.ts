@@ -12,5 +12,7 @@ export function tagColorClasses(category: TagCategory): string {
       return "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400";
     case "investor-interest":
       return "bg-pink-50 text-pink-700 dark:bg-pink-500/15 dark:text-pink-400";
+    case "stealth":
+      return "bg-purple-50 text-purple-700 dark:bg-purple-500/15 dark:text-purple-400";
   }
 }

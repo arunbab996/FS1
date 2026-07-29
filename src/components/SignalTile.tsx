@@ -1,4 +1,4 @@
-import { Building2, Mail, Rss, Tag, Trash2 } from "lucide-react";
+import { Building2, Compass, EyeOff, Mail, Rss, Tag, Trash2, User } from "lucide-react";
 import { useState } from "react";
 import type { Signal, SignalTag } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
@@ -6,6 +6,7 @@ import { countryFlag } from "../utils/flags";
 import { signalStatusColorClasses } from "../utils/signalStatus";
 import { sourcedViaColorClasses } from "../utils/sourcedVia";
 import { tagColorClasses } from "../utils/tags";
+import { formatTenureLabel } from "../utils/tenure";
 import { AiSummaryBubble } from "./AiSummaryBubble";
 import { AssignInvestorButton } from "./AssignInvestorButton";
 import { ExperienceColumn } from "./ExperienceColumn";
@@ -19,7 +20,9 @@ import { Tooltip } from "./Tooltip";
 
 function tagIcon(tag: SignalTag) {
   if (tag.category === "investor-interest") return Tag;
+  if (tag.category === "stealth") return EyeOff;
   if (tag.label === "New Company") return Building2;
+  if (tag.label === "Exploring") return Compass;
   return undefined;
 }
 
@@ -31,6 +34,10 @@ export function SignalTile({ signal }: { signal: Signal }) {
     if (target.closest("button, a")) return;
     setProfileOpen(true);
   }
+
+  const latestTenureMonths = signal.profile?.positions[0]?.months;
+  const latestTenureLabel =
+    latestTenureMonths !== undefined ? formatTenureLabel(latestTenureMonths) : undefined;
 
   return (
     <>
@@ -84,14 +91,23 @@ export function SignalTile({ signal }: { signal: Signal }) {
 
       {/* Row 2 — event headline */}
       <div className="mt-2 flex gap-2.5">
-        <img
-          src={personPhotoUrl(signal.id)}
-          alt={signal.avatarInitials}
-          className="h-9 w-9 shrink-0 rounded-full object-cover"
-        />
+        {signal.useGenericAvatar ? (
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-700">
+            <User className="h-5 w-5 text-gray-400 dark:text-neutral-400" />
+          </div>
+        ) : (
+          <img
+            src={signal.photoUrl ?? personPhotoUrl(signal.id)}
+            alt={signal.avatarInitials}
+            className="h-9 w-9 shrink-0 rounded-full object-cover"
+          />
+        )}
         <div className="min-w-0">
           <p className="text-sm leading-snug text-gray-700 dark:text-neutral-200">
             <Highlight text={signal.headline} />
+            {latestTenureLabel && (
+              <span className="text-gray-400 dark:text-neutral-500"> ({latestTenureLabel})</span>
+            )}
           </p>
           <p className="mt-0.5 text-xs text-gray-500 dark:text-neutral-400">
             {signal.contextLine}

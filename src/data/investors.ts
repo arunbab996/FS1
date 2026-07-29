@@ -1,9 +1,11 @@
-/** Fake investor names for the "Assign investor" mockup flow — Silicon Valley (HBO) characters, plus tracked network contacts. */
+/** Investor names for the "Assign investor" flow. */
 export const fakeInvestors = [
+  "Alex Rankin",
+  "Roy Ong",
+  "Joshua Lim",
+  "Hongfei Xia",
   "Raynard Lao",
-  "Laurie Bream",
-  "Peter Gregory",
-  "Monica Hall",
-  "Russ Hanneman",
-  "Erlich Bachman",
+  "Jonathan Hodson",
+  "Benjamin Dunphy",
+  "David Bridge",
 ];
