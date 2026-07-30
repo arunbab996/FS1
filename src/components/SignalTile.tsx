@@ -1,4 +1,4 @@
-import { Building2, Compass, EyeOff, Mail, Rss, Tag, Trash2, User } from "lucide-react";
+import { Building2, Calendar, Compass, EyeOff, Mail, Rss, Tag, Trash2, User } from "lucide-react";
 import { useState } from "react";
 import type { Signal, SignalTag } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
@@ -38,6 +38,8 @@ export function SignalTile({ signal }: { signal: Signal }) {
   const latestTenureMonths = signal.profile?.positions[0]?.months;
   const latestTenureLabel =
     latestTenureMonths !== undefined ? formatTenureLabel(latestTenureMonths) : undefined;
+  // dateGroup is "Today · Jul 27" / "Yesterday · Jul 26" — the tile only needs the date itself.
+  const shortDate = signal.dateGroup.split(" · ")[1];
 
   return (
     <>
@@ -109,8 +111,9 @@ export function SignalTile({ signal }: { signal: Signal }) {
               <span className="text-gray-400 dark:text-neutral-500"> ({latestTenureLabel})</span>
             )}
           </p>
-          <p className="mt-0.5 text-xs text-gray-500 dark:text-neutral-400">
-            {signal.contextLine}
+          <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-500 dark:text-neutral-400">
+            <Calendar className="h-3 w-3 shrink-0 text-gray-400 dark:text-neutral-500" />
+            {shortDate} · {signal.contextLine}
           </p>
         </div>
       </div>

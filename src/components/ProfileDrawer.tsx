@@ -173,8 +173,8 @@ export function ProfileDrawer({
         onClick={onClose}
       />
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-full bg-white shadow-2xl transition-transform duration-300 ease-out sm:w-[55%] lg:max-w-2xl dark:bg-neutral-900 ${
-          open ? "translate-x-0" : "translate-x-full"
+        className={`fixed top-0 right-0 z-50 h-full w-full bg-white transition-transform duration-300 ease-out sm:w-[55%] lg:max-w-2xl dark:bg-neutral-900 ${
+          open ? "translate-x-0 shadow-2xl" : "translate-x-full"
         }`}
       >
         <div className="flex h-full flex-col">

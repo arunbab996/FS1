@@ -55,7 +55,7 @@ export const signals: Signal[] = [
     status: "New Signal",
     photoUrl: "/avatars/skywee.jpg",
     tags: [
-      { label: "Investor interest", category: "investor-interest" },
+      { label: "Investor Interest", category: "investor-interest" },
       { label: "Repeat Founder", category: "momentum" },
       { label: "Software", category: "industry" },
       { label: "Singapore", category: "geography" },
@@ -105,7 +105,7 @@ export const signals: Signal[] = [
     status: "New Signal",
     photoUrl: "/avatars/achintya.jpg",
     tags: [
-      { label: "Investor interest", category: "investor-interest" },
+      { label: "Investor Interest", category: "investor-interest" },
       { label: "Repeat Founder", category: "momentum" },
       { label: "Essentials", category: "industry" },
       { label: "India", category: "geography" },

@@ -1,28 +1,27 @@
-import { useState } from "react";
-import { DateGroupHeader } from "./components/DateGroupHeader";
+import { useMemo, useState } from "react";
 import { FooterBar } from "./components/FooterBar";
 import { Sidebar } from "./components/Sidebar";
 import { SignalTile } from "./components/SignalTile";
 import { TopBar } from "./components/TopBar";
 import { signals } from "./data/signals";
-import type { Signal } from "./types";
-
-function groupByDate(items: Signal[]) {
-  const groups: { label: string; signals: Signal[] }[] = [];
-  for (const signal of items) {
-    const existing = groups.find((g) => g.label === signal.dateGroup);
-    if (existing) {
-      existing.signals.push(signal);
-    } else {
-      groups.push({ label: signal.dateGroup, signals: [signal] });
-    }
-  }
-  return groups;
-}
+import {
+  deriveFilterOptions,
+  emptyFilters,
+  signalMatchesFilters,
+  signalMatchesSearch,
+  type SignalFilters,
+} from "./utils/signalFilters";
 
 function App() {
-  const groups = groupByDate(signals.filter((signal) => !signal.hidden));
   const [isDark, setIsDark] = useState(false);
+  const [filters, setFilters] = useState<SignalFilters>(emptyFilters);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const visibleSignals = useMemo(() => signals.filter((signal) => !signal.hidden), []);
+  const filterOptions = useMemo(() => deriveFilterOptions(visibleSignals), [visibleSignals]);
+  const results = visibleSignals.filter(
+    (signal) => signalMatchesFilters(signal, filters) && signalMatchesSearch(signal, searchQuery),
+  );
 
   return (
     <div className={isDark ? "dark" : ""}>
@@ -30,21 +29,38 @@ function App() {
         <Sidebar isDark={isDark} onToggleDark={() => setIsDark((v) => !v)} />
 
         <div className="flex min-w-0 flex-1 flex-col">
-          <TopBar />
+          <TopBar
+            filters={filters}
+            onFiltersChange={setFilters}
+            filterOptions={filterOptions}
+            searchQuery={searchQuery}
+            onSearchQueryChange={setSearchQuery}
+          />
 
           <main id="main-scroll" className="flex-1 overflow-y-auto px-6 py-4">
-            <div className="flex flex-col gap-4">
-              {groups.map((group) => (
-                <div key={group.label} className="flex flex-col gap-2">
-                  <DateGroupHeader label={group.label} />
-                  <div className="flex flex-col gap-2">
-                    {group.signals.map((signal) => (
-                      <SignalTile key={signal.id} signal={signal} />
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
+            {results.length > 0 ? (
+              <div className="flex flex-col gap-2">
+                {results.map((signal) => (
+                  <SignalTile key={signal.id} signal={signal} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-1 py-16 text-center">
+                <p className="text-sm font-medium text-gray-700 dark:text-neutral-200">
+                  No signals match your search or filters
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setFilters(emptyFilters);
+                    setSearchQuery("");
+                  }}
+                  className="cursor-pointer text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                >
+                  Clear search and filters
+                </button>
+              </div>
+            )}
           </main>
 
           <FooterBar />
