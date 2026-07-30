@@ -213,12 +213,12 @@ export function FilterDialog({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 dark:bg-black/70"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="flex h-[min(640px,85vh)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl dark:bg-neutral-900">
+      <div className="flex h-[min(640px,85vh)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl dark:border dark:border-neutral-700 dark:bg-neutral-900">
         <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-5 py-4 dark:border-neutral-800">
           <h2 className="text-base font-semibold text-gray-900 dark:text-neutral-50">
             All Filters

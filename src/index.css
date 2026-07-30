@@ -19,6 +19,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Tells the browser to paint native form controls (checkboxes, radios, date
+   pickers) with their dark palette instead of always defaulting to light. */
+.dark {
+  color-scheme: dark;
+}
+
 /* Thin, subtle scrollbars everywhere, instead of the chunky default OS scrollbar. */
 * {
   scrollbar-width: thin;

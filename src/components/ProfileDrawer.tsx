@@ -22,6 +22,7 @@ import {
   positionCategoryDotClasses,
 } from "../utils/positionCategory";
 import { extractPersonName, stripMarkdown } from "../utils/text";
+import { formatTenureLabel } from "../utils/tenure";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
 
@@ -222,7 +223,7 @@ export function ProfileDrawer({
                 aria-label="Close"
                 className="shrink-0 cursor-pointer rounded-md p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4" />
               </button>
             </div>
 
@@ -339,65 +340,89 @@ export function ProfileDrawer({
             {tab === "experience" && (
               <div className="flex flex-col gap-5">
                 {profile
-                  ? mainGroups.map((group, gi) => (
-                      <div key={gi}>
-                        <div className="flex items-center gap-2">
-                          <img
-                            src={companyLogoUrl(group.company)}
-                            alt=""
-                            className="h-7 w-7 rounded bg-white object-cover"
-                          />
-                          <h3 className="text-sm font-bold text-gray-900 dark:text-neutral-50">
-                            {group.company}
-                          </h3>
-                        </div>
-                        {group.meta && (
-                          <div className="mt-1.5 flex flex-wrap gap-1.5">
-                            {group.meta.map((m) => (
-                              <span
-                                key={m}
-                                className="rounded-full border border-gray-200 px-2 py-0.5 text-[11px] text-gray-500 dark:border-neutral-700 dark:text-neutral-400"
-                              >
-                                {m}
-                              </span>
+                  ? mainGroups.map((group, gi) => {
+                      const totalMonths = group.positions.reduce((sum, p) => sum + p.months, 0);
+                      // "$0" funding/valuation on a company card just means LinkedIn has nothing
+                      // on file — showing it as a badge reads as "raised nothing", which is noise.
+                      const visibleMeta = group.meta?.filter((m) => !m.trim().endsWith("$0"));
+
+                      return (
+                        <div
+                          key={gi}
+                          className="rounded-xl border border-gray-200 p-4 dark:border-neutral-700"
+                        >
+                          <div className="flex items-start gap-3">
+                            <img
+                              src={companyLogoUrl(group.company)}
+                              alt=""
+                              className="h-9 w-9 shrink-0 rounded-lg object-cover"
+                            />
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-center justify-between gap-2">
+                                <h3 className="text-sm font-bold text-gray-900 dark:text-neutral-50">
+                                  {group.company}
+                                </h3>
+                                {totalMonths > 0 && (
+                                  <span className="shrink-0 text-xs font-medium text-gray-400 dark:text-neutral-500">
+                                    {formatTenureLabel(totalMonths)}
+                                  </span>
+                                )}
+                              </div>
+                              {visibleMeta && visibleMeta.length > 0 && (
+                                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                                  {visibleMeta.map((m) => (
+                                    <span
+                                      key={m}
+                                      className="rounded-full border border-gray-200 px-2 py-0.5 text-[11px] text-gray-500 dark:border-neutral-700 dark:text-neutral-400"
+                                    >
+                                      {m}
+                                    </span>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                          <div className="mt-3 flex flex-col gap-3 border-l-2 border-gray-100 pl-4 dark:border-neutral-800">
+                            {group.positions.map((pos, pi) => (
+                              <div key={pi} className="relative">
+                                <span
+                                  className={`absolute top-1.5 -left-[21px] h-2 w-2 rounded-full ${positionCategoryDotClasses(pos.category)}`}
+                                />
+                                <div className="flex items-start justify-between gap-3">
+                                  <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                                    {pos.title}
+                                  </p>
+                                  <span className="shrink-0 text-xs whitespace-nowrap text-gray-400 dark:text-neutral-500">
+                                    {pos.period}
+                                  </span>
+                                </div>
+                                {pos.tag && (
+                                  <span className="mt-1 inline-block rounded-full border border-gray-200 px-2 py-0.5 text-[11px] text-gray-500 dark:border-neutral-700 dark:text-neutral-400">
+                                    {pos.tag}
+                                  </span>
+                                )}
+                                {pos.description && (
+                                  <p className="mt-1 text-sm text-gray-600 dark:text-neutral-300">
+                                    {pos.description}
+                                  </p>
+                                )}
+                              </div>
                             ))}
                           </div>
-                        )}
-                        <div className="mt-3 flex flex-col gap-3 border-l-2 border-gray-100 pl-4 dark:border-neutral-800">
-                          {group.positions.map((pos, pi) => (
-                            <div key={pi} className="relative">
-                              <span
-                                className={`absolute top-1.5 -left-[21px] h-2 w-2 rounded-full ${positionCategoryDotClasses(pos.category)}`}
-                              />
-                              <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                                {pos.title}
-                              </p>
-                              {pos.tag && (
-                                <span className="mt-1 inline-block rounded-full border border-gray-200 px-2 py-0.5 text-[11px] text-gray-500 dark:border-neutral-700 dark:text-neutral-400">
-                                  {pos.tag}
-                                </span>
-                              )}
-                              {pos.description && (
-                                <p className="mt-1 text-sm text-gray-600 dark:text-neutral-300">
-                                  {pos.description}
-                                </p>
-                              )}
-                              <p className="mt-0.5 text-xs text-gray-400 dark:text-neutral-500">
-                                {pos.period}
-                              </p>
-                            </div>
-                          ))}
                         </div>
-                      </div>
-                    ))
+                      );
+                    })
                   : [...signal.current, ...signal.past].map((entry, i) => (
-                      <div key={i} className="flex items-center gap-2.5">
+                      <div
+                        key={i}
+                        className="flex items-center gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700"
+                      >
                         <img
                           src={companyLogoUrl(entry.company)}
                           alt=""
-                          className="h-7 w-7 rounded bg-white object-cover"
+                          className="h-9 w-9 shrink-0 rounded-lg object-cover"
                         />
-                        <div>
+                        <div className="min-w-0">
                           <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
                             {entry.company}
                           </p>
@@ -409,30 +434,37 @@ export function ProfileDrawer({
                     ))}
 
                 {earlierGroup && (
-                  <div>
+                  <div className="rounded-xl border border-gray-200 p-4 dark:border-neutral-700">
                     <button
                       type="button"
                       onClick={() => setShowEarlier((v) => !v)}
-                      className="flex cursor-pointer items-center gap-1 text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                      className="flex w-full cursor-pointer items-center justify-between gap-2 text-left"
                     >
-                      {showEarlier ? "Show less" : `Show more (${earlierGroup.positions.length})`}
-                      <ChevronDown
-                        className={`h-3.5 w-3.5 transition-transform ${showEarlier ? "rotate-180" : ""}`}
-                      />
+                      <span className="text-sm font-bold text-gray-900 dark:text-neutral-50">
+                        Earlier roles
+                      </span>
+                      <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-blue-600 dark:text-blue-400">
+                        {showEarlier ? "Show less" : `Show ${earlierGroup.positions.length}`}
+                        <ChevronDown
+                          className={`h-3.5 w-3.5 transition-transform ${showEarlier ? "rotate-180" : ""}`}
+                        />
+                      </span>
                     </button>
                     {showEarlier && (
-                      <div className="mt-3 flex flex-col gap-2 border-l-2 border-gray-100 pl-4 dark:border-neutral-800">
+                      <div className="mt-3 flex flex-col gap-3 border-l-2 border-gray-100 pl-4 dark:border-neutral-800">
                         {earlierGroup.positions.map((pos, pi) => (
                           <div key={pi} className="relative">
                             <span
                               className={`absolute top-1.5 -left-[21px] h-2 w-2 rounded-full ${positionCategoryDotClasses(pos.category)}`}
                             />
-                            <p className="text-sm font-medium text-gray-800 dark:text-neutral-200">
-                              {pos.title}
-                            </p>
-                            <p className="text-xs text-gray-400 dark:text-neutral-500">
-                              {pos.period} · {pos.months} mos
-                            </p>
+                            <div className="flex items-start justify-between gap-3">
+                              <p className="text-sm font-medium text-gray-800 dark:text-neutral-200">
+                                {pos.title}
+                              </p>
+                              <span className="shrink-0 text-xs whitespace-nowrap text-gray-400 dark:text-neutral-500">
+                                {pos.period}
+                              </span>
+                            </div>
                           </div>
                         ))}
                       </div>
