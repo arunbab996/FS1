@@ -94,7 +94,29 @@ export const paulynProfile: TalentProfile = {
       period: "Jan 2008 - Jan 2013",
     },
   ],
-  skills: [],
+  linkedinActivity: [
+    {
+      kind: "reaction",
+      reaction: "Celebrated",
+      preview: "Wrapping up 12 wonderful months building quality culture across the Qantas engineering org.",
+      date: "1 week ago",
+      url: "https://www.linkedin.com/posts/qantas_engineering-activity-7122556780123456789",
+    },
+    {
+      kind: "comment",
+      preview:
+        "So true — the best QA cultures I've seen treat testing as a design discipline, not a gate at the end of the pipeline.",
+      date: "2 weeks ago",
+      url: "https://www.linkedin.com/posts/prospa_quality-engineering-activity-7120212233123456789",
+    },
+    {
+      kind: "post",
+      preview:
+        "Taking some time to figure out what's next. If you're building something in QA automation or UX-centric test tooling, I'd love to chat.",
+      date: "3 weeks ago",
+      url: "https://www.linkedin.com/posts/paulynvillafuerte_opentowork-activity-7117987654123456789",
+    },
+  ],
   insights: {
     totalMonths: 134,
     avgMonths: 19,

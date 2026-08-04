@@ -2,20 +2,24 @@ import {
   Briefcase,
   Calendar,
   ChevronDown,
+  ExternalLink,
   Eye,
+  FileText,
   GraduationCap,
   Handshake,
   MapPin,
+  MessageSquare,
   Reply,
   Search,
   Send,
   Sparkles,
+  ThumbsUp,
   User,
   Users,
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import type { ProfileActivityItem, ProfilePosition, Signal } from "../types";
+import type { LinkedInActivityItem, ProfileActivityItem, ProfilePosition, Signal } from "../types";
 import { companyLogoUrl, personPhotoUrl } from "../utils/avatars";
 import {
   positionCategoryBarClasses,
@@ -23,10 +27,11 @@ import {
 } from "../utils/positionCategory";
 import { extractPersonName, stripMarkdown } from "../utils/text";
 import { formatTenureLabel } from "../utils/tenure";
+import { GithubIcon } from "./icons/GithubIcon";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
 
-type Tab = "overview" | "experience" | "insights" | "education" | "skills" | "interactions";
+type Tab = "overview" | "experience" | "insights" | "education" | "social" | "interactions";
 
 function StatChip({ icon: Icon, label }: { icon: typeof Briefcase; label: string }) {
   return (
@@ -104,6 +109,29 @@ function activityIcon(kind: ProfileActivityItem["kind"]) {
   }
 }
 
+function linkedinActivityIcon(kind: LinkedInActivityItem["kind"]) {
+  switch (kind) {
+    case "post":
+      return FileText;
+    case "comment":
+      return MessageSquare;
+    case "reaction":
+      return ThumbsUp;
+  }
+}
+
+const linkedinActivityLabel: Record<LinkedInActivityItem["kind"], string> = {
+  post: "Post",
+  comment: "Comment",
+  reaction: "Reaction",
+};
+
+const linkedinActivityTextClasses: Record<LinkedInActivityItem["kind"], string> = {
+  post: "text-blue-600 dark:text-blue-400",
+  comment: "text-cyan-600 dark:text-cyan-400",
+  reaction: "text-pink-600 dark:text-pink-400",
+};
+
 export function ProfileDrawer({
   signal,
   open,
@@ -155,7 +183,9 @@ export function ProfileDrawer({
     { id: "experience", label: "Experience" },
     ...(profile ? ([{ id: "insights", label: "Insights" }] as const) : []),
     { id: "education", label: "Education" },
-    ...(profile?.skills.length ? ([{ id: "skills", label: "Skills" }] as const) : []),
+    ...(profile?.linkedinActivity?.length
+      ? ([{ id: "social", label: "Social Activity" }] as const)
+      : []),
     ...(profile?.activity.length
       ? ([{ id: "interactions", label: "Interactions" }] as const)
       : []),
@@ -205,10 +235,23 @@ export function ProfileDrawer({
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="View LinkedIn"
-                        className="text-gray-400 hover:text-gray-700 dark:text-neutral-500 dark:hover:text-neutral-200"
+                        className="text-gray-600 hover:text-gray-900 dark:text-neutral-300 dark:hover:text-neutral-50"
                       >
                         <LinkedinIcon className="h-4 w-4" />
                       </a>
+                    )}
+                    {signal.githubUrl ? (
+                      <a
+                        href={signal.githubUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="View GitHub"
+                        className="text-gray-400 hover:text-gray-700 dark:text-neutral-500 dark:hover:text-neutral-200"
+                      >
+                        <GithubIcon className="h-4 w-4" />
+                      </a>
+                    ) : (
+                      <GithubIcon className="h-4 w-4 text-gray-300 dark:text-neutral-700" />
                     )}
                     <TwitterIcon className="h-4 w-4 text-gray-400 dark:text-neutral-500" />
                   </div>
@@ -238,7 +281,7 @@ export function ProfileDrawer({
           </div>
 
           {/* Tabs */}
-          <div className="flex shrink-0 gap-5 overflow-x-auto border-b border-gray-200 px-5 dark:border-neutral-700">
+          <div className="flex shrink-0 gap-5 overflow-x-auto border-b border-gray-200 px-5 [scrollbar-width:none] dark:border-neutral-700 [&::-webkit-scrollbar]:hidden">
             {tabs.map((t) => (
               <TabButton key={t.id} active={tab === t.id} onClick={() => setTab(t.id)}>
                 {t.label}
@@ -568,16 +611,61 @@ export function ProfileDrawer({
               </div>
             )}
 
-            {tab === "skills" && profile && (
-              <div className="flex flex-wrap gap-2">
-                {profile.skills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-full border border-gray-200 px-3 py-1 text-xs text-gray-700 dark:border-neutral-700 dark:text-neutral-300"
-                  >
-                    {skill}
-                  </span>
-                ))}
+            {tab === "social" && profile && (
+              <div className="flex flex-col gap-3">
+                {profile.linkedinActivity?.map((item, i) => {
+                  const Icon = linkedinActivityIcon(item.kind);
+                  return (
+                    <div
+                      key={i}
+                      className="overflow-hidden rounded-xl border border-gray-200 dark:border-neutral-700"
+                    >
+                      <div className="flex items-center gap-2.5 p-3 pb-2">
+                        {signal.useGenericAvatar ? (
+                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-700">
+                            <User className="h-4.5 w-4.5 text-gray-400 dark:text-neutral-400" />
+                          </div>
+                        ) : (
+                          <img
+                            src={signal.photoUrl ?? personPhotoUrl(signal.id)}
+                            alt={signal.avatarInitials}
+                            className="h-9 w-9 shrink-0 rounded-full object-cover"
+                          />
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                            {name}
+                          </p>
+                          <p
+                            className={`flex items-center gap-1 text-xs font-medium ${linkedinActivityTextClasses[item.kind]}`}
+                          >
+                            <Icon className="h-3 w-3" />
+                            {linkedinActivityLabel[item.kind]}
+                            {item.reaction ? ` · ${item.reaction}` : ""}
+                            <span className="text-gray-300 dark:text-neutral-600">·</span>
+                            <span className="font-normal text-gray-400 dark:text-neutral-500">
+                              {item.date}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                      <div className="px-3 pb-3">
+                        <p className="text-sm leading-relaxed text-gray-700 dark:text-neutral-300">
+                          {item.preview}
+                        </p>
+                      </div>
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-1.5 border-t border-gray-100 py-2 text-xs font-semibold text-blue-600 hover:bg-gray-50 dark:border-neutral-800 dark:text-blue-400 dark:hover:bg-neutral-800/60"
+                      >
+                        View on LinkedIn
+                        <ExternalLink className="h-3 w-3" />
+                      </a>
+                    </div>
+                  );
+                })}
               </div>
             )}
 

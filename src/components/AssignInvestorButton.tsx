@@ -46,13 +46,13 @@ export function AssignInvestorButton({ signal }: { signal: Signal }) {
         <button
           type="button"
           onClick={openModal}
-          className="flex items-center gap-1.5"
+          className="flex items-center gap-1.5 whitespace-nowrap"
         >
-          <span className="flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 hover:bg-blue-100 dark:bg-blue-500/15 dark:text-blue-400 dark:hover:bg-blue-500/25">
-            <CircleUser className="h-3.5 w-3.5" />
+          <span className="flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-blue-700 hover:bg-blue-100 dark:bg-blue-500/15 dark:text-blue-400 dark:hover:bg-blue-500/25">
+            <CircleUser className="h-3.5 w-3.5 shrink-0" />
             {assignedInvestor}
           </span>
-          <span className="rounded-full border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-600 dark:border-neutral-600 dark:text-neutral-300">
+          <span className="rounded-full border border-gray-200 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-gray-600 dark:border-neutral-600 dark:text-neutral-300">
             {assignedStage}
           </span>
         </button>

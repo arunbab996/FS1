@@ -53,7 +53,7 @@ interface Category {
 }
 
 const categories: Category[] = [
-  { id: "signalTypes", label: "Signal Type", icon: Tags },
+  { id: "signalTypes", label: "Signal Type", icon: Tags, searchable: true },
   { id: "sources", label: "Signal Source", icon: Radio },
   { id: "industries", label: "Industry", icon: Briefcase },
   { id: "countries", label: "Country", icon: Globe, searchable: true },
@@ -159,7 +159,10 @@ export function FilterDialog({
     setDraft({ ...draft, [id]: next });
   }
 
-  const totalActive = categories.reduce((sum, c) => sum + categoryCount(c.id, draft), 0);
+  const totalActive = categories.reduce(
+    (sum, c) => sum + (categoryCount(c.id, draft) > 0 ? 1 : 0),
+    0,
+  );
 
   function handleApply() {
     onFiltersChange(draft);

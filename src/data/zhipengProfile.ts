@@ -137,13 +137,28 @@ export const zhipengProfile: TalentProfile = {
       period: "Jan 2016 - Jan 2020",
     },
   ],
-  skills: [
-    "Process Mining",
-    "Data Analysis",
-    "Deep Learning",
-    "Data Visualization",
-    "Business Process Management",
-    "Python",
+  linkedinActivity: [
+    {
+      kind: "post",
+      preview:
+        "Open-sourced my tabular data preprocessing tool today. Built it for my own PhD work but figured other researchers fighting messy datasets could use it too.",
+      date: "2 days ago",
+      url: "https://www.linkedin.com/posts/zhipenghe_opensource-activity-7124656780123456789",
+    },
+    {
+      kind: "reaction",
+      reaction: "Liked",
+      preview: "QUT PhD candidates showcase their research at this year's Postgraduate Research Conference.",
+      date: "1 week ago",
+      url: "https://www.linkedin.com/posts/qut_research-activity-7122212233123456789",
+    },
+    {
+      kind: "comment",
+      preview:
+        "Agreed — most predictive systems for tabular data still underperform simple gradient boosting baselines once you account for real-world missingness.",
+      date: "2 weeks ago",
+      url: "https://www.linkedin.com/posts/aiml-research_tabular-data-activity-7119887654123456789",
+    },
   ],
   insights: {
     totalMonths: 65,

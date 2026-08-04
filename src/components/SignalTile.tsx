@@ -1,30 +1,24 @@
-import { Building2, Calendar, Compass, EyeOff, Mail, Rss, Tag, Trash2, User } from "lucide-react";
+import { Calendar, Mail, Rss, Trash2, User } from "lucide-react";
 import { useState } from "react";
-import type { Signal, SignalTag } from "../types";
+import type { Signal } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
 import { countryFlag } from "../utils/flags";
 import { signalStatusColorClasses } from "../utils/signalStatus";
 import { sourcedViaColorClasses } from "../utils/sourcedVia";
-import { tagColorClasses } from "../utils/tags";
+import { tagColorClasses, tagIcon } from "../utils/tags";
 import { formatTenureLabel } from "../utils/tenure";
 import { AiSummaryBubble } from "./AiSummaryBubble";
 import { AssignInvestorButton } from "./AssignInvestorButton";
 import { ExperienceColumn } from "./ExperienceColumn";
 import { Highlight } from "./Highlight";
+import { GithubIcon } from "./icons/GithubIcon";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
 import { FeaturedBox, InvestorInterestBox } from "./InvestorSignalRow";
 import { ProfileDrawer } from "./ProfileDrawer";
 import { ScoreReasoningBubble } from "./ScoreReasoningBubble";
+import { TagInfoCard } from "./TagInfoCard";
 import { Tooltip } from "./Tooltip";
-
-function tagIcon(tag: SignalTag) {
-  if (tag.category === "investor-interest") return Tag;
-  if (tag.category === "stealth") return EyeOff;
-  if (tag.label === "New Company") return Building2;
-  if (tag.label === "Exploring") return Compass;
-  return undefined;
-}
 
 export function SignalTile({ signal }: { signal: Signal }) {
   const [profileOpen, setProfileOpen] = useState(false);
@@ -52,9 +46,8 @@ export function SignalTile({ signal }: { signal: Signal }) {
         <div className="flex flex-wrap items-center gap-1">
           {signal.tags.map((tag) => {
             const Icon = tagIcon(tag);
-            return (
+            const pill = (
               <span
-                key={tag.label}
                 className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${tagColorClasses(tag.category)}`}
               >
                 {Icon && <Icon className="h-3 w-3" />}
@@ -63,6 +56,13 @@ export function SignalTile({ signal }: { signal: Signal }) {
                   <span className="ml-1">{countryFlag(tag.label)}</span>
                 )}
               </span>
+            );
+            return tag.description ? (
+              <TagInfoCard key={tag.label} tag={tag}>
+                {pill}
+              </TagInfoCard>
+            ) : (
+              <span key={tag.label}>{pill}</span>
             );
           })}
           <AiSummaryBubble summary={signal.aiSummary} />
@@ -142,7 +142,7 @@ export function SignalTile({ signal }: { signal: Signal }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="View LinkedIn"
-              className="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+              className="flex h-8 w-8 items-center justify-center rounded-md text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-50"
             >
               <LinkedinIcon className="h-4 w-4" />
             </a>
@@ -153,6 +153,25 @@ export function SignalTile({ signal }: { signal: Signal }) {
               className="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
             >
               <LinkedinIcon className="h-4 w-4" />
+            </button>
+          )}
+          {signal.githubUrl ? (
+            <a
+              href={signal.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View GitHub"
+              className="flex h-8 w-8 items-center justify-center rounded-md text-gray-400 hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+            >
+              <GithubIcon className="h-4 w-4" />
+            </a>
+          ) : (
+            <button
+              type="button"
+              aria-label="View GitHub"
+              className="flex h-8 w-8 items-center justify-center rounded-md text-gray-300 dark:text-neutral-600"
+            >
+              <GithubIcon className="h-4 w-4" />
             </button>
           )}
           <button

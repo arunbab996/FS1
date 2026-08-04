@@ -4,7 +4,8 @@ export type TagCategory =
   | "geography"
   | "background"
   | "investor-interest"
-  | "stealth";
+  | "stealth"
+  | "thesis";
 
 export type SignalStatus =
   | "New Signal"
@@ -16,6 +17,8 @@ export type SignalStatus =
 export interface SignalTag {
   label: string;
   category: TagCategory;
+  /** Optional hover explanation, e.g. why a "Nexus to Asia Pacific" call was made for this signal. */
+  description?: string;
 }
 
 export interface ExperienceEntry {
@@ -64,6 +67,17 @@ export interface ProfileActivityItem {
   tags?: string[];
 }
 
+/** The talent's own recent activity on LinkedIn — posts, comments, and reactions. */
+export interface LinkedInActivityItem {
+  kind: "post" | "comment" | "reaction";
+  /** Short preview/snippet of the post, the comment, or the post being reacted to. */
+  preview: string;
+  date: string;
+  url: string;
+  /** For reactions, e.g. "Liked", "Celebrated", "Supported". */
+  reaction?: string;
+}
+
 export interface TalentProfile {
   titleLine: string;
   connections: number;
@@ -76,7 +90,8 @@ export interface TalentProfile {
   aiSummaryGenerated: string;
   positions: ProfilePosition[];
   education: ProfileEducationEntry[];
-  skills: string[];
+  /** Omit when there's no recent LinkedIn activity to show. */
+  linkedinActivity?: LinkedInActivityItem[];
   insights: {
     totalMonths: number;
     avgMonths: number;
@@ -122,6 +137,7 @@ export interface Signal {
   assignedInvestor?: string;
   assignedStage?: string;
   linkedinUrl?: string;
+  githubUrl?: string;
   /** Show a generic silhouette instead of a photo, e.g. for anonymized stealth signals. */
   useGenericAvatar?: boolean;
   /** Name of the external investor/fund shown to be interested in this person. */

@@ -234,6 +234,12 @@ export const signals: Signal[] = [
       { label: "Big tech experience", category: "background" },
       { label: "Software", category: "industry" },
       { label: "United States", category: "geography" },
+      {
+        label: "Nexus to Asia Pacific",
+        category: "thesis",
+        description:
+          "Based in the US, but educated in India (B.Tech, Bhopal) and active in TiE — fits the India/SEA/Oceania thesis despite a US base.",
+      },
     ],
     score: 8.1,
     avatarInitials: "AB",
@@ -266,6 +272,7 @@ export const signals: Signal[] = [
         "19+ years AI/ML & engineering leadership (Amazon, Microsoft, VMware)",
         "Repeat founder (CloudDefense.AI, acquired by AccuKnox)",
         "Deep LLM inference/edge AI expertise",
+        "Educated in India (B.Tech, Bhopal) and active in TiE — fits the India/SEA/Oceania thesis despite a US base",
       ],
       negatives: ["Stealth-mode, no public product info yet"],
     },

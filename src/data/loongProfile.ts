@@ -94,17 +94,28 @@ export const loongProfile: TalentProfile = {
       degree: "Advanced Research and Development (Computer Science) (Honours)",
     },
   ],
-  skills: [
-    "Ada",
-    "Concurrent Programming",
-    "Cryptocurrency",
-    "Distributed Systems",
-    "Go",
-    "Haskell",
-    "Java",
-    "JavaScript",
-    "Parallel Programming",
-    "SQL",
+  linkedinActivity: [
+    {
+      kind: "post",
+      preview:
+        "Drug design is still bottlenecked by simulation cost, not ideas. Metal exists to make the compute side a non-issue.",
+      date: "3 days ago",
+      url: "https://www.linkedin.com/posts/bzlwang_drugdiscovery-activity-7124756780123456789",
+    },
+    {
+      kind: "comment",
+      preview:
+        "Been there — QDX taught me that a prior IPO means nothing to a new cap table. You still have to earn every dollar again.",
+      date: "1 week ago",
+      url: "https://www.linkedin.com/posts/automera_startups-activity-7121312233123456789",
+    },
+    {
+      kind: "reaction",
+      reaction: "Liked",
+      preview: "Singapore's deep tech ecosystem just crossed another funding milestone this quarter.",
+      date: "2 weeks ago",
+      url: "https://www.linkedin.com/posts/enterprisesg_deeptech-activity-7118876543123456789",
+    },
   ],
   insights: {
     totalMonths: 138,

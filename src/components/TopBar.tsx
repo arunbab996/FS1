@@ -1,7 +1,9 @@
-import { ListFilter, Search } from "lucide-react";
+import { LayoutGrid, ListFilter, Search, Table2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { activeFilterCount, type SignalFilters } from "../utils/signalFilters";
 import { FilterDialog, type FilterOptions } from "./FilterDialog";
+
+export type ViewMode = "cards" | "table";
 
 export function TopBar({
   filters,
@@ -9,12 +11,16 @@ export function TopBar({
   filterOptions,
   searchQuery,
   onSearchQueryChange,
+  viewMode,
+  onViewModeChange,
 }: {
   filters: SignalFilters;
   onFiltersChange: (filters: SignalFilters) => void;
   filterOptions: FilterOptions;
   searchQuery: string;
   onSearchQueryChange: (query: string) => void;
+  viewMode: ViewMode;
+  onViewModeChange: (mode: ViewMode) => void;
 }) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [searchDraft, setSearchDraft] = useState(searchQuery);
@@ -60,6 +66,32 @@ export function TopBar({
       </div>
 
       <div className="flex shrink-0 items-center justify-end gap-2">
+        <div className="flex shrink-0 items-center gap-0.5 rounded-lg border border-gray-200 bg-white p-0.5 dark:border-neutral-600 dark:bg-neutral-900">
+          <button
+            type="button"
+            onClick={() => onViewModeChange("cards")}
+            aria-label="Card view"
+            className={`flex cursor-pointer items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium transition-colors ${
+              viewMode === "cards"
+                ? "bg-gray-100 text-gray-900 dark:bg-neutral-700 dark:text-neutral-50"
+                : "text-gray-500 hover:text-gray-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+            }`}
+          >
+            <LayoutGrid className="h-3.5 w-3.5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => onViewModeChange("table")}
+            aria-label="Table view"
+            className={`flex cursor-pointer items-center gap-1.5 rounded-md px-2 py-1 text-sm font-medium transition-colors ${
+              viewMode === "table"
+                ? "bg-gray-100 text-gray-900 dark:bg-neutral-700 dark:text-neutral-50"
+                : "text-gray-500 hover:text-gray-700 dark:text-neutral-400 dark:hover:text-neutral-200"
+            }`}
+          >
+            <Table2 className="h-3.5 w-3.5" />
+          </button>
+        </div>
         <button
           type="button"
           onClick={() => setDialogOpen(true)}

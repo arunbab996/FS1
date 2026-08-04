@@ -140,7 +140,29 @@ export const anshuProfile: TalentProfile = {
       degree: "MS",
     },
   ],
-  skills: [],
+  linkedinActivity: [
+    {
+      kind: "comment",
+      preview:
+        "The inference cost curve is bending faster than most roadmaps assume. Edge deployment isn't a 2027 problem anymore, it's a now problem.",
+      date: "4 days ago",
+      url: "https://www.linkedin.com/posts/anshubansal_llm-inference-activity-7122456780123456789",
+    },
+    {
+      kind: "reaction",
+      reaction: "Liked",
+      preview: "Ex-Amazon, ex-Microsoft — a look back at 20 years of mobile platform engineering.",
+      date: "1 week ago",
+      url: "https://www.linkedin.com/posts/forbes-technology-council_engineering-activity-7120112233123456789",
+    },
+    {
+      kind: "post",
+      preview:
+        "Quietly heads-down on something new. If you're deep in agentic infra or edge AI runtimes, I'd love to compare notes.",
+      date: "2 weeks ago",
+      url: "https://www.linkedin.com/posts/anshubansal_buildinginpublic-activity-7118765432123456789",
+    },
+  ],
   insights: {
     totalMonths: 236,
     avgMonths: 52,

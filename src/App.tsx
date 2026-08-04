@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { FooterBar } from "./components/FooterBar";
 import { Sidebar } from "./components/Sidebar";
+import { SignalTable } from "./components/SignalTable";
 import { SignalTile } from "./components/SignalTile";
-import { TopBar } from "./components/TopBar";
+import { TopBar, type ViewMode } from "./components/TopBar";
 import { signals } from "./data/signals";
 import {
   deriveFilterOptions,
@@ -16,6 +17,7 @@ function App() {
   const [isDark, setIsDark] = useState(false);
   const [filters, setFilters] = useState<SignalFilters>(emptyFilters);
   const [searchQuery, setSearchQuery] = useState("");
+  const [viewMode, setViewMode] = useState<ViewMode>("cards");
 
   const visibleSignals = useMemo(() => signals.filter((signal) => !signal.hidden), []);
   const filterOptions = useMemo(() => deriveFilterOptions(visibleSignals), [visibleSignals]);
@@ -35,15 +37,21 @@ function App() {
             filterOptions={filterOptions}
             searchQuery={searchQuery}
             onSearchQueryChange={setSearchQuery}
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
           />
 
           <main id="main-scroll" className="flex-1 overflow-y-auto px-6 py-4">
             {results.length > 0 ? (
-              <div className="flex flex-col gap-2">
-                {results.map((signal) => (
-                  <SignalTile key={signal.id} signal={signal} />
-                ))}
-              </div>
+              viewMode === "table" ? (
+                <SignalTable signals={results} />
+              ) : (
+                <div className="flex flex-col gap-2">
+                  {results.map((signal) => (
+                    <SignalTile key={signal.id} signal={signal} />
+                  ))}
+                </div>
+              )
             ) : (
               <div className="flex flex-col items-center justify-center gap-1 py-16 text-center">
                 <p className="text-sm font-medium text-gray-700 dark:text-neutral-200">

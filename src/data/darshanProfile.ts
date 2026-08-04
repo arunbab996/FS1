@@ -110,19 +110,28 @@ export const darshanProfile: TalentProfile = {
       period: "Jan 2021 - Dec 2023",
     },
   ],
-  skills: [
-    "Qiskit",
-    "Physics",
-    "Linear Algebra",
-    "Quantum Computing",
-    "Business Intelligence",
-    "SQL",
-    "ETL",
-    "Data Warehousing",
-    "SDLC",
-    "Data Modeling",
-    "Tableau",
-    "JIRA",
+  linkedinActivity: [
+    {
+      kind: "post",
+      preview:
+        "Shipping AI-generated code is easy. Shipping AI-generated code that survives a production incident at 2am is the hard part. That's the problem FinishKit exists to solve.",
+      date: "3 days ago",
+      url: "https://www.linkedin.com/posts/darshan-patel-au_finishkit-activity-7123456780123456789",
+    },
+    {
+      kind: "comment",
+      preview:
+        "Completely agree — the review bottleneck moved from 'is this correct' to 'do I trust the thing that wrote this'. That trust gap is the real product.",
+      date: "1 week ago",
+      url: "https://www.linkedin.com/posts/darshan-patel-au_ai-code-review-activity-7121002345123456789",
+    },
+    {
+      kind: "reaction",
+      reaction: "Celebrated",
+      preview: "Blackbird Giants C11 cohort — meet the 12 teams building with us this year.",
+      date: "2 weeks ago",
+      url: "https://www.linkedin.com/posts/blackbird-ventures_giants-c11-activity-7119876543123456789",
+    },
   ],
   insights: {
     totalMonths: 59,

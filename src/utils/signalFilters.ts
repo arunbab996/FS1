@@ -9,6 +9,15 @@ export const signalTypeOptions = [
   "Stealth Signal",
   "Exploring",
   "Investor Interest",
+  "Ecosystem (Credit Providers)",
+  "Company Incorporation",
+  "Patent",
+  "Grant",
+  "Hackathon",
+  "Research Paper",
+  "Government",
+  "Legal",
+  "Student Club",
 ] as const;
 
 /** Base country list (mirrors the old "View by: Country" filter), plus whatever else shows up in real data. */
@@ -100,17 +109,18 @@ export const emptyFilters: SignalFilters = {
   date: { preset: "All dates" },
 };
 
+/** Counts active filter *categories*, not the number of options selected within each. */
 export function activeFilterCount(filters: SignalFilters): number {
   return (
-    filters.signalTypes.length +
-    filters.sources.length +
-    filters.industries.length +
-    filters.countries.length +
-    filters.locations.length +
-    filters.education.length +
+    (filters.signalTypes.length > 0 ? 1 : 0) +
+    (filters.sources.length > 0 ? 1 : 0) +
+    (filters.industries.length > 0 ? 1 : 0) +
+    (filters.countries.length > 0 ? 1 : 0) +
+    (filters.locations.length > 0 ? 1 : 0) +
+    (filters.education.length > 0 ? 1 : 0) +
     (isScoreFilterActive(filters.score) ? 1 : 0) +
-    filters.statuses.length +
-    filters.assignedTo.length +
+    (filters.statuses.length > 0 ? 1 : 0) +
+    (filters.assignedTo.length > 0 ? 1 : 0) +
     (filters.date.preset !== "All dates" ? 1 : 0)
   );
 }

@@ -127,23 +127,28 @@ export const achintyaProfile: TalentProfile = {
       period: "Apr 2012 - Mar 2013",
     },
   ],
-  skills: [
-    "CRM",
-    "Business Strategy",
-    "Brand Management",
-    "Social Media Marketing",
-    "Business Development",
-    "Social Media",
-    "Analytics",
-    "Online Advertising",
-    "Cloud Computing",
-    "Content Marketing",
-    "Team Management",
-    "Competitive Analysis",
-    "Online Marketing",
-    "Mobile Devices",
-    "Competitive Intelligence",
-    "Sales",
+  linkedinActivity: [
+    {
+      kind: "post",
+      preview:
+        "Revenue intelligence for GTM teams shouldn't require a data team to operationalize. That's the gap Reo.Dev is closing for developer-led sales.",
+      date: "4 days ago",
+      url: "https://www.linkedin.com/posts/achintyagupta_gtm-activity-7124556780123456789",
+    },
+    {
+      kind: "comment",
+      preview:
+        "This matches what we're seeing at Reo.Dev too — BFSI buyers want proof of ROI before they'll even take the second call.",
+      date: "1 week ago",
+      url: "https://www.linkedin.com/posts/3one4capital_fintech-activity-7122112233123456789",
+    },
+    {
+      kind: "reaction",
+      reaction: "Supported",
+      preview: "Reo.Dev is hiring B2B SaaS Product Managers and Product Designers.",
+      date: "2 weeks ago",
+      url: "https://www.linkedin.com/posts/reodev_hiring-activity-7119987654123456789",
+    },
   ],
   insights: {
     totalMonths: 215,

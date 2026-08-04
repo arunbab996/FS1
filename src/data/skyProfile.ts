@@ -302,23 +302,28 @@ export const skyProfile: TalentProfile = {
       period: "Jan 2016 - Jan 2019",
     },
   ],
-  skills: [
-    "Brand Awareness",
-    "Brand Development",
-    "Business Development",
-    "Coaching",
-    "Cold Calling",
-    "Community Building",
-    "Digital Marketing",
-    "E-Commerce",
-    "Entrepreneurship",
-    "Human Resources",
-    "Influencer Marketing",
-    "Instagram",
-    "Interviewing",
-    "Leadership",
-    "Listing Services",
-    "Management",
+  linkedinActivity: [
+    {
+      kind: "post",
+      preview:
+        "Another exchange listing locked in this week. Grateful for the community that's shown up across every cycle — bull, bear, and everything in between.",
+      date: "2 days ago",
+      url: "https://www.linkedin.com/posts/skywee97_web3-activity-7124456780123456789",
+    },
+    {
+      kind: "reaction",
+      reaction: "Celebrated",
+      preview: "Forbes 30 Under 30 Asia 2026 — the full list is live.",
+      date: "5 days ago",
+      url: "https://www.linkedin.com/posts/forbes_30under30-activity-7123112233123456789",
+    },
+    {
+      kind: "comment",
+      preview:
+        "KOL marketing without a distribution strategy is just noise. The exchanges that win are the ones treating community like a product, not a funnel.",
+      date: "1 week ago",
+      url: "https://www.linkedin.com/posts/binance_web3-marketing-activity-7121987654123456789",
+    },
   ],
   insights: {
     totalMonths: 162,
