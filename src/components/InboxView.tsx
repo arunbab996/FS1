@@ -2,7 +2,7 @@ import { ArrowRight, ChevronDown, Info, PartyPopper, Sparkles } from "lucide-rea
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { InvestorProfile } from "../data/inboxInvestor";
 import type { Signal } from "../types";
-import { companyLogoUrl, personPhotoUrl } from "../utils/avatars";
+import { personPhotoUrl } from "../utils/avatars";
 import { countryFlag } from "../utils/flags";
 import { scoreTextClasses } from "../utils/score";
 import {
