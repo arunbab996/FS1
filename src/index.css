@@ -66,3 +66,36 @@ body {
 .animate-featured-glow {
   animation: featured-glow 2.8s ease-in-out infinite;
 }
+
+/* An irregular flicker rather than a smooth pulse, like a live broadcast signal. */
+@keyframes signal-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  8% {
+    opacity: 0.35;
+  }
+  16% {
+    opacity: 1;
+  }
+  24% {
+    opacity: 0.55;
+  }
+  30% {
+    opacity: 1;
+  }
+  68% {
+    opacity: 1;
+  }
+  74% {
+    opacity: 0.4;
+  }
+  80% {
+    opacity: 1;
+  }
+}
+
+.animate-signal-flicker {
+  animation: signal-flicker 2.6s ease-in-out infinite;
+}

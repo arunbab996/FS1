@@ -1,6 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import {
   LayoutDashboard,
+  Inbox,
   Radar,
   Landmark,
   CreditCard,
@@ -17,17 +18,21 @@ import {
   Crosshair,
 } from "lucide-react";
 
+export type NavView = "equity-signals" | "inbox";
+
 export interface NavItem {
   label: string;
   icon: LucideIcon;
   badge?: string;
-  active?: boolean;
   collapsible?: boolean;
+  /** Only nav items tied to an actual view are clickable; the rest are inert placeholders. */
+  view?: NavView;
 }
 
 export const navItems: NavItem[] = [
+  { label: "Inbox", icon: Inbox, view: "inbox" },
   { label: "Dashboard", icon: LayoutDashboard },
-  { label: "Equity Signals", icon: Radar, active: true },
+  { label: "Equity Signals", icon: Radar, view: "equity-signals" },
   { label: "LP Signals", icon: Landmark, badge: "92" },
   { label: "Credit Signals", icon: CreditCard, badge: "15" },
   { label: "TFF", icon: Layers, collapsible: true },

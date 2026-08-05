@@ -289,6 +289,7 @@ export const signals: Signal[] = [
       { label: "FinTech", category: "industry" },
       { label: "Singapore", category: "geography" },
     ],
+    viewedBy: ["Raynard Lao"],
     score: 6.3,
     avatarInitials: "LW",
     headline:

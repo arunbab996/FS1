@@ -302,6 +302,55 @@ export const skyProfile: TalentProfile = {
       period: "Jan 2016 - Jan 2019",
     },
   ],
+  careerSignals: [
+    {
+      kind: "employer-tier",
+      label: "Official KOL partnerships with Binance, TikTok, Facebook Gaming and YouTube",
+      detail:
+        "Platform-recognized creator/partner status across four major platforms simultaneously — a rare multi-platform distribution moat.",
+    },
+    {
+      kind: "departure-event",
+      label: "Added a stealth co-founder role on top of an already-active portfolio",
+      detail:
+        "Took on a new unnamed stealth startup in Feb 2026 while still running Nexawork AI and Mars Growth Capital — signals a new bet forming before the others wind down.",
+    },
+  ],
+  network: [
+    {
+      kind: "co-founder",
+      label: "Serial co-founder across 6+ ventures",
+      detail:
+        "FindWork, Nixgen Entertainment, Nowdawn Production, Sky Ventures, Nexawork AI, and now a stealth startup — an unusually high founding cadence.",
+    },
+    {
+      kind: "colleague-overlap",
+      label: "Family-office and Web3 fund network (Sky Ventures, Mars Growth Capital)",
+      detail:
+        "Direct lending and venture relationships across family offices in the Web3 space — a distribution channel most first-time founders don't have.",
+    },
+  ],
+  recognition: [
+    {
+      kind: "list",
+      label: "Forbes 30 Under 30 Asia — Blockchain Visionaries",
+      detail: "Honoree, 2025 cohort — one of the region's most visible young Web3 operators.",
+      date: "2025",
+      url: "https://www.forbes.com/30-under-30/2025/asia/blockchain/",
+    },
+    {
+      kind: "press",
+      label: "Forbes Contributing Writer, Web3/crypto commentary",
+      detail: "Regularly publishing Web3 and crypto market commentary as a Forbes contributing writer.",
+      date: "Nov 2025",
+    },
+    {
+      kind: "press",
+      label: "Author, \"From Gamer to Web3 Visionary\"",
+      detail: "Published book chronicling his path from Mobile Legends streaming to blockchain venture building.",
+      date: "Oct 2025",
+    },
+  ],
   linkedinActivity: [
     {
       kind: "post",

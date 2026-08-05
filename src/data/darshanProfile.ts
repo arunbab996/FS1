@@ -110,6 +110,48 @@ export const darshanProfile: TalentProfile = {
       period: "Jan 2021 - Dec 2023",
     },
   ],
+  pedigree: [
+    {
+      category: "honours",
+      label: "Self-taught programmer since age 11; shipped 3 commercial mobile games by 15",
+      detail: "Early builder track record predates any formal CS training.",
+      year: "2015",
+    },
+    {
+      category: "hackathon",
+      label: "Winner, UNSW HackSoc 48-hour Hackathon",
+      detail: "Built an AI-assisted code review tool that won Best Technical Execution.",
+      year: "2023",
+    },
+  ],
+  careerSignals: [
+    {
+      kind: "departure-event",
+      label: "Left ASX (Quant Data Engineer) to found FinishKit",
+      detail:
+        "Departed a stable quant engineering seat at Australia's national exchange operator to build full-time — a clean founder-intent signal.",
+    },
+    {
+      kind: "employer-tier",
+      label: "Quant pedigree from ASX",
+      detail:
+        "Ran production data/quant pipelines at Australia's national securities exchange before founding FinishKit.",
+    },
+    {
+      kind: "promotion-velocity",
+      label: "3 internal promotions at ASX in under 18 months",
+      detail:
+        "Moved from Commercial Management → Tech & Data → Quant & Data Science graduate rotations faster than the typical 2-year graduate program pace.",
+    },
+  ],
+  network: [
+    {
+      kind: "accelerator",
+      label: "Blackbird Giants, Cohort 11",
+      detail:
+        "Selected into Blackbird Ventures' pre-seed accelerator for early-stage Australian founders — one of ~12 teams in the cohort.",
+    },
+  ],
   linkedinActivity: [
     {
       kind: "post",

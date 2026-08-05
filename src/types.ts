@@ -78,6 +78,37 @@ export interface LinkedInActivityItem {
   reaction?: string;
 }
 
+/** Academic/competitive credentials that signal raw talent caliber (olympiads, scholarships, honours, etc.). */
+export interface PedigreeItem {
+  category: "school" | "honours" | "scholarship" | "olympiad" | "competitive-programming" | "hackathon";
+  label: string;
+  detail?: string;
+  year?: string;
+}
+
+/** Derived signals about career trajectory — employer quality, promotion pace, stealth/departure events. */
+export interface CareerSignalItem {
+  kind: "employer-tier" | "early-employee" | "promotion-velocity" | "departure-event";
+  label: string;
+  detail: string;
+}
+
+/** Founder/professional network affiliations — co-founders, accelerators, notable colleague overlap. */
+export interface NetworkItem {
+  kind: "co-founder" | "accelerator" | "colleague-overlap";
+  label: string;
+  detail?: string;
+}
+
+/** External validation — press coverage, young-leader lists, conference speaking. */
+export interface RecognitionItem {
+  kind: "press" | "list" | "speaking";
+  label: string;
+  detail?: string;
+  date?: string;
+  url?: string;
+}
+
 export interface TalentProfile {
   titleLine: string;
   connections: number;
@@ -92,6 +123,14 @@ export interface TalentProfile {
   education: ProfileEducationEntry[];
   /** Omit when there's no recent LinkedIn activity to show. */
   linkedinActivity?: LinkedInActivityItem[];
+  /** Omit when there are no notable pedigree/credential signals for this profile. */
+  pedigree?: PedigreeItem[];
+  /** Omit when there are no notable career-trajectory signals for this profile. */
+  careerSignals?: CareerSignalItem[];
+  /** Omit when there's no notable network affiliation to show. */
+  network?: NetworkItem[];
+  /** Omit when there's no notable press/recognition to show. */
+  recognition?: RecognitionItem[];
   insights: {
     totalMonths: number;
     avgMonths: number;
@@ -146,6 +185,8 @@ export interface Signal {
   featuredCount?: number;
   /** Rolling window (in days) that featuredCount applies to. Defaults to 15. */
   featuredWindowDays?: number;
+  /** Names of people who've screened this signal (registers a view). Omit when no one has yet. */
+  viewedBy?: string[];
   current: ExperienceEntry[];
   past: ExperienceEntry[];
   education: ExperienceEntry[];

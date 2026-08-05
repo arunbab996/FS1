@@ -31,6 +31,7 @@ const coreCountries = [
   "Malaysia",
   "India",
   "China",
+  "South Korea",
 ];
 
 export const scoreMin = 0;
@@ -94,6 +95,13 @@ export interface SignalFilters {
   statuses: string[];
   assignedTo: string[];
   date: DateFilter;
+}
+
+/** A named snapshot of a filter combination, saved so it can be reapplied without reconfiguring. */
+export interface SavedSearch {
+  id: string;
+  name: string;
+  filters: SignalFilters;
 }
 
 export const emptyFilters: SignalFilters = {

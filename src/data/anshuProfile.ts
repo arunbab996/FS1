@@ -140,6 +140,56 @@ export const anshuProfile: TalentProfile = {
       degree: "MS",
     },
   ],
+  pedigree: [
+    {
+      category: "honours",
+      label: "MIT Sloan Executive MBA",
+      detail:
+        "Completed while operating as General Partner and active company builder — a non-traditional executive-education path layered on top of a technical MS from Otto-von-Guericke University Magdeburg.",
+    },
+  ],
+  careerSignals: [
+    {
+      kind: "departure-event",
+      label: "Went quiet after CloudDefense.AI's acquisition, no announced next role",
+      detail:
+        "Left the co-founder seat after CloudDefense.AI's acquisition by AccuKnox, then stayed off the radar for several weeks before this stealth listing — a classic stealth-gap pattern.",
+    },
+    {
+      kind: "employer-tier",
+      label: "Tier-1 big tech pedigree (Amazon, Microsoft, VMware)",
+      detail:
+        "19+ years spanning senior engineering management at three of the largest technology employers globally, prior to founding CloudDefense.AI.",
+    },
+    {
+      kind: "promotion-velocity",
+      label: "IC to Sr. Engineering Manager across three Big Tech employers",
+      detail:
+        "Consistent upward trajectory from H&R Block → Microsoft → Expedia → Amazon, each move a step up in scope and seniority.",
+    },
+  ],
+  network: [
+    {
+      kind: "co-founder",
+      label: "Repeat co-founder: HyreCar (Nasdaq: HYRE) and CloudDefense.AI (acquired)",
+      detail:
+        "Two prior companies built to a public listing and an acquisition exit respectively — a strong repeat-founder pattern.",
+    },
+    {
+      kind: "colleague-overlap",
+      label: "Active TiE Silicon Valley angel/mentor network",
+      detail:
+        "14 years volunteering and angel investing through TiE — deep ties into the India-diaspora founder and investor community, reinforcing the Nexus-to-APAC read.",
+    },
+  ],
+  recognition: [
+    {
+      kind: "list",
+      label: "Forbes Technology Council member",
+      detail: "Invited member of the Forbes Technology Council since 2023 — a vetted community of senior tech executives.",
+      date: "Nov 2023",
+    },
+  ],
   linkedinActivity: [
     {
       kind: "comment",

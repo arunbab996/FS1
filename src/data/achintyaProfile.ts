@@ -127,6 +127,61 @@ export const achintyaProfile: TalentProfile = {
       period: "Apr 2012 - Mar 2013",
     },
   ],
+  pedigree: [
+    {
+      category: "school",
+      label: "IIT Delhi — dual degree, Chemical Engineering",
+      detail: "Elite engineering pedigree; IIT admission implies top ~0.5% JEE percentile nationally.",
+      year: "2004–2009",
+    },
+    {
+      category: "honours",
+      label: "Co-authored a Brand Management textbook with IIT Delhi faculty & the UPSC Chairman",
+      detail:
+        "Book felicitated by the Director of IIT Delhi and Secretary of MHRD at its pan-India launch — a notable early academic credibility signal.",
+      year: "2009",
+    },
+  ],
+  careerSignals: [
+    {
+      kind: "employer-tier",
+      label: "Founding CBO-track operator turned repeat founder",
+      detail:
+        "Rose to Chief Business Officer at Finvolv (Kuliza) before founding Phyllo — deep BFSI enterprise GTM pedigree feeding two fintech-adjacent startups.",
+    },
+    {
+      kind: "early-employee",
+      label: "Built Finvolv's entire sales function from zero",
+      detail:
+        "Started as Brand Manager, then personally stood up the company's first enterprise sales and CRM practices — founding-team-level ownership inside a non-founder role.",
+    },
+    {
+      kind: "promotion-velocity",
+      label: "4 internal promotions at Finvolv over 9 years",
+      detail:
+        "Brand Manager → Evangelist → Director of Sales & Marketing → Chief Business Officer — steady upward trajectory culminating in a C-suite seat.",
+    },
+  ],
+  network: [
+    {
+      kind: "co-founder",
+      label: "Repeat co-founder: Phyllo ($17.8M raised) and Reo.Dev ($20.4M raised)",
+      detail: "Second consecutive venture-backed B2B SaaS company — a repeat-founder pattern with growing round sizes.",
+    },
+    {
+      kind: "colleague-overlap",
+      label: "ISB PGP Class of 2013 network",
+      detail: "Indian School of Business alumni cohort — a dense network for India B2B SaaS GTM and fintech operators.",
+    },
+  ],
+  recognition: [
+    {
+      kind: "list",
+      label: "Featured in Inc42's \"40 Under 40\" B2B SaaS operators list",
+      detail: "Recognized among India's most notable young B2B SaaS founders for GTM innovation at Reo.Dev.",
+      date: "2026",
+    },
+  ],
   linkedinActivity: [
     {
       kind: "post",

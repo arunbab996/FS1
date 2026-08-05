@@ -137,6 +137,48 @@ export const zhipengProfile: TalentProfile = {
       period: "Jan 2016 - Jan 2020",
     },
   ],
+  pedigree: [
+    {
+      category: "honours",
+      label: "First Class Honours, Bachelor of IT (QUT)",
+      detail: "Graduated top of cohort before proceeding directly into a QUT PhD program.",
+      year: "2021",
+    },
+    {
+      category: "school",
+      label: "QUT PhD, supervised by A/Prof. Chun Ouyang, A/Prof. Catarina Moreira and Prof. Alistair Barros",
+      detail: "Thesis: Building Robust Predictive Systems for Tabular Data — supervisor lineage in a well-regarded Australian applied-AI lab.",
+      year: "2022–2026",
+    },
+  ],
+  careerSignals: [
+    {
+      kind: "employer-tier",
+      label: "Postdoctoral Research Fellow appointment straight out of PhD",
+      detail:
+        "Retained by QUT for a funded postdoc on multi-institute privacy-preserving healthcare AI — a strong quality signal from his own department.",
+    },
+    {
+      kind: "promotion-velocity",
+      label: "Research Assistant → Senior Research Assistant → Postdoctoral Fellow in under 3 years",
+      detail: "Rapid academic-track progression within the same lab, unusually fast for a research pathway.",
+    },
+  ],
+  network: [
+    {
+      kind: "colleague-overlap",
+      label: "Multi-supervisor lab network (Ouyang / Moreira / Barros, QUT)",
+      detail: "Thesis lineage ties into QUT's information-systems and explainable-AI research group — a recognized applied-AI lab in Australia.",
+    },
+  ],
+  recognition: [
+    {
+      kind: "speaking",
+      label: "Presented at the QUT Postgraduate Research Conference",
+      detail: "Showcased tabular-data research to the broader QUT postgraduate community.",
+      date: "Jul 2026",
+    },
+  ],
   linkedinActivity: [
     {
       kind: "post",

@@ -1,17 +1,17 @@
-import { Rss, User } from "lucide-react";
-import { useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { User } from "lucide-react";
+import { useState } from "react";
 import type { Signal } from "../types";
 import { companyLogoUrl, personPhotoUrl } from "../utils/avatars";
 import { countryFlag } from "../utils/flags";
 import { signalLocation } from "../utils/signalFilters";
 import { signalStatusColorClasses } from "../utils/signalStatus";
-import { sourcedViaColorClasses } from "../utils/sourcedVia";
 import { tagAccentTextClasses, tagColorClasses, tagIcon } from "../utils/tags";
 import { extractPersonName, stripMarkdown } from "../utils/text";
 import { AssignInvestorButton } from "./AssignInvestorButton";
 import { Highlight } from "./Highlight";
+import { HoverPopup } from "./HoverPopup";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
+import { SignalWaveIcon } from "./icons/SignalWaveIcon";
 import { ProfileDrawer } from "./ProfileDrawer";
 
 const columnHeaders: { label: string; className?: string }[] = [
@@ -19,78 +19,11 @@ const columnHeaders: { label: string; className?: string }[] = [
   { label: "Signal" },
   { label: "Score", className: "w-16" },
   { label: "Current", className: "w-40" },
-  { label: "Source", className: "w-28" },
   { label: "Status", className: "w-36" },
   { label: "Date", className: "w-16" },
   { label: "Assigned", className: "w-56" },
   { label: "", className: "w-14" },
 ];
-
-/**
- * Shows `content` in a floating popup on hover, positioned via viewport
- * coordinates (not CSS absolute) so it can escape the table's horizontal
- * scroll container without being clipped by its overflow.
- */
-function HoverPopup({
-  trigger,
-  content,
-  width,
-  variant = "dark",
-}: {
-  trigger: React.ReactNode;
-  content: React.ReactNode;
-  /** Fixed popup width in px. Omit for a compact tooltip that hugs its content (capped at 280px). */
-  width?: number;
-  /** "dark": plain dark tooltip (default). "card": white/dark bordered card with a smooth fade/scale-in, for richer content. */
-  variant?: "dark" | "card";
-}) {
-  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
-  const [visible, setVisible] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  function handleEnter() {
-    const rect = ref.current?.getBoundingClientRect();
-    if (!rect) return;
-    const popupWidth = width ?? (variant === "card" ? 256 : 280);
-    const left = Math.min(rect.left, window.innerWidth - popupWidth - 16);
-    setCoords({ top: rect.bottom + 6, left: Math.max(left, 16) });
-    if (variant === "card") requestAnimationFrame(() => setVisible(true));
-  }
-
-  function handleLeave() {
-    setVisible(false);
-    setCoords(null);
-  }
-
-  return (
-    <div ref={ref} onMouseEnter={handleEnter} onMouseLeave={handleLeave}>
-      {trigger}
-      {coords &&
-        createPortal(
-          variant === "card" ? (
-            <div
-              style={{ top: coords.top, left: coords.left, width: width ?? 256 }}
-              className={`fixed z-[60] origin-top-left rounded-2xl border border-gray-200 bg-white p-3.5 shadow-xl transition-all duration-200 ease-out dark:border-neutral-700 dark:bg-neutral-800 ${
-                visible
-                  ? "translate-y-0 scale-100 opacity-100"
-                  : "pointer-events-none -translate-y-1 scale-95 opacity-0"
-              }`}
-            >
-              {content}
-            </div>
-          ) : (
-            <div
-              style={width ? { top: coords.top, left: coords.left, width } : { top: coords.top, left: coords.left, maxWidth: 280 }}
-              className="pointer-events-none fixed z-[60] rounded-lg bg-gray-900 p-3 text-xs leading-relaxed text-white shadow-xl dark:bg-neutral-700"
-            >
-              {content}
-            </div>
-          ),
-          document.body,
-        )}
-    </div>
-  );
-}
 
 function ScoreBadge({ score }: { score: number }) {
   const color =
@@ -250,25 +183,11 @@ function SignalTableRow({
         )}
       </td>
 
-      <td className="w-28 overflow-hidden px-4 py-2.5">
-        {signal.sourcedVia || signal.sourcedBy ? (
-          <span
-            className={`block max-w-full truncate rounded-full px-2 py-0.5 text-[11px] font-medium ${
-              signal.sourcedVia
-                ? sourcedViaColorClasses(signal.sourcedVia)
-                : "bg-yellow-50 text-yellow-700 dark:bg-yellow-500/15 dark:text-yellow-400"
-            }`}
-          >
-            {signal.sourcedVia ?? signal.sourcedBy}
-          </span>
-        ) : (
-          <span className="text-xs text-gray-300 dark:text-neutral-600">—</span>
-        )}
-      </td>
-
       <td className="w-36 overflow-hidden px-4 py-2.5">
         <span className="flex min-w-0 items-center gap-1.5 text-xs text-gray-600 dark:text-neutral-300">
-          <Rss className={`h-3.5 w-3.5 shrink-0 ${signalStatusColorClasses(signal.status)}`} />
+          <SignalWaveIcon
+            className={`h-5 w-5 shrink-0 animate-signal-flicker ${signalStatusColorClasses(signal.status)}`}
+          />
           <span className="truncate">{signal.status}</span>
         </span>
       </td>
@@ -320,7 +239,7 @@ export function SignalTable({ signals }: { signals: Signal[] }) {
   return (
     <>
       <div className="overflow-x-auto rounded-xl border border-gray-200 dark:border-neutral-700">
-        <table className="w-full min-w-[1250px] table-fixed border-collapse text-left">
+        <table className="w-full min-w-[1138px] table-fixed border-collapse text-left">
           <thead>
             <tr className="border-b border-gray-200 bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900">
               {columnHeaders.map((header) => (

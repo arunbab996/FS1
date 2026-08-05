@@ -1,4 +1,4 @@
-import { Calendar, Mail, Rss, Trash2, User } from "lucide-react";
+import { Calendar, Mail, Trash2, User } from "lucide-react";
 import { useState } from "react";
 import type { Signal } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
@@ -13,14 +13,22 @@ import { ExperienceColumn } from "./ExperienceColumn";
 import { Highlight } from "./Highlight";
 import { GithubIcon } from "./icons/GithubIcon";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
+import { SignalWaveIcon } from "./icons/SignalWaveIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
 import { FeaturedBox, InvestorInterestBox } from "./InvestorSignalRow";
 import { ProfileDrawer } from "./ProfileDrawer";
 import { ScoreReasoningBubble } from "./ScoreReasoningBubble";
+import { SignalScreenStatus } from "./SignalScreenStatus";
 import { TagInfoCard } from "./TagInfoCard";
 import { Tooltip } from "./Tooltip";
 
-export function SignalTile({ signal }: { signal: Signal }) {
+export function SignalTile({
+  signal,
+  hideSourcedVia = false,
+}: {
+  signal: Signal;
+  hideSourcedVia?: boolean;
+}) {
   const [profileOpen, setProfileOpen] = useState(false);
 
   function handleTileClick(event: React.MouseEvent<HTMLDivElement>) {
@@ -74,7 +82,7 @@ export function SignalTile({ signal }: { signal: Signal }) {
               Sourced by {signal.sourcedBy}
             </span>
           )}
-          {signal.sourcedVia && (
+          {signal.sourcedVia && !hideSourcedVia && (
             <span
               className={`rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${sourcedViaColorClasses(signal.sourcedVia)}`}
             >
@@ -82,11 +90,12 @@ export function SignalTile({ signal }: { signal: Signal }) {
             </span>
           )}
           <Tooltip label={signal.status}>
-            <Rss
-              className={`h-3.5 w-3.5 ${signalStatusColorClasses(signal.status)}`}
+            <SignalWaveIcon
+              className={`h-5 w-5 animate-signal-flicker ${signalStatusColorClasses(signal.status)}`}
               aria-label={signal.status}
             />
           </Tooltip>
+          <SignalScreenStatus signal={signal} />
           <ScoreReasoningBubble score={signal.score} reasoning={signal.reasoning} />
         </div>
       </div>

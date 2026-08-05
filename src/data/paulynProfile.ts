@@ -94,6 +94,25 @@ export const paulynProfile: TalentProfile = {
       period: "Jan 2008 - Jan 2013",
     },
   ],
+  careerSignals: [
+    {
+      kind: "departure-event",
+      label: "Left Qantas (Quality Engineer) with no announced next role",
+      detail:
+        "Departed after 16 months without a public next step — matches the \"Exploring\" status already flagged on this signal.",
+    },
+    {
+      kind: "employer-tier",
+      label: "QA leadership across Qantas and Prospa (ASX: PGL)",
+      detail:
+        "Owned test automation and quality strategy at a national airline and a publicly listed fintech lender — cross-industry reliability engineering credibility.",
+    },
+    {
+      kind: "promotion-velocity",
+      label: "Customer Support → QA Engineer → SDET at Prospa over 8 years",
+      detail: "Moved from a non-technical support role into a senior technical QA/SDET position internally — self-driven technical upskilling.",
+    },
+  ],
   linkedinActivity: [
     {
       kind: "reaction",

@@ -3,6 +3,13 @@ const countryFlags: Record<string, string> = {
   India: "🇮🇳",
   Singapore: "🇸🇬",
   "United States": "🇺🇸",
+  Philippines: "🇵🇭",
+  Thailand: "🇹🇭",
+  Indonesia: "🇮🇩",
+  Vietnam: "🇻🇳",
+  Malaysia: "🇲🇾",
+  China: "🇨🇳",
+  "South Korea": "🇰🇷",
 };
 
 export function countryFlag(countryName: string): string | undefined {

@@ -94,6 +94,46 @@ export const loongProfile: TalentProfile = {
       degree: "Advanced Research and Development (Computer Science) (Honours)",
     },
   ],
+  pedigree: [
+    {
+      category: "honours",
+      label: "ANU Advanced Research & Development (CS), Honours",
+      detail:
+        "Honours-level computer science research degree — combined coursework with an academic research thesis before entering industry.",
+    },
+  ],
+  careerSignals: [
+    {
+      kind: "employer-tier",
+      label: "Serial deep-tech founder: Ren (seed), Automera (Series A, $16M), QDX, now Metal",
+      detail: "Each successive company raised further and scaled headcount further than the last — a compounding founder trajectory.",
+    },
+    {
+      kind: "departure-event",
+      label: "Left QDX (CEO) directly into founding Metal",
+      detail: "Transitioned from CEO of QDX straight into founding Metal with no public gap — signals a decisive pivot rather than a stealth pause.",
+    },
+  ],
+  network: [
+    {
+      kind: "co-founder",
+      label: "Repeat co-founder across 4 companies (Ren, Automera, QDX, Metal)",
+      detail: "One of the highest founding cadences in the dataset — a strong prior on execution and ability to attract capital repeatedly.",
+    },
+    {
+      kind: "colleague-overlap",
+      label: "ANU computer science alumni network",
+      detail: "Academic tutor and researcher at ANU before founding Ren — retains ties into the university's CS research community.",
+    },
+  ],
+  recognition: [
+    {
+      kind: "press",
+      label: "QDX profiled in APAC deep-tech / drug-discovery coverage",
+      detail: "QDX's AI-accelerated drug design work drew regional tech press attention prior to Loong's departure to found Metal.",
+      date: "2025",
+    },
+  ],
   linkedinActivity: [
     {
       kind: "post",

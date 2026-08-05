@@ -1,25 +1,45 @@
 import {
+  Award,
   Briefcase,
   Calendar,
   ChevronDown,
+  Code2,
   ExternalLink,
   Eye,
   FileText,
   GraduationCap,
   Handshake,
+  Landmark,
+  LogOut,
   MapPin,
   MessageSquare,
+  Mic,
+  Newspaper,
   Reply,
+  Rocket,
+  School,
   Search,
   Send,
   Sparkles,
+  Star,
   ThumbsUp,
+  TrendingUp,
+  Trophy,
   User,
   Users,
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import type { LinkedInActivityItem, ProfileActivityItem, ProfilePosition, Signal } from "../types";
+import type {
+  CareerSignalItem,
+  LinkedInActivityItem,
+  NetworkItem,
+  PedigreeItem,
+  ProfileActivityItem,
+  ProfilePosition,
+  RecognitionItem,
+  Signal,
+} from "../types";
 import { companyLogoUrl, personPhotoUrl } from "../utils/avatars";
 import {
   positionCategoryBarClasses,
@@ -27,11 +47,90 @@ import {
 } from "../utils/positionCategory";
 import { extractPersonName, stripMarkdown } from "../utils/text";
 import { formatTenureLabel } from "../utils/tenure";
+import { tagColorClasses, tagIcon } from "../utils/tags";
 import { GithubIcon } from "./icons/GithubIcon";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
+import { TagInfoCard } from "./TagInfoCard";
 
-type Tab = "overview" | "experience" | "insights" | "education" | "social" | "interactions";
+type Tab =
+  | "overview"
+  | "experience"
+  | "insights"
+  | "education"
+  | "credentials"
+  | "social"
+  | "interactions";
+
+type HighlightKind = "pedigree" | "career" | "network" | "recognition";
+
+function highlightAccentClasses(kind: HighlightKind) {
+  switch (kind) {
+    case "pedigree":
+      return {
+        card: "bg-amber-50/60 hover:border-amber-300 dark:bg-amber-500/5 dark:hover:border-amber-700",
+        iconBg: "bg-amber-100 dark:bg-amber-500/15",
+        iconText: "text-amber-600 dark:text-amber-400",
+        label: "text-amber-700 dark:text-amber-400",
+      };
+    case "career":
+      return {
+        card: "bg-blue-50/60 hover:border-blue-300 dark:bg-blue-500/5 dark:hover:border-blue-700",
+        iconBg: "bg-blue-100 dark:bg-blue-500/15",
+        iconText: "text-blue-600 dark:text-blue-400",
+        label: "text-blue-700 dark:text-blue-400",
+      };
+    case "network":
+      return {
+        card: "bg-teal-50/60 hover:border-teal-300 dark:bg-teal-500/5 dark:hover:border-teal-700",
+        iconBg: "bg-teal-100 dark:bg-teal-500/15",
+        iconText: "text-teal-600 dark:text-teal-400",
+        label: "text-teal-700 dark:text-teal-400",
+      };
+    case "recognition":
+      return {
+        card: "bg-violet-50/60 hover:border-violet-300 dark:bg-violet-500/5 dark:hover:border-violet-700",
+        iconBg: "bg-violet-100 dark:bg-violet-500/15",
+        iconText: "text-violet-600 dark:text-violet-400",
+        label: "text-violet-700 dark:text-violet-400",
+      };
+  }
+}
+
+function HighlightCard({
+  kind,
+  categoryLabel,
+  icon: Icon,
+  label,
+  onClick,
+}: {
+  kind: HighlightKind;
+  categoryLabel: string;
+  icon: typeof Star;
+  label: string;
+  onClick: () => void;
+}) {
+  const c = highlightAccentClasses(kind);
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`flex items-start gap-2 rounded-xl border border-gray-200 p-2.5 text-left transition-colors dark:border-neutral-700 ${c.card}`}
+    >
+      <div className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full ${c.iconBg}`}>
+        <Icon className={`h-3.5 w-3.5 ${c.iconText}`} />
+      </div>
+      <div className="min-w-0">
+        <p className={`text-[10px] font-semibold tracking-wide uppercase ${c.label}`}>
+          {categoryLabel}
+        </p>
+        <p className="mt-0.5 line-clamp-2 text-xs font-medium text-gray-800 dark:text-neutral-200">
+          {label}
+        </p>
+      </div>
+    </button>
+  );
+}
 
 function StatChip({ icon: Icon, label }: { icon: typeof Briefcase; label: string }) {
   return (
@@ -132,6 +231,58 @@ const linkedinActivityTextClasses: Record<LinkedInActivityItem["kind"], string> 
   reaction: "text-pink-600 dark:text-pink-400",
 };
 
+function pedigreeIcon(category: PedigreeItem["category"]) {
+  switch (category) {
+    case "school":
+      return School;
+    case "honours":
+      return Award;
+    case "scholarship":
+      return Landmark;
+    case "olympiad":
+      return Trophy;
+    case "competitive-programming":
+      return Code2;
+    case "hackathon":
+      return Rocket;
+  }
+}
+
+function careerSignalIcon(kind: CareerSignalItem["kind"]) {
+  switch (kind) {
+    case "employer-tier":
+      return Star;
+    case "early-employee":
+      return Rocket;
+    case "promotion-velocity":
+      return TrendingUp;
+    case "departure-event":
+      return LogOut;
+  }
+}
+
+function networkIcon(kind: NetworkItem["kind"]) {
+  switch (kind) {
+    case "co-founder":
+      return Handshake;
+    case "accelerator":
+      return Rocket;
+    case "colleague-overlap":
+      return Users;
+  }
+}
+
+function recognitionIcon(kind: RecognitionItem["kind"]) {
+  switch (kind) {
+    case "press":
+      return Newspaper;
+    case "list":
+      return Trophy;
+    case "speaking":
+      return Mic;
+  }
+}
+
 export function ProfileDrawer({
   signal,
   open,
@@ -177,12 +328,19 @@ export function ProfileDrawer({
 
   const name = signal.personName ?? extractPersonName(signal.headline);
   const [location, yearsText] = signal.contextLine.split(" · ");
+  const nexusTag = signal.tags.find((t) => t.category === "thesis");
 
   const tabs: { id: Tab; label: string }[] = [
     { id: "overview", label: "Overview" },
     { id: "experience", label: "Experience" },
     ...(profile ? ([{ id: "insights", label: "Insights" }] as const) : []),
     { id: "education", label: "Education" },
+    ...(profile?.pedigree?.length ||
+    profile?.careerSignals?.length ||
+    profile?.network?.length ||
+    profile?.recognition?.length
+      ? ([{ id: "credentials", label: "Credentials" }] as const)
+      : []),
     ...(profile?.linkedinActivity?.length
       ? ([{ id: "social", label: "Social Activity" }] as const)
       : []),
@@ -204,7 +362,7 @@ export function ProfileDrawer({
         onClick={onClose}
       />
       <div
-        className={`fixed top-0 right-0 z-50 h-full w-full bg-white transition-transform duration-300 ease-out sm:w-[55%] lg:max-w-2xl dark:bg-neutral-900 ${
+        className={`fixed top-0 right-0 z-50 h-full w-full bg-white transition-transform duration-300 ease-out sm:w-3/5 dark:bg-neutral-900 ${
           open ? "translate-x-0 shadow-2xl" : "translate-x-full"
         }`}
       >
@@ -277,11 +435,24 @@ export function ProfileDrawer({
                 <StatChip icon={Eye} label={`${profile.followers} Followers`} />
               )}
               <StatChip icon={MapPin} label={profile?.location ?? location} />
+              {nexusTag && (
+                <TagInfoCard tag={nexusTag}>
+                  <span
+                    className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium ${tagColorClasses(nexusTag.category)}`}
+                  >
+                    {(() => {
+                      const Icon = tagIcon(nexusTag);
+                      return Icon && <Icon className="h-3 w-3" />;
+                    })()}
+                    {nexusTag.label}
+                  </span>
+                </TagInfoCard>
+              )}
             </div>
           </div>
 
           {/* Tabs */}
-          <div className="flex shrink-0 gap-5 overflow-x-auto border-b border-gray-200 px-5 [scrollbar-width:none] dark:border-neutral-700 [&::-webkit-scrollbar]:hidden">
+          <div className="flex shrink-0 gap-4 overflow-x-auto border-b border-gray-200 px-5 [scrollbar-width:none] dark:border-neutral-700 [&::-webkit-scrollbar]:hidden">
             {tabs.map((t) => (
               <TabButton key={t.id} active={tab === t.id} onClick={() => setTab(t.id)}>
                 {t.label}
@@ -307,6 +478,56 @@ export function ProfileDrawer({
                     </p>
                   )}
                 </div>
+
+                {profile &&
+                (profile.pedigree?.length ||
+                  profile.careerSignals?.length ||
+                  profile.network?.length ||
+                  profile.recognition?.length) ? (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Signal Highlights
+                    </h3>
+                    <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                      {profile.pedigree?.[0] && (
+                        <HighlightCard
+                          kind="pedigree"
+                          categoryLabel="Pedigree"
+                          icon={pedigreeIcon(profile.pedigree[0].category)}
+                          label={profile.pedigree[0].label}
+                          onClick={() => setTab("credentials")}
+                        />
+                      )}
+                      {profile.careerSignals?.[0] && (
+                        <HighlightCard
+                          kind="career"
+                          categoryLabel="Career Signal"
+                          icon={careerSignalIcon(profile.careerSignals[0].kind)}
+                          label={profile.careerSignals[0].label}
+                          onClick={() => setTab("credentials")}
+                        />
+                      )}
+                      {profile.network?.[0] && (
+                        <HighlightCard
+                          kind="network"
+                          categoryLabel="Network"
+                          icon={networkIcon(profile.network[0].kind)}
+                          label={profile.network[0].label}
+                          onClick={() => setTab("credentials")}
+                        />
+                      )}
+                      {profile.recognition?.[0] && (
+                        <HighlightCard
+                          kind="recognition"
+                          categoryLabel="Recognition"
+                          icon={recognitionIcon(profile.recognition[0].kind)}
+                          label={profile.recognition[0].label}
+                          onClick={() => setTab("credentials")}
+                        />
+                      )}
+                    </div>
+                  </div>
+                ) : null}
 
                 {profile && (
                   <div>
@@ -608,6 +829,165 @@ export function ProfileDrawer({
                         </div>
                       </div>
                     ))}
+              </div>
+            )}
+
+            {tab === "credentials" && profile && (
+              <div className="flex flex-col gap-6">
+                {profile.pedigree?.length ? (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Pedigree
+                    </h3>
+                    <div className="mt-2 flex flex-col gap-3">
+                      {profile.pedigree.map((item, i) => {
+                        const Icon = pedigreeIcon(item.category);
+                        return (
+                          <div
+                            key={i}
+                            className="flex gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700"
+                          >
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-500/10">
+                              <Icon className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-start justify-between gap-2">
+                                <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                                  {item.label}
+                                </p>
+                                {item.year && (
+                                  <span className="shrink-0 text-xs text-gray-400 dark:text-neutral-500">
+                                    {item.year}
+                                  </span>
+                                )}
+                              </div>
+                              {item.detail && (
+                                <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">
+                                  {item.detail}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                {profile.careerSignals?.length ? (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Career Signals
+                    </h3>
+                    <div className="mt-2 flex flex-col gap-3">
+                      {profile.careerSignals.map((item, i) => {
+                        const Icon = careerSignalIcon(item.kind);
+                        return (
+                          <div
+                            key={i}
+                            className="flex gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700"
+                          >
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-50 dark:bg-blue-500/10">
+                              <Icon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                                {item.label}
+                              </p>
+                              <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">
+                                {item.detail}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                {profile.network?.length ? (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Affiliations
+                    </h3>
+                    <div className="mt-2 flex flex-col gap-3">
+                      {profile.network.map((item, i) => {
+                        const Icon = networkIcon(item.kind);
+                        return (
+                          <div
+                            key={i}
+                            className="flex gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700"
+                          >
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-teal-50 dark:bg-teal-500/10">
+                              <Icon className="h-4 w-4 text-teal-600 dark:text-teal-400" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                                {item.label}
+                              </p>
+                              {item.detail && (
+                                <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">
+                                  {item.detail}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                {profile.recognition?.length ? (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Recognition & Media
+                    </h3>
+                    <div className="mt-2 flex flex-col gap-3">
+                      {profile.recognition.map((item, i) => {
+                        const Icon = recognitionIcon(item.kind);
+                        return (
+                          <div
+                            key={i}
+                            className="flex gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700"
+                          >
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-50 dark:bg-violet-500/10">
+                              <Icon className="h-4 w-4 text-violet-600 dark:text-violet-400" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-start justify-between gap-2">
+                                <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                                  {item.label}
+                                </p>
+                                {item.date && (
+                                  <span className="shrink-0 text-xs text-gray-400 dark:text-neutral-500">
+                                    {item.date}
+                                  </span>
+                                )}
+                              </div>
+                              {item.detail && (
+                                <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">
+                                  {item.detail}
+                                </p>
+                              )}
+                              {item.url && (
+                                <a
+                                  href={item.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="mt-1.5 inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400"
+                                >
+                                  View source
+                                  <ExternalLink className="h-3 w-3" />
+                                </a>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
               </div>
             )}
 
