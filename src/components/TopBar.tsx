@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { countryFlag } from "../utils/flags";
+import { countryFlag, countryShortName } from "../utils/flags";
 import {
   activeFilterCount,
   emptyFilters,
@@ -356,7 +356,7 @@ export function TopBar({
         <h1 className="whitespace-nowrap text-lg font-semibold text-gray-900 dark:text-neutral-50">
           Equity Signals
         </h1>
-        <div className="relative w-full">
+        <div className="relative w-full min-w-0">
           <button
             type="button"
             onClick={runSearch}
@@ -377,7 +377,7 @@ export function TopBar({
           />
         </div>
 
-        <div className="flex shrink-0 items-center justify-end gap-2">
+        <div className="flex min-w-max shrink-0 items-center justify-end gap-2">
           <div className="flex shrink-0 items-center gap-0.5 rounded-lg border border-gray-200 bg-white p-0.5 dark:border-neutral-600 dark:bg-neutral-900">
             <button
               type="button"
@@ -503,14 +503,15 @@ export function TopBar({
                 key={country}
                 type="button"
                 onClick={() => selectCountryTab(country)}
-                className={`flex max-w-[180px] shrink-0 cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium whitespace-nowrap transition-colors ${
+                title={country}
+                className={`flex shrink-0 cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 text-sm font-medium whitespace-nowrap transition-colors ${
                   activeCountry === country
                     ? "bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-400"
                     : "text-gray-600 hover:bg-gray-100 dark:text-neutral-400 dark:hover:bg-neutral-800"
                 }`}
               >
                 {countryFlag(country) && <span className="shrink-0">{countryFlag(country)}</span>}
-                <span className="truncate">{country}</span>
+                {countryShortName(country)}
               </button>
             ))
           )}

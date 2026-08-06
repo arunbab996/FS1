@@ -41,13 +41,21 @@ function ViewedByCard({ viewers }: { viewers: string[] }) {
  * Eye/view-count + "Screen" control, grouped in one pill since screening a
  * signal is what registers a view. Each person's view only counts once.
  */
-export function SignalScreenStatus({ signal }: { signal: Signal }) {
+export function SignalScreenStatus({
+  signal,
+  onScreen,
+}: {
+  signal: Signal;
+  /** Called in addition to the internal state update, e.g. so a parent list can remove the row. */
+  onScreen?: () => void;
+}) {
   const [viewedBy, setViewedBy] = useState<string[]>(signal.viewedBy ?? []);
   const screened = viewedBy.includes(CURRENT_USER_NAME);
 
   function handleScreen() {
     if (screened) return;
     setViewedBy((prev) => [...prev, CURRENT_USER_NAME]);
+    onScreen?.();
   }
 
   return (
