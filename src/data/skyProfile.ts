@@ -374,6 +374,20 @@ export const skyProfile: TalentProfile = {
       url: "https://www.linkedin.com/posts/binance_web3-marketing-activity-7121987654123456789",
     },
   ],
+  behavioralSignals: [
+    {
+      kind: "stealth-mode",
+      label: "Took on an unnamed \"Stealth Startup\" co-founder role on top of an already-active portfolio",
+      detail: "Added in Feb 2026 while Nexawork AI and Mars Growth Capital were both still active — reportedly AI workforce tooling.",
+      date: "Feb 2026",
+    },
+    {
+      kind: "follow-burst",
+      label: "Sudden connections with Accel and Min-Liang Tan",
+      detail: "Both connections landed within the same week the stealth co-founder role appeared — an early tell ahead of any public raise.",
+      date: "Jul 2026",
+    },
+  ],
   insights: {
     totalMonths: 162,
     avgMonths: 40,

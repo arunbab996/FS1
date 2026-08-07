@@ -113,6 +113,7 @@ export const achintyaProfile: TalentProfile = {
       badge: "Bachelor Degree",
       degree: "B.Tech (dual degree) - Chemical Engineering",
       period: "Jan 2004 - Jan 2009",
+      detail: "JEE admission — implies top ~0.5% national percentile in the entrance cohort.",
     },
     {
       school: "Indian School of Business",

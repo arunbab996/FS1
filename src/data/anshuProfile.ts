@@ -1,4 +1,5 @@
 import type { TalentProfile } from "../types";
+import { generateContributions } from "../utils/github";
 
 export const anshuProfile: TalentProfile = {
   titleLine:
@@ -133,6 +134,7 @@ export const anshuProfile: TalentProfile = {
       school: "MIT Sloan School of Management",
       badge: "Master Degree",
       degree: "Executive Master of Business Administration",
+      detail: "Completed while active as a General Partner and company builder, not a career pause.",
     },
     {
       school: "Otto-von-Guericke University Magdeburg",
@@ -211,6 +213,28 @@ export const anshuProfile: TalentProfile = {
         "Quietly heads-down on something new. If you're deep in agentic infra or edge AI runtimes, I'd love to compare notes.",
       date: "2 weeks ago",
       url: "https://www.linkedin.com/posts/anshubansal_buildinginpublic-activity-7118765432123456789",
+    },
+  ],
+  github: {
+    username: "anshu-bansal-ai",
+    followers: 211,
+    stars: 340,
+    publicRepos: 18,
+    topLanguages: ["Python", "C++", "CUDA"],
+    contributions: generateContributions("anshu-bansal-ai", 371, new Date(2026, 6, 27)),
+  },
+  behavioralSignals: [
+    {
+      kind: "stealth-mode",
+      label: "Title changed to \"AI, LLM Inference & Edge AI R&D\" with no named company",
+      detail: "Classic stealth phrasing — a placeholder title rather than a named employer, right after CloudDefense.AI's acquisition closed.",
+      date: "May 2026",
+    },
+    {
+      kind: "topic-shift",
+      label: "Posting activity has narrowed almost entirely to inference cost and edge deployment",
+      detail: "A sharp topic narrowing from his prior broad AI-platform commentary — usually a sign of a specific problem being worked on.",
+      date: "Jun–Jul 2026",
     },
   ],
   insights: {

@@ -6,7 +6,9 @@ import {
   Code2,
   ExternalLink,
   Eye,
+  EyeOff,
   FileText,
+  Globe,
   GraduationCap,
   Handshake,
   Landmark,
@@ -26,11 +28,13 @@ import {
   TrendingUp,
   Trophy,
   User,
+  UserPlus,
   Users,
   X,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type {
+  BehavioralSignalItem,
   CareerSignalItem,
   LinkedInActivityItem,
   NetworkItem,
@@ -48,6 +52,7 @@ import {
 import { extractPersonName, stripMarkdown } from "../utils/text";
 import { formatTenureLabel } from "../utils/tenure";
 import { tagColorClasses, tagIcon } from "../utils/tags";
+import { GithubActivityGraph } from "./GithubActivityGraph";
 import { GithubIcon } from "./icons/GithubIcon";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
@@ -280,6 +285,21 @@ function recognitionIcon(kind: RecognitionItem["kind"]) {
       return Trophy;
     case "speaking":
       return Mic;
+  }
+}
+
+function behavioralSignalIcon(kind: BehavioralSignalItem["kind"]) {
+  switch (kind) {
+    case "stealth-mode":
+      return EyeOff;
+    case "new-domain":
+      return Globe;
+    case "new-directorship":
+      return Landmark;
+    case "follow-burst":
+      return UserPlus;
+    case "topic-shift":
+      return TrendingUp;
   }
 }
 
@@ -740,6 +760,53 @@ export function ProfileDrawer({
 
             {tab === "insights" && profile && (
               <div className="flex flex-col gap-5">
+                {profile.behavioralSignals?.length ? (
+                  <div>
+                    <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Signals to watch
+                    </h3>
+                    <div className="flex flex-col gap-3">
+                      {profile.behavioralSignals.map((item, i) => {
+                        const Icon = behavioralSignalIcon(item.kind);
+                        return (
+                          <div
+                            key={i}
+                            className="flex gap-3 rounded-xl border border-gray-200 bg-rose-50/60 p-3 dark:border-neutral-700 dark:bg-rose-500/5"
+                          >
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-500/15">
+                              <Icon className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-start justify-between gap-2">
+                                <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                                  {item.label}
+                                </p>
+                                {item.date && (
+                                  <span className="shrink-0 text-xs text-gray-400 dark:text-neutral-500">
+                                    {item.date}
+                                  </span>
+                                )}
+                              </div>
+                              <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">
+                                {item.detail}
+                              </p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                {profile.github && (
+                  <div>
+                    <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      GitHub activity
+                    </h3>
+                    <GithubActivityGraph github={profile.github} githubUrl={signal.githubUrl} />
+                  </div>
+                )}
+
                 <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
                   <StatTile label="Total" value={`${profile.insights.totalMonths}mo`} />
                   <StatTile label="Average" value={`${profile.insights.avgMonths}mo`} />
@@ -807,6 +874,11 @@ export function ProfileDrawer({
                           {edu.period && (
                             <p className="mt-0.5 text-xs text-gray-400 dark:text-neutral-500">
                               {edu.period}
+                            </p>
+                          )}
+                          {edu.detail && (
+                            <p className="mt-1 text-xs text-gray-500 dark:text-neutral-400">
+                              {edu.detail}
                             </p>
                           )}
                         </div>

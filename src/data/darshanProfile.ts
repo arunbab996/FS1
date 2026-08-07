@@ -1,4 +1,5 @@
 import type { TalentProfile } from "../types";
+import { generateContributions } from "../utils/github";
 
 export const darshanProfile: TalentProfile = {
   titleLine: "Founder · Quant Data Engineer at ASX | Blackbird Giants C11",
@@ -108,6 +109,7 @@ export const darshanProfile: TalentProfile = {
       badge: "Bachelor Degree",
       degree: "Bachelor of Science - BS - Biotechnology",
       period: "Jan 2021 - Dec 2023",
+      detail: "Formal degree is unrelated to his coding background — self-taught programmer since age 11.",
     },
   ],
   pedigree: [
@@ -173,6 +175,28 @@ export const darshanProfile: TalentProfile = {
       preview: "Blackbird Giants C11 cohort — meet the 12 teams building with us this year.",
       date: "2 weeks ago",
       url: "https://www.linkedin.com/posts/blackbird-ventures_giants-c11-activity-7119876543123456789",
+    },
+  ],
+  github: {
+    username: "darshanp-dev",
+    followers: 58,
+    stars: 94,
+    publicRepos: 31,
+    topLanguages: ["TypeScript", "Python", "Rust"],
+    contributions: generateContributions("darshanp-dev", 371, new Date(2026, 6, 27)),
+  },
+  behavioralSignals: [
+    {
+      kind: "new-domain",
+      label: "Registered finishkit.ai and finishkit.dev",
+      detail: "Both domains registered within days of leaving ASX — ahead of any public announcement of FinishKit.",
+      date: "Dec 2025",
+    },
+    {
+      kind: "stealth-mode",
+      label: "LinkedIn headline switched from \"Quant Data Engineer\" to \"Founder\"",
+      detail: "Title change preceded the FinishKit launch post by several weeks — an early founder-intent tell.",
+      date: "Jan 2026",
     },
   ],
   insights: {

@@ -1,4 +1,5 @@
 import type { TalentProfile } from "../types";
+import { generateContributions } from "../utils/github";
 
 export const loongProfile: TalentProfile = {
   titleLine: "CEO & Founder · Rethinking drug design one byte at a time.",
@@ -92,6 +93,7 @@ export const loongProfile: TalentProfile = {
       school: "The Australian National University",
       badge: "Others",
       degree: "Advanced Research and Development (Computer Science) (Honours)",
+      detail: "Honours (First Class) — combined coursework with an academic research thesis in distributed systems.",
     },
   ],
   pedigree: [
@@ -155,6 +157,22 @@ export const loongProfile: TalentProfile = {
       preview: "Singapore's deep tech ecosystem just crossed another funding milestone this quarter.",
       date: "2 weeks ago",
       url: "https://www.linkedin.com/posts/enterprisesg_deeptech-activity-7118876543123456789",
+    },
+  ],
+  github: {
+    username: "bzlwang",
+    followers: 173,
+    stars: 512,
+    publicRepos: 27,
+    topLanguages: ["Haskell", "Java", "SQL"],
+    contributions: generateContributions("bzlwang", 371, new Date(2026, 6, 27)),
+  },
+  behavioralSignals: [
+    {
+      kind: "new-directorship",
+      label: "Appears as a newly registered director of Metal",
+      detail: "New company incorporation registered days after stepping down as CEO of QDX — a clean, fast pivot rather than a stealth gap.",
+      date: "May 2026",
     },
   ],
   insights: {

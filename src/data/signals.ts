@@ -29,6 +29,7 @@ export const signals: Signal[] = [
     assignedInvestor: "Raynard Lao",
     assignedStage: "Prospecting",
     linkedinUrl: "https://www.linkedin.com/in/darshan-patel-au/",
+    githubUrl: "https://github.com/darshanp-dev",
     profile: darshanProfile,
     current: [{ company: "FinishKit", role: "Founder" }],
     past: [
@@ -161,6 +162,7 @@ export const signals: Signal[] = [
       "A PhD candidate at QUT building robust predictive systems for tabular data, now actively building an open-source tool on GitHub alongside a self-employed full-stack AI engineering practice.",
     sourcedVia: "Open Source",
     linkedinUrl: "https://www.linkedin.com/in/zhipenghe",
+    githubUrl: "https://github.com/zhipeng-he",
     profile: zhipengProfile,
     current: [
       { company: "QUT", role: "Postdoctoral Research Fellow" },
@@ -250,6 +252,7 @@ export const signals: Signal[] = [
       "Anshu Bansal has quietly left public view and entered stealth — a 19+ year AI/ML leader (ex-Amazon, ex-Microsoft, CloudDefense.AI co-founder) now working on something new, flagged as a hot strategic-intelligence signal.",
     sourcedVia: "Evertrace",
     linkedinUrl: "https://www.linkedin.com/in/anshubansal",
+    githubUrl: "https://github.com/anshu-bansal-ai",
     profile: anshuProfile,
     current: [
       { company: "AI R&D", role: "AI, LLM Inference & Edge AI R&D" },
@@ -283,6 +286,7 @@ export const signals: Signal[] = [
     status: "New Signal",
     photoUrl: "/avatars/loong.jpg",
     linkedinUrl: "https://www.linkedin.com/in/bzlwang/",
+    githubUrl: "https://github.com/bzlwang",
     tags: [
       { label: "New Company", category: "momentum" },
       { label: "Repeat Founder", category: "momentum" },

@@ -20,6 +20,19 @@ export const signalTypeOptions = [
   "Student Club",
 ] as const;
 
+/** FirstSignal's own sourcing engines, plus discovery channels — always offered, regardless of what's in the mock data. */
+const coreSources = [
+  "Scout",
+  "Watcher",
+  "YC",
+  "Product Hunt",
+  "Peerlist",
+  "Futurepedia",
+  "BetaList",
+  "Hacker News",
+  "X (Formerly Twitter)",
+];
+
 /** Base country list (mirrors the old "View by: Country" filter), plus whatever else shows up in real data. */
 const coreCountries = [
   "Singapore",
@@ -296,7 +309,7 @@ export function deriveFilterOptions(signals: Signal[]) {
   const countries = new Set<string>(coreCountries);
   const locations = new Set<string>();
   const education = new Set<string>();
-  const sources = new Set<string>();
+  const sources = new Set<string>(coreSources);
   const statuses = new Set<string>();
   const assignedTo = new Set<string>();
 
@@ -305,8 +318,9 @@ export function deriveFilterOptions(signals: Signal[]) {
     signalCountryLabels(signal).forEach((v) => countries.add(v));
     locations.add(signalLocation(signal));
     signalEducationLabels(signal).forEach((v) => education.add(v));
-    const source = signalSource(signal);
-    if (source) sources.add(source);
+    // "Sourced via [tool]" tags are provenance labels, not a filterable source — only
+    // "Sourced by [person]" entries (and the core engines above) populate this filter.
+    if (signal.sourcedBy) sources.add(signal.sourcedBy);
     statuses.add(signal.status);
     assignedTo.add(signalAssignedTo(signal));
   }

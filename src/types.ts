@@ -50,6 +50,24 @@ export interface ProfileEducationEntry {
   degree: string;
   /** Omit when the source profile doesn't list dates for this entry. */
   period?: string;
+  /** GPA/honours, thesis, scholarship, or a country-specific admission stat (e.g. "JEE Advanced AIR 342"). */
+  detail?: string;
+}
+
+export interface GithubContributionDay {
+  /** ISO date, e.g. "2026-07-27". */
+  date: string;
+  count: number;
+}
+
+export interface GithubStats {
+  username: string;
+  followers: number;
+  stars: number;
+  publicRepos: number;
+  topLanguages: string[];
+  /** ~1 year of daily contribution counts, oldest first. */
+  contributions: GithubContributionDay[];
 }
 
 export interface ProfileActivityItem {
@@ -93,6 +111,15 @@ export interface CareerSignalItem {
   detail: string;
 }
 
+/** Early, pre-public "intent" signals — stealth-mode flags, new domains, follow bursts — the raw material
+ * behind why a signal fired at all, ahead of anything the person has announced publicly. */
+export interface BehavioralSignalItem {
+  kind: "stealth-mode" | "new-domain" | "new-directorship" | "follow-burst" | "topic-shift";
+  label: string;
+  detail: string;
+  date?: string;
+}
+
 /** Founder/professional network affiliations — co-founders, accelerators, notable colleague overlap. */
 export interface NetworkItem {
   kind: "co-founder" | "accelerator" | "colleague-overlap";
@@ -131,6 +158,10 @@ export interface TalentProfile {
   network?: NetworkItem[];
   /** Omit when there's no notable press/recognition to show. */
   recognition?: RecognitionItem[];
+  /** Omit when this person has no public GitHub activity to show. */
+  github?: GithubStats;
+  /** Omit when there are no early/pre-public intent signals worth flagging for this profile. */
+  behavioralSignals?: BehavioralSignalItem[];
   insights: {
     totalMonths: number;
     avgMonths: number;

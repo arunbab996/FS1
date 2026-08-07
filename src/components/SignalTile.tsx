@@ -4,7 +4,7 @@ import type { Signal } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
 import { countryFlag } from "../utils/flags";
 import { signalStatusColorClasses } from "../utils/signalStatus";
-import { sourcedViaColorClasses } from "../utils/sourcedVia";
+import { discoverySourceFor, sourcedViaColorClasses } from "../utils/sourcedVia";
 import { tagColorClasses, tagIcon } from "../utils/tags";
 import { formatTenureLabel } from "../utils/tenure";
 import { AiSummaryBubble } from "./AiSummaryBubble";
@@ -82,13 +82,19 @@ export function SignalTile({
               Sourced by {signal.sourcedBy}
             </span>
           )}
-          {signal.sourcedVia && !hideSourcedVia && (
-            <span
-              className={`rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${sourcedViaColorClasses(signal.sourcedVia)}`}
-            >
-              Sourced via {signal.sourcedVia}
-            </span>
-          )}
+          {!signal.sourcedBy &&
+            (() => {
+              const source = hideSourcedVia ? discoverySourceFor(signal.id) : signal.sourcedVia;
+              return (
+                source && (
+                  <span
+                    className={`rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${sourcedViaColorClasses(source)}`}
+                  >
+                    {source}
+                  </span>
+                )
+              );
+            })()}
           <Tooltip label={signal.status}>
             <SignalWaveIcon
               className={`h-5 w-5 animate-signal-flicker ${signalStatusColorClasses(signal.status)}`}
