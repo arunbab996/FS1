@@ -22,13 +22,7 @@ import { SignalScreenStatus } from "./SignalScreenStatus";
 import { TagInfoCard } from "./TagInfoCard";
 import { Tooltip } from "./Tooltip";
 
-export function SignalTile({
-  signal,
-  hideSourcedVia = false,
-}: {
-  signal: Signal;
-  hideSourcedVia?: boolean;
-}) {
+export function SignalTile({ signal }: { signal: Signal }) {
   const [profileOpen, setProfileOpen] = useState(false);
 
   function handleTileClick(event: React.MouseEvent<HTMLDivElement>) {
@@ -84,15 +78,13 @@ export function SignalTile({
           )}
           {!signal.sourcedBy &&
             (() => {
-              const source = hideSourcedVia ? discoverySourceFor(signal.id) : signal.sourcedVia;
+              const source = discoverySourceFor(signal.id);
               return (
-                source && (
-                  <span
-                    className={`rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${sourcedViaColorClasses(source)}`}
-                  >
-                    {source}
-                  </span>
-                )
+                <span
+                  className={`rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${sourcedViaColorClasses(source)}`}
+                >
+                  {source}
+                </span>
               );
             })()}
           <Tooltip label={signal.status}>

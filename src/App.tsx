@@ -22,7 +22,6 @@ function App() {
   const [filters, setFilters] = useState<SignalFilters>(emptyFilters);
   const [searchQuery, setSearchQuery] = useState("");
   const [viewMode, setViewMode] = useState<ViewMode>("cards");
-  const [hideSourcedVia, setHideSourcedVia] = useState(false);
   const [savedSearches, setSavedSearches] = useState<SavedSearch[]>([]);
   const [activeSavedSearchId, setActiveSavedSearchId] = useState<string | null>(null);
   const [activeView, setActiveView] = useState<NavView>("equity-signals");
@@ -80,8 +79,6 @@ function App() {
         <Sidebar
           isDark={isDark}
           onToggleDark={() => setIsDark((v) => !v)}
-          hideSourcedVia={hideSourcedVia}
-          onToggleHideSourcedVia={() => setHideSourcedVia((v) => !v)}
           activeView={activeView}
           onSelectView={setActiveView}
           showInboxSection={showInboxSection}
@@ -122,11 +119,7 @@ function App() {
                   ) : (
                     <div className="flex flex-col gap-2">
                       {results.map((signal) => (
-                        <SignalTile
-                          key={signal.id}
-                          signal={signal}
-                          hideSourcedVia={hideSourcedVia}
-                        />
+                        <SignalTile key={signal.id} signal={signal} />
                       ))}
                     </div>
                   )

@@ -49,6 +49,7 @@ import {
   positionCategoryBarClasses,
   positionCategoryDotClasses,
 } from "../utils/positionCategory";
+import { discoverySourceFor } from "../utils/sourcedVia";
 import { extractPersonName, stripMarkdown } from "../utils/text";
 import { formatTenureLabel } from "../utils/tenure";
 import { tagColorClasses, tagIcon } from "../utils/tags";
@@ -605,18 +606,16 @@ export function ProfileDrawer({
                     </div>
                   </div>
                 ) : (
-                  (signal.sourcedBy || signal.sourcedVia) && (
-                    <div>
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                        Sourcing
-                      </h3>
-                      <p className="mt-1.5 text-sm text-gray-700 dark:text-neutral-300">
-                        {signal.sourcedBy
-                          ? `Sourced by ${signal.sourcedBy}`
-                          : `Sourced via ${signal.sourcedVia}`}
-                      </p>
-                    </div>
-                  )
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Sourcing
+                    </h3>
+                    <p className="mt-1.5 text-sm text-gray-700 dark:text-neutral-300">
+                      {signal.sourcedBy
+                        ? `Sourced by ${signal.sourcedBy}`
+                        : `Sourced via ${discoverySourceFor(signal.id)}`}
+                    </p>
+                  </div>
                 )}
               </div>
             )}

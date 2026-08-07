@@ -27,8 +27,6 @@ function MiniToggle({ checked, onChange }: { checked: boolean; onChange: () => v
 export function Sidebar({
   isDark,
   onToggleDark,
-  hideSourcedVia,
-  onToggleHideSourcedVia,
   activeView,
   onSelectView,
   showInboxSection,
@@ -36,8 +34,6 @@ export function Sidebar({
 }: {
   isDark: boolean;
   onToggleDark: () => void;
-  hideSourcedVia: boolean;
-  onToggleHideSourcedVia: () => void;
   activeView: NavView;
   onSelectView: (view: NavView) => void;
   showInboxSection: boolean;
@@ -145,12 +141,6 @@ export function Sidebar({
             <p className="px-1 pb-2 text-[11px] font-semibold tracking-wide text-gray-400 uppercase dark:text-neutral-500">
               Display settings
             </p>
-            <label className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-1 py-1.5">
-              <span className="text-sm text-gray-700 dark:text-neutral-200">
-                Hide "Sourced via" tags
-              </span>
-              <MiniToggle checked={hideSourcedVia} onChange={onToggleHideSourcedVia} />
-            </label>
             <label className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-1 py-1.5">
               <span className="text-sm text-gray-700 dark:text-neutral-200">
                 Show Inbox (preview)
