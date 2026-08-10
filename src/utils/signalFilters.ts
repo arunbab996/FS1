@@ -130,6 +130,18 @@ export interface ScopedListFilter {
 
 export const emptyScopedListFilter: ScopedListFilter = { values: [], scope: "both" };
 
+/** LinkedIn-style company headcount buckets, used as a discrete multi-select in the Companies filter. */
+export const companySizeRanges = [
+  { id: "1-10", label: "1-10", min: 1, max: 10 },
+  { id: "11-50", label: "11-50", min: 11, max: 50 },
+  { id: "51-200", label: "51-200", min: 51, max: 200 },
+  { id: "201-500", label: "201-500", min: 201, max: 500 },
+  { id: "501-1000", label: "501-1,000", min: 501, max: 1000 },
+  { id: "1001-5000", label: "1,001-5,000", min: 1001, max: 5000 },
+  { id: "5001-10000", label: "5,001-10,000", min: 5001, max: 10000 },
+  { id: "10001+", label: "10,001+", min: 10001, max: null },
+] as const;
+
 export const datePresets = [
   "All dates",
   "Last week",
@@ -155,13 +167,14 @@ export interface SignalFilters {
   locations: string[];
   education: string[];
   companies: ScopedListFilter;
-  companySize: RangeFilter;
+  companySize: string[];
   companyFoundedYear: RangeFilter;
   companyTagline: string;
   currentJobTitles: string[];
   pastJobTitles: string[];
-  seniorityLevels: string[];
+  seniorityLevel: string | null;
   educationLevels: string[];
+  fieldOfStudy: string;
   graduationYear: RangeFilter;
   yearsOfExperience: RangeFilter;
   score: ScoreFilter;
@@ -185,13 +198,14 @@ export const emptyFilters: SignalFilters = {
   locations: [],
   education: [],
   companies: emptyScopedListFilter,
-  companySize: emptyRangeFilter,
+  companySize: [],
   companyFoundedYear: emptyRangeFilter,
   companyTagline: "",
   currentJobTitles: [],
   pastJobTitles: [],
-  seniorityLevels: [],
+  seniorityLevel: null,
   educationLevels: [],
+  fieldOfStudy: "",
   graduationYear: emptyRangeFilter,
   yearsOfExperience: emptyRangeFilter,
   score: emptyScoreFilter,
@@ -207,13 +221,14 @@ export function activeFilterCount(filters: SignalFilters): number {
     (filters.sources.length > 0 ? 1 : 0) +
     (filters.industries.length > 0 ? 1 : 0) +
     (filters.companies.values.length > 0 ? 1 : 0) +
-    (isRangeFilterActive(filters.companySize) ? 1 : 0) +
+    (filters.companySize.length > 0 ? 1 : 0) +
     (isRangeFilterActive(filters.companyFoundedYear) ? 1 : 0) +
     (filters.companyTagline.trim().length > 0 ? 1 : 0) +
     (filters.currentJobTitles.length > 0 ? 1 : 0) +
     (filters.pastJobTitles.length > 0 ? 1 : 0) +
-    (filters.seniorityLevels.length > 0 ? 1 : 0) +
+    (filters.seniorityLevel !== null ? 1 : 0) +
     (filters.educationLevels.length > 0 ? 1 : 0) +
+    (filters.fieldOfStudy.trim().length > 0 ? 1 : 0) +
     (isRangeFilterActive(filters.graduationYear) ? 1 : 0) +
     (isRangeFilterActive(filters.yearsOfExperience) ? 1 : 0) +
     (filters.countries.length > 0 ? 1 : 0) +
@@ -479,6 +494,22 @@ function matchesTextContains(signal: Signal, query: string): boolean {
   return signal.profile.positions.some((p) => p.description?.toLowerCase().includes(q));
 }
 
+/** Matches a signal's degree text (e.g. "Bachelor of Science, Biotechnology") against a free-text query. */
+function matchesFieldOfStudy(signal: Signal, query: string): boolean {
+  if (!query.trim()) return true;
+  if (!signal.profile) return false;
+  const q = query.toLowerCase();
+  return signal.profile.education.some((e) => e.degree.toLowerCase().includes(q));
+}
+
+/** Matches a signal's company headcounts against the selected LinkedIn-style size buckets. */
+function matchesCompanySizeBuckets(sizes: number[], selectedIds: string[]): boolean {
+  if (selectedIds.length === 0) return true;
+  if (sizes.length === 0) return false;
+  const buckets = companySizeRanges.filter((b) => selectedIds.includes(b.id));
+  return sizes.some((size) => buckets.some((b) => size >= b.min && (b.max === null || size <= b.max)));
+}
+
 /** Matches a scoped multi-select filter against a signal's current and/or past values, per its scope. */
 function matchesScopedList(filter: ScopedListFilter, currentValues: string[], pastValues: string[]): boolean {
   if (filter.values.length === 0) return true;
@@ -503,13 +534,16 @@ export function signalMatchesFilters(signal: Signal, filters: SignalFilters): bo
   ) {
     return false;
   }
-  if (!matchesRangeAny(signalCompanySizes(signal), filters.companySize)) return false;
+  if (!matchesCompanySizeBuckets(signalCompanySizes(signal), filters.companySize)) return false;
   if (!matchesRangeAny(signalCompanyFoundedYears(signal), filters.companyFoundedYear)) return false;
   if (!matchesTextContains(signal, filters.companyTagline)) return false;
   if (!matchesAny(filters.currentJobTitles, signalCurrentTitles(signal))) return false;
   if (!matchesAny(filters.pastJobTitles, signalPastTitles(signal))) return false;
-  if (!matchesAny(filters.seniorityLevels, signalSeniorityLevels(signal))) return false;
+  if (filters.seniorityLevel !== null && !signalSeniorityLevels(signal).includes(filters.seniorityLevel)) {
+    return false;
+  }
   if (!matchesAny(filters.educationLevels, signalEducationLevels(signal))) return false;
+  if (!matchesFieldOfStudy(signal, filters.fieldOfStudy)) return false;
   if (!matchesRange(signalGraduationYear(signal), filters.graduationYear)) return false;
   if (!matchesRange(signalYearsExperience(signal), filters.yearsOfExperience)) return false;
   if (filters.sources.length > 0) {

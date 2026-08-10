@@ -8,7 +8,6 @@ import {
   Gauge,
   GraduationCap,
   Globe,
-  History,
   MapPin,
   Plus,
   Radio,
@@ -21,6 +20,7 @@ import {
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { companyLogoUrl } from "../utils/avatars";
 import {
+  companySizeRanges,
   datePresets,
   educationLevelOptions,
   emptyFilters,
@@ -66,9 +66,8 @@ interface Category {
 const categories: Category[] = [
   { id: "signalTypes", label: "Signal Type", icon: Tags, searchable: true },
   { id: "sources", label: "Signal Source", icon: Radio },
-  { id: "industries", label: "Industry", icon: Briefcase },
   { id: "companies", label: "Companies", icon: Building2, searchable: true },
-  { id: "experience", label: "Experience", icon: History },
+  { id: "experience", label: "Experience", icon: Briefcase },
   { id: "countries", label: "Country", icon: Globe, searchable: true },
   { id: "locations", label: "Location", icon: MapPin, searchable: true },
   { id: "education", label: "Education", icon: GraduationCap, searchable: true },
@@ -99,7 +98,8 @@ function categoryCount(id: CategoryId, filters: SignalFilters): number {
   if (id === "companies") {
     return (
       filters.companies.values.length +
-      (isRangeFilterActive(filters.companySize) ? 1 : 0) +
+      filters.industries.length +
+      filters.companySize.length +
       (isRangeFilterActive(filters.companyFoundedYear) ? 1 : 0) +
       (filters.companyTagline.trim().length > 0 ? 1 : 0)
     );
@@ -108,7 +108,7 @@ function categoryCount(id: CategoryId, filters: SignalFilters): number {
     return (
       filters.currentJobTitles.length +
       filters.pastJobTitles.length +
-      filters.seniorityLevels.length +
+      (filters.seniorityLevel !== null ? 1 : 0) +
       (isRangeFilterActive(filters.yearsOfExperience) ? 1 : 0)
     );
   }
@@ -116,6 +116,7 @@ function categoryCount(id: CategoryId, filters: SignalFilters): number {
     return (
       filters.education.length +
       filters.educationLevels.length +
+      (filters.fieldOfStudy.trim().length > 0 ? 1 : 0) +
       (isRangeFilterActive(filters.graduationYear) ? 1 : 0)
     );
   }
@@ -351,7 +352,6 @@ function RangePanel({
   step,
   anyLabel,
   valueLabel,
-  helpText,
 }: {
   filter: RangeFilter;
   onChange: (filter: RangeFilter) => void;
@@ -360,7 +360,6 @@ function RangePanel({
   step: number;
   anyLabel: string;
   valueLabel: string;
-  helpText: string;
 }) {
   function selectOperator(value: string) {
     if (value === "any") {
@@ -370,79 +369,103 @@ function RangePanel({
     }
   }
 
+  const selectClasses =
+    "cursor-pointer rounded-full border border-gray-200 bg-white py-2 pr-8 pl-3.5 text-sm text-gray-700 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200";
+  const inputClasses =
+    "rounded-full border border-gray-200 bg-white px-3.5 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500";
+
   return (
-    <div className="flex max-w-xs flex-col gap-4">
-      <label className="flex flex-col gap-1">
-        <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">Condition</span>
-        <select
-          value={filter.operator ?? "any"}
-          onChange={(e) => selectOperator(e.target.value)}
-          className="w-full cursor-pointer rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
-        >
-          <option value="any">{anyLabel}</option>
-          {scoreOperators.map((op) => (
-            <option key={op} value={op}>
-              {scoreOperatorLabels[op]}
-            </option>
-          ))}
-        </select>
-      </label>
+    <div className="flex items-center gap-2">
+      <select
+        value={filter.operator ?? "any"}
+        onChange={(e) => selectOperator(e.target.value)}
+        className={selectClasses}
+      >
+        <option value="any">{anyLabel}</option>
+        {scoreOperators.map((op) => (
+          <option key={op} value={op}>
+            {scoreOperatorLabels[op]}
+          </option>
+        ))}
+      </select>
 
       {filter.operator && filter.operator !== "range" && (
-        <label className="flex flex-col gap-1">
-          <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">{valueLabel}</span>
+        <input
+          type="number"
+          min={min}
+          max={max}
+          step={step}
+          placeholder={valueLabel}
+          value={filter.value ?? ""}
+          onChange={(e) =>
+            onChange({ ...filter, value: e.target.value === "" ? null : Number(e.target.value) })
+          }
+          className={`w-32 ${inputClasses}`}
+        />
+      )}
+
+      {filter.operator === "range" && (
+        <>
           <input
             type="number"
             min={min}
             max={max}
             step={step}
-            placeholder="e.g. 5"
-            value={filter.value ?? ""}
+            placeholder="Min"
+            value={filter.min ?? ""}
             onChange={(e) =>
-              onChange({ ...filter, value: e.target.value === "" ? null : Number(e.target.value) })
+              onChange({ ...filter, min: e.target.value === "" ? null : Number(e.target.value) })
             }
-            className="w-32 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-600"
+            className={`w-20 ${inputClasses}`}
           />
-        </label>
+          <span className="text-gray-300 dark:text-neutral-600">–</span>
+          <input
+            type="number"
+            min={min}
+            max={max}
+            step={step}
+            placeholder="Max"
+            value={filter.max ?? ""}
+            onChange={(e) =>
+              onChange({ ...filter, max: e.target.value === "" ? null : Number(e.target.value) })
+            }
+            className={`w-20 ${inputClasses}`}
+          />
+        </>
       )}
+    </div>
+  );
+}
 
-      {filter.operator === "range" && (
-        <div className="flex items-center gap-3">
-          <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">Min</span>
-            <input
-              type="number"
-              min={min}
-              max={max}
-              step={step}
-              placeholder={String(min)}
-              value={filter.min ?? ""}
-              onChange={(e) =>
-                onChange({ ...filter, min: e.target.value === "" ? null : Number(e.target.value) })
-              }
-              className="w-24 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-600"
-            />
-          </label>
-          <span className="mt-5 text-gray-300 dark:text-neutral-600">–</span>
-          <label className="flex flex-col gap-1">
-            <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">Max</span>
-            <input
-              type="number"
-              min={min}
-              max={max}
-              step={step}
-              placeholder={String(max)}
-              value={filter.max ?? ""}
-              onChange={(e) =>
-                onChange({ ...filter, max: e.target.value === "" ? null : Number(e.target.value) })
-              }
-              className="w-24 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-600"
-            />
-          </label>
-        </div>
-      )}
-
-      <p className="text-xs text-gray-400 dark:text-neutral-500">{helpText}</p>
+/** Pill-button multi-select, for short discrete option sets like LinkedIn-style headcount buckets. */
+function ChipMultiSelect({
+  options,
+  selected,
+  onToggle,
+}: {
+  options: readonly { id: string; label: string }[];
+  selected: string[];
+  onToggle: (id: string) => void;
+}) {
+  return (
+    <div className="flex flex-wrap gap-1.5">
+      {options.map((opt) => {
+        const active = selected.includes(opt.id);
+        return (
+          <button
+            key={opt.id}
+            type="button"
+            onClick={() => onToggle(opt.id)}
+            className={`cursor-pointer rounded-full border px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors ${
+              active
+                ? "border-blue-600 bg-blue-600 text-white dark:border-blue-500 dark:bg-blue-500"
+                : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+            }`}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
     </div>
   );
 }
@@ -506,7 +529,7 @@ export function FilterDialog({
   }
 
   function toggleListValue(
-    id: "currentJobTitles" | "pastJobTitles" | "seniorityLevels" | "educationLevels",
+    id: "currentJobTitles" | "pastJobTitles" | "educationLevels" | "companySize",
     value: string,
   ) {
     const current = draft[id];
@@ -547,7 +570,7 @@ export function FilterDialog({
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className="flex h-[min(640px,85vh)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl dark:border dark:border-neutral-700 dark:bg-neutral-900">
+      <div className="flex h-[min(656px,90vh)] w-full max-w-3xl flex-col overflow-hidden rounded-2xl bg-white shadow-2xl dark:border dark:border-neutral-700 dark:bg-neutral-900">
         <div className="flex shrink-0 items-center justify-between border-b border-gray-100 px-5 py-4 dark:border-neutral-800">
           <h2 className="text-base font-semibold text-gray-900 dark:text-neutral-50">
             All Filters
@@ -603,13 +626,12 @@ export function FilterDialog({
           </div>
 
           <div className="min-w-0 flex-1 overflow-y-auto border-l border-gray-200 bg-gray-50 p-4 dark:border-neutral-800 dark:bg-black/20">
-            <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-neutral-50">
+            <h3 className="mb-2 text-sm font-semibold text-gray-900 dark:text-neutral-50">
               {activeMeta.label}
             </h3>
 
             {activeCategory === "signalTypes" && renderOptionList("signalTypes", options.signalTypes)}
             {activeCategory === "sources" && renderOptionList("sources", options.sources)}
-            {activeCategory === "industries" && renderOptionList("industries", options.industries)}
             {activeCategory === "countries" && renderOptionList("countries", options.countries)}
             {activeCategory === "locations" && renderOptionList("locations", options.locations)}
             {activeCategory === "education" && (
@@ -622,7 +644,7 @@ export function FilterDialog({
                     values={options.education}
                     selected={draft.education}
                     onToggle={(value) => toggleValue("education", value)}
-                    placeholder="Search schools..."
+                    placeholder="e.g. Stanford, MIT, Harvard..."
                   />
                 </div>
 
@@ -630,14 +652,24 @@ export function FilterDialog({
                   <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Education level
                   </span>
-                  <CheckboxList
-                    values={[...educationLevelOptions]}
+                  <ChipMultiSelect
+                    options={educationLevelOptions.map((level) => ({ id: level, label: level }))}
                     selected={draft.educationLevels}
                     onToggle={(value) => toggleListValue("educationLevels", value)}
                   />
-                  <p className="mt-2 text-xs text-gray-400 dark:text-neutral-500">
-                    Inferred from each signal's degree text — not an explicit data field.
-                  </p>
+                </div>
+
+                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
+                  <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                    Field of study
+                  </span>
+                  <input
+                    type="text"
+                    value={draft.fieldOfStudy}
+                    onChange={(e) => setDraft({ ...draft, fieldOfStudy: e.target.value })}
+                    placeholder="e.g. Computer Science, Biotechnology..."
+                    className="w-full rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-600"
+                  />
                 </div>
 
                 <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
@@ -650,9 +682,8 @@ export function FilterDialog({
                     min={1970}
                     max={2030}
                     step={1}
-                    anyLabel="Any year"
+                    anyLabel="All"
                     valueLabel="Year"
-                    helpText="Only available for signals with detailed profile data and a completed (non-ongoing) degree."
                   />
                 </div>
               </div>
@@ -661,9 +692,11 @@ export function FilterDialog({
             {activeCategory === "assignedTo" && renderOptionList("assignedTo", options.assignedTo)}
 
             {activeCategory === "companies" && (
-              <div className="flex flex-col gap-3">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">Where</span>
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                    Company name
+                  </span>
                   <ScopeToggle
                     scope={draft.companies.scope}
                     onChange={(scope) =>
@@ -685,8 +718,8 @@ export function FilterDialog({
                   )}
                 />
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
-                  <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Company industry
                   </span>
                   <SearchSelect
@@ -695,31 +728,22 @@ export function FilterDialog({
                     onToggle={(value) => toggleValue("industries", value)}
                     placeholder="Search industries..."
                   />
-                  <p className="mt-2 text-xs text-gray-400 dark:text-neutral-500">
-                    Same list as the Industry filter — applies to each signal overall, not scoped by
-                    company history.
-                  </p>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
-                  <span className="mb-3 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                    Company size (current + past, headcount)
+                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                    Company size
                   </span>
-                  <RangePanel
-                    filter={draft.companySize}
-                    onChange={(companySize) => setDraft({ ...draft, companySize })}
-                    min={0}
-                    max={1000000}
-                    step={1}
-                    anyLabel="Any size"
-                    valueLabel="Headcount"
-                    helpText="Only available for signals with detailed profile data — most of the mock dataset doesn't have a headcount on file."
+                  <ChipMultiSelect
+                    options={companySizeRanges}
+                    selected={draft.companySize}
+                    onToggle={(id) => toggleListValue("companySize", id)}
                   />
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
-                  <span className="mb-3 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                    Company founded date (year, current + past)
+                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                    Founded year
                   </span>
                   <RangePanel
                     filter={draft.companyFoundedYear}
@@ -727,14 +751,13 @@ export function FilterDialog({
                     min={1900}
                     max={2030}
                     step={1}
-                    anyLabel="Any founding year"
+                    anyLabel="All"
                     valueLabel="Year"
-                    helpText="Only available for signals with detailed profile data."
                   />
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
-                  <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Company tagline
                   </span>
                   <input
@@ -744,52 +767,59 @@ export function FilterDialog({
                     placeholder="e.g. AI-powered analytics, Fintech for SMBs..."
                     className="w-full rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-600"
                   />
-                  <p className="mt-2 text-xs text-gray-400 dark:text-neutral-500">
-                    We don't have a dedicated tagline field, so this searches each company's
-                    description text — only populated for signals with detailed profile data.
-                  </p>
                 </div>
               </div>
             )}
 
             {activeCategory === "experience" && (
               <div className="flex flex-col gap-6">
-                <div>
-                  <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                    Current job title
-                  </span>
-                  <SearchSelect
-                    values={options.currentJobTitles}
-                    selected={draft.currentJobTitles}
-                    onToggle={(value) => toggleListValue("currentJobTitles", value)}
-                    placeholder="Search current job titles..."
-                  />
-                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Current job title
+                    </span>
+                    <SearchSelect
+                      values={options.currentJobTitles}
+                      selected={draft.currentJobTitles}
+                      onToggle={(value) => toggleListValue("currentJobTitles", value)}
+                      placeholder="e.g. VP of Engineering..."
+                    />
+                  </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
-                  <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                    Past job title
-                  </span>
-                  <SearchSelect
-                    values={options.pastJobTitles}
-                    selected={draft.pastJobTitles}
-                    onToggle={(value) => toggleListValue("pastJobTitles", value)}
-                    placeholder="Search past job titles..."
-                  />
+                  <div>
+                    <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Past job title
+                    </span>
+                    <SearchSelect
+                      values={options.pastJobTitles}
+                      selected={draft.pastJobTitles}
+                      onToggle={(value) => toggleListValue("pastJobTitles", value)}
+                      placeholder="e.g. Software Engineer..."
+                    />
+                  </div>
                 </div>
 
                 <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
                   <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Seniority level
                   </span>
-                  <CheckboxList
-                    values={[...seniorityLevelOptions]}
-                    selected={draft.seniorityLevels}
-                    onToggle={(value) => toggleListValue("seniorityLevels", value)}
-                  />
-                  <p className="mt-2 text-xs text-gray-400 dark:text-neutral-500">
-                    Inferred from job title keywords — not an explicit data field.
-                  </p>
+                  <select
+                    value={draft.seniorityLevel ?? "any"}
+                    onChange={(e) =>
+                      setDraft({
+                        ...draft,
+                        seniorityLevel: e.target.value === "any" ? null : e.target.value,
+                      })
+                    }
+                    className="cursor-pointer rounded-full border border-gray-200 bg-white py-2 pr-8 pl-3.5 text-sm text-gray-700 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+                  >
+                    <option value="any">All</option>
+                    {seniorityLevelOptions.map((level) => (
+                      <option key={level} value={level}>
+                        {level}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
@@ -802,9 +832,8 @@ export function FilterDialog({
                     min={0}
                     max={50}
                     step={0.5}
-                    anyLabel="Any experience"
+                    anyLabel="All"
                     valueLabel="Years"
-                    helpText="Based on each signal's total years of experience."
                   />
                 </div>
               </div>
@@ -953,8 +982,6 @@ function ScorePanel({
           </label>
         </div>
       )}
-
-      <p className="text-xs text-gray-400 dark:text-neutral-500">Signals are scored 0–10.</p>
     </div>
   );
 }
