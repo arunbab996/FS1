@@ -58,6 +58,7 @@ import { GithubIcon } from "./icons/GithubIcon";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
 import { TagInfoCard } from "./TagInfoCard";
+import { Tooltip } from "./Tooltip";
 
 type Tab =
   | "overview"
@@ -193,6 +194,57 @@ function groupPositions(positions: ProfilePosition[]) {
     }
   }
   return groups;
+}
+
+function startYear(period: string): number | null {
+  const match = period.match(/\d{4}/);
+  return match ? parseInt(match[0], 10) : null;
+}
+
+/** How much of this person's career has actually gone into founding things — null when they've never held a founder-category role. */
+function computeFounderDna(positions: ProfilePosition[]) {
+  const founderPositions = positions.filter((p) => p.category === "founder");
+  if (founderPositions.length === 0) return null;
+
+  const allStartYears = positions.map((p) => startYear(p.period)).filter((y): y is number => y !== null);
+  const founderStartYears = founderPositions
+    .map((p) => startYear(p.period))
+    .filter((y): y is number => y !== null);
+
+  const careerStart = allStartYears.length ? Math.min(...allStartYears) : null;
+  const firstFounderStart = founderStartYears.length ? Math.min(...founderStartYears) : null;
+  // The app's fictional "today" (matches the Jul 2026 reference date used elsewhere) — summing
+  // each founder position's own duration would double-count concurrent/overlapping ventures.
+  const currentYear = 2026;
+
+  return {
+    ventures: new Set(founderPositions.map((p) => p.company)).size,
+    yearsBeforeFirstVenture:
+      careerStart !== null && firstFounderStart !== null
+        ? Math.max(0, firstFounderStart - careerStart)
+        : null,
+    yearsAsFounder: firstFounderStart !== null ? Math.max(0, currentYear - firstFounderStart) : null,
+  };
+}
+
+function founderDnaCopy(dna: NonNullable<ReturnType<typeof computeFounderDna>>) {
+  const title = dna.ventures === 1 ? "First-time founder" : `Serial founder — ${dna.ventures} ventures`;
+
+  const detailParts: string[] = [];
+  if (dna.yearsBeforeFirstVenture !== null) {
+    detailParts.push(
+      dna.yearsBeforeFirstVenture === 0
+        ? "founded from day one of their career"
+        : `first venture came ${dna.yearsBeforeFirstVenture}yr into their career`,
+    );
+  }
+  if (dna.yearsAsFounder !== null) {
+    detailParts.push(
+      dna.yearsAsFounder === 0 ? "brand new to founding" : `a ${dna.yearsAsFounder}-year track record since`,
+    );
+  }
+
+  return { title, detail: detailParts.join(" — ") };
 }
 
 function activityIcon(kind: ProfileActivityItem["kind"]) {
@@ -813,6 +865,53 @@ export function ProfileDrawer({
                   <StatTile label="Shortest" value={`${profile.insights.shortestMonths}mo`} />
                   <StatTile label="Roles" value={profile.insights.roles} />
                   <StatTile label="Companies" value={profile.insights.companies} />
+                </div>
+
+                {(() => {
+                  const dna = computeFounderDna(profile.positions);
+                  if (!dna) return null;
+                  const { title, detail } = founderDnaCopy(dna);
+                  return (
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                        Founder DNA
+                      </h3>
+                      <div className="mt-3 flex gap-3 rounded-xl border border-gray-200 bg-amber-50/60 p-3 dark:border-neutral-700 dark:bg-amber-500/5">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-500/15">
+                          <Rocket className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                            {title}
+                          </p>
+                          {detail && (
+                            <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">
+                              {detail}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })()}
+
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                    Companies
+                  </h3>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {[...new Set(profile.positions.map((p) => p.company))]
+                      .filter((company) => company !== "Earlier roles")
+                      .map((company) => (
+                        <Tooltip key={company} label={company}>
+                          <img
+                            src={companyLogoUrl(company)}
+                            alt={company}
+                            className="h-9 w-9 rounded-lg border border-gray-200 object-cover dark:border-neutral-700"
+                          />
+                        </Tooltip>
+                      ))}
+                  </div>
                 </div>
 
                 <div>

@@ -20,6 +20,17 @@ export const signalTypeOptions = [
   "Student Club",
 ] as const;
 
+/** Fixed seniority taxonomy, inferred from job title keywords — not an explicit data field. */
+export const seniorityLevelOptions = [
+  "Executive / Founder",
+  "VP / Director",
+  "Manager",
+  "Individual Contributor",
+] as const;
+
+/** Fixed education-level taxonomy, inferred from degree text/badge — not an explicit data field. */
+export const educationLevelOptions = ["PhD", "Master's", "Bachelor's", "Other"] as const;
+
 /** FirstSignal's own sourcing engines, plus discovery channels — always offered, regardless of what's in the mock data. */
 const coreSources = [
   "Scout",
@@ -74,11 +85,50 @@ export const emptyScoreFilter: ScoreFilter = {
   max: null,
 };
 
-export function isScoreFilterActive(filter: ScoreFilter): boolean {
+function isNumericFilterActive(filter: {
+  operator: ScoreOperator | null;
+  value: number | null;
+  min: number | null;
+  max: number | null;
+}): boolean {
   if (filter.operator === null) return false;
   if (filter.operator === "range") return filter.min !== null || filter.max !== null;
   return filter.value !== null;
 }
+
+export function isScoreFilterActive(filter: ScoreFilter): boolean {
+  return isNumericFilterActive(filter);
+}
+
+/** A generic numeric range filter (same shape as ScoreFilter), reused for fields like years of experience. */
+export interface RangeFilter {
+  operator: ScoreOperator | null;
+  value: number | null;
+  min: number | null;
+  max: number | null;
+}
+
+export const emptyRangeFilter: RangeFilter = {
+  operator: null,
+  value: null,
+  min: null,
+  max: null,
+};
+
+export function isRangeFilterActive(filter: RangeFilter): boolean {
+  return isNumericFilterActive(filter);
+}
+
+/** Whether a scoped list filter should match against a signal's current roles, past roles, or both. */
+export type FilterScope = "current" | "past" | "both";
+
+/** A multi-select filter (companies, job titles) that can be scoped to current/past/both roles. */
+export interface ScopedListFilter {
+  values: string[];
+  scope: FilterScope;
+}
+
+export const emptyScopedListFilter: ScopedListFilter = { values: [], scope: "both" };
 
 export const datePresets = [
   "All dates",
@@ -104,6 +154,16 @@ export interface SignalFilters {
   countries: string[];
   locations: string[];
   education: string[];
+  companies: ScopedListFilter;
+  companySize: RangeFilter;
+  companyFoundedYear: RangeFilter;
+  companyTagline: string;
+  currentJobTitles: string[];
+  pastJobTitles: string[];
+  seniorityLevels: string[];
+  educationLevels: string[];
+  graduationYear: RangeFilter;
+  yearsOfExperience: RangeFilter;
   score: ScoreFilter;
   statuses: string[];
   assignedTo: string[];
@@ -124,6 +184,16 @@ export const emptyFilters: SignalFilters = {
   countries: [],
   locations: [],
   education: [],
+  companies: emptyScopedListFilter,
+  companySize: emptyRangeFilter,
+  companyFoundedYear: emptyRangeFilter,
+  companyTagline: "",
+  currentJobTitles: [],
+  pastJobTitles: [],
+  seniorityLevels: [],
+  educationLevels: [],
+  graduationYear: emptyRangeFilter,
+  yearsOfExperience: emptyRangeFilter,
   score: emptyScoreFilter,
   statuses: [],
   assignedTo: [],
@@ -136,6 +206,16 @@ export function activeFilterCount(filters: SignalFilters): number {
     (filters.signalTypes.length > 0 ? 1 : 0) +
     (filters.sources.length > 0 ? 1 : 0) +
     (filters.industries.length > 0 ? 1 : 0) +
+    (filters.companies.values.length > 0 ? 1 : 0) +
+    (isRangeFilterActive(filters.companySize) ? 1 : 0) +
+    (isRangeFilterActive(filters.companyFoundedYear) ? 1 : 0) +
+    (filters.companyTagline.trim().length > 0 ? 1 : 0) +
+    (filters.currentJobTitles.length > 0 ? 1 : 0) +
+    (filters.pastJobTitles.length > 0 ? 1 : 0) +
+    (filters.seniorityLevels.length > 0 ? 1 : 0) +
+    (filters.educationLevels.length > 0 ? 1 : 0) +
+    (isRangeFilterActive(filters.graduationYear) ? 1 : 0) +
+    (isRangeFilterActive(filters.yearsOfExperience) ? 1 : 0) +
     (filters.countries.length > 0 ? 1 : 0) +
     (filters.locations.length > 0 ? 1 : 0) +
     (filters.education.length > 0 ? 1 : 0) +
@@ -175,6 +255,104 @@ export function signalEducationLabels(signal: Signal): string[] {
 
 export function signalAssignedTo(signal: Signal): string {
   return signal.assignedInvestor ?? UNASSIGNED;
+}
+
+/** "—" is the placeholder company for a not-currently-employed signal (e.g. "Exploring") — not a real company. */
+export function signalCurrentCompanies(signal: Signal): string[] {
+  return signal.current.map((entry) => entry.company).filter((c) => c && c !== "—");
+}
+
+export function signalPastCompanies(signal: Signal): string[] {
+  return signal.past.map((entry) => entry.company).filter((c) => c && c !== "—");
+}
+
+export function signalCurrentTitles(signal: Signal): string[] {
+  return signal.current.map((entry) => entry.role).filter(Boolean);
+}
+
+export function signalPastTitles(signal: Signal): string[] {
+  return signal.past.map((entry) => entry.role).filter(Boolean);
+}
+
+/** Parsed from the "X yrs experience" fragment of contextLine — null when it can't be determined. */
+export function signalYearsExperience(signal: Signal): number | null {
+  const yearsText = signal.contextLine.split(" · ")[1];
+  if (!yearsText) return null;
+  const match = yearsText.match(/[\d.]+/);
+  return match ? parseFloat(match[0]) : null;
+}
+
+/** Keyword heuristic — there's no explicit seniority field, so this is inferred from the title text. */
+function classifySeniority(title: string): (typeof seniorityLevelOptions)[number] {
+  const t = title.toLowerCase();
+  if (/\b(founder|co-founder|ceo|cto|coo|cfo|chief|president)\b/.test(t)) return "Executive / Founder";
+  if (/\b(vp|vice president|director|head of|general partner)\b/.test(t)) return "VP / Director";
+  if (/\bmanager\b/.test(t)) return "Manager";
+  return "Individual Contributor";
+}
+
+/** Seniority levels seen across a signal's current + past titles combined. */
+export function signalSeniorityLevels(signal: Signal): string[] {
+  const titles = [...signalCurrentTitles(signal), ...signalPastTitles(signal)];
+  return [...new Set(titles.map(classifySeniority))];
+}
+
+/** Keyword heuristic over degree text/badge — there's no separate structured "level" field. */
+function classifyEducationLevel(text: string): (typeof educationLevelOptions)[number] {
+  const t = text.toLowerCase();
+  if (t.includes("phd") || t.includes("doctor")) return "PhD";
+  if (t.includes("master") || t.includes("mba")) return "Master's";
+  if (t.includes("bachelor") || /\bb\.?tech\b/.test(t) || /\bb\.?e\.?\b/.test(t) || t.includes("undergrad")) {
+    return "Bachelor's";
+  }
+  return "Other";
+}
+
+export function signalEducationLevels(signal: Signal): string[] {
+  if (signal.profile) {
+    return [...new Set(signal.profile.education.map((e) => classifyEducationLevel(e.badge ?? e.degree)))];
+  }
+  return [...new Set(signal.education.map((e) => classifyEducationLevel(e.role)))];
+}
+
+/** Most recent graduation year, parsed from a profile education entry's period (e.g. "Jan 2021 -
+ * Dec 2023" -> 2023). Only available for signals with a full profile — "Present" (still studying)
+ * and signals without profile/period data return null. */
+export function signalGraduationYear(signal: Signal): number | null {
+  if (!signal.profile) return null;
+  const years = signal.profile.education
+    .map((e) => e.period)
+    .filter((p): p is string => !!p && !p.includes("Present"))
+    .map((p) => {
+      const match = p.match(/\d{4}(?!.*\d{4})/);
+      return match ? parseInt(match[0], 10) : null;
+    })
+    .filter((y): y is number => y !== null);
+  return years.length ? Math.max(...years) : null;
+}
+
+function parseMetaNumber(companyMeta: string[] | undefined, prefix: string): number | null {
+  const entry = companyMeta?.find((m) => m.startsWith(prefix));
+  if (!entry) return null;
+  const digits = entry.replace(/[^0-9]/g, "");
+  return digits ? parseInt(digits, 10) : null;
+}
+
+/** Headcounts for a signal's companies (current + past), parsed from each rich-profile position's
+ * "Headcount: N" metadata — empty when the signal has no full profile or no headcount data. */
+export function signalCompanySizes(signal: Signal): number[] {
+  if (!signal.profile) return [];
+  return signal.profile.positions
+    .map((p) => parseMetaNumber(p.companyMeta, "Headcount:"))
+    .filter((n): n is number => n !== null);
+}
+
+/** Founding years for a signal's companies (current + past), parsed from "Founded: MMM YYYY" metadata. */
+export function signalCompanyFoundedYears(signal: Signal): number[] {
+  if (!signal.profile) return [];
+  return signal.profile.positions
+    .map((p) => parseMetaNumber(p.companyMeta, "Founded:"))
+    .filter((n): n is number => n !== null);
 }
 
 /** The mock data only carries relative labels ("Today"/"Yesterday"), so map them to real calendar dates. */
@@ -263,6 +441,56 @@ function matchesScore(score: number, filter: ScoreFilter): boolean {
   }
 }
 
+function matchesRangeValue(value: number, filter: RangeFilter): boolean {
+  switch (filter.operator) {
+    case null:
+      return true;
+    case "gte":
+      return filter.value === null || value >= filter.value;
+    case "lte":
+      return filter.value === null || value <= filter.value;
+    case "eq":
+      return filter.value === null || Math.abs(value - filter.value) < 0.05;
+    case "range":
+      return (
+        (filter.min === null || value >= filter.min) && (filter.max === null || value <= filter.max)
+      );
+  }
+}
+
+function matchesRange(value: number | null, filter: RangeFilter): boolean {
+  if (filter.operator === null) return true;
+  if (value === null) return false;
+  return matchesRangeValue(value, filter);
+}
+
+/** Like matchesRange, but for signals with multiple candidate values (e.g. several past companies'
+ * headcounts) — matches if any one of them satisfies the filter. */
+function matchesRangeAny(values: number[], filter: RangeFilter): boolean {
+  if (filter.operator === null) return true;
+  if (values.length === 0) return false;
+  return values.some((v) => matchesRangeValue(v, filter));
+}
+
+function matchesTextContains(signal: Signal, query: string): boolean {
+  if (!query.trim()) return true;
+  if (!signal.profile) return false;
+  const q = query.toLowerCase();
+  return signal.profile.positions.some((p) => p.description?.toLowerCase().includes(q));
+}
+
+/** Matches a scoped multi-select filter against a signal's current and/or past values, per its scope. */
+function matchesScopedList(filter: ScopedListFilter, currentValues: string[], pastValues: string[]): boolean {
+  if (filter.values.length === 0) return true;
+  const pool =
+    filter.scope === "current"
+      ? currentValues
+      : filter.scope === "past"
+        ? pastValues
+        : [...currentValues, ...pastValues];
+  return filter.values.some((v) => pool.includes(v));
+}
+
 export function signalMatchesFilters(signal: Signal, filters: SignalFilters): boolean {
   if (!matchesScore(signal.score, filters.score)) return false;
   if (!matchesAny(filters.signalTypes, signalTypeLabels(signal))) return false;
@@ -270,6 +498,20 @@ export function signalMatchesFilters(signal: Signal, filters: SignalFilters): bo
   if (!matchesAny(filters.countries, signalCountryLabels(signal))) return false;
   if (!matchesAny(filters.locations, [signalLocation(signal)])) return false;
   if (!matchesAny(filters.education, signalEducationLabels(signal))) return false;
+  if (
+    !matchesScopedList(filters.companies, signalCurrentCompanies(signal), signalPastCompanies(signal))
+  ) {
+    return false;
+  }
+  if (!matchesRangeAny(signalCompanySizes(signal), filters.companySize)) return false;
+  if (!matchesRangeAny(signalCompanyFoundedYears(signal), filters.companyFoundedYear)) return false;
+  if (!matchesTextContains(signal, filters.companyTagline)) return false;
+  if (!matchesAny(filters.currentJobTitles, signalCurrentTitles(signal))) return false;
+  if (!matchesAny(filters.pastJobTitles, signalPastTitles(signal))) return false;
+  if (!matchesAny(filters.seniorityLevels, signalSeniorityLevels(signal))) return false;
+  if (!matchesAny(filters.educationLevels, signalEducationLevels(signal))) return false;
+  if (!matchesRange(signalGraduationYear(signal), filters.graduationYear)) return false;
+  if (!matchesRange(signalYearsExperience(signal), filters.yearsOfExperience)) return false;
   if (filters.sources.length > 0) {
     const source = signalSource(signal);
     if (!source || !filters.sources.includes(source)) return false;
@@ -312,6 +554,9 @@ export function deriveFilterOptions(signals: Signal[]) {
   const sources = new Set<string>(coreSources);
   const statuses = new Set<string>();
   const assignedTo = new Set<string>();
+  const companies = new Set<string>();
+  const currentJobTitles = new Set<string>();
+  const pastJobTitles = new Set<string>();
 
   for (const signal of signals) {
     signalIndustryLabels(signal).forEach((v) => industries.add(v));
@@ -323,6 +568,10 @@ export function deriveFilterOptions(signals: Signal[]) {
     if (signal.sourcedBy) sources.add(signal.sourcedBy);
     statuses.add(signal.status);
     assignedTo.add(signalAssignedTo(signal));
+    signalCurrentCompanies(signal).forEach((v) => companies.add(v));
+    signalPastCompanies(signal).forEach((v) => companies.add(v));
+    signalCurrentTitles(signal).forEach((v) => currentJobTitles.add(v));
+    signalPastTitles(signal).forEach((v) => pastJobTitles.add(v));
   }
 
   return {
@@ -334,5 +583,8 @@ export function deriveFilterOptions(signals: Signal[]) {
     sources: [...sources].sort(),
     statuses: [...statuses].sort(),
     assignedTo: [...assignedTo].sort(),
+    companies: [...companies].sort(),
+    currentJobTitles: [...currentJobTitles].sort(),
+    pastJobTitles: [...pastJobTitles].sort(),
   };
 }

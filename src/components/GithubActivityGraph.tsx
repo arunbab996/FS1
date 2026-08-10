@@ -1,3 +1,4 @@
+import { ExternalLink, FolderGit2, Star, Users } from "lucide-react";
 import type { GithubStats } from "../types";
 import { GithubIcon } from "./icons/GithubIcon";
 
@@ -9,12 +10,49 @@ function levelClasses(count: number): string {
   return "bg-green-700 dark:bg-green-400";
 }
 
-function StatTile({ label, value }: { label: string; value: string | number }) {
+/** Approximate GitHub-linguist colors, for the small dot next to each language chip. */
+function languageColor(lang: string): string {
+  switch (lang) {
+    case "TypeScript":
+      return "#3178C6";
+    case "JavaScript":
+      return "#F1E05A";
+    case "Python":
+      return "#3572A5";
+    case "Rust":
+      return "#DEA584";
+    case "Haskell":
+      return "#5E5086";
+    case "Java":
+      return "#B07219";
+    case "SQL":
+      return "#E38C00";
+    case "C++":
+      return "#F34B7D";
+    case "CUDA":
+      return "#3A4E3A";
+    case "Jupyter Notebook":
+      return "#DA5B0B";
+    default:
+      return "#8B8B8B";
+  }
+}
+
+function StatTile({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: typeof Users;
+  label: string;
+  value: string | number;
+}) {
   return (
-    <div className="rounded-xl border border-gray-200 p-3 dark:border-neutral-700">
-      <p className="text-[11px] font-semibold tracking-wide text-gray-400 uppercase dark:text-neutral-500">
+    <div className="rounded-xl bg-gray-50 p-3 dark:bg-neutral-800/60">
+      <div className="flex items-center gap-1 text-[11px] font-semibold tracking-wide text-gray-400 uppercase dark:text-neutral-500">
+        <Icon className="h-3 w-3" />
         {label}
-      </p>
+      </div>
       <p className="mt-1 text-xl font-bold text-gray-900 dark:text-neutral-50">{value}</p>
     </div>
   );
@@ -43,10 +81,22 @@ export function GithubActivityGraph({
     weeks.push(week);
   }
 
+  const monthLabels: { weekIndex: number; label: string }[] = [];
+  let lastMonth = -1;
+  weeks.forEach((w, wi) => {
+    const firstReal = w.find((d) => d.count !== -1);
+    if (!firstReal) return;
+    const date = new Date(`${firstReal.date}T00:00:00`);
+    if (date.getMonth() !== lastMonth) {
+      monthLabels.push({ weekIndex: wi, label: date.toLocaleDateString("en-US", { month: "short" }) });
+      lastMonth = date.getMonth();
+    }
+  });
+
   const total = github.contributions.reduce((sum, d) => sum + d.count, 0);
 
   return (
-    <div>
+    <div className="rounded-xl border border-gray-200 p-4 dark:border-neutral-700">
       <div className="flex items-center justify-between">
         <a
           href={githubUrl}
@@ -54,32 +104,49 @@ export function GithubActivityGraph({
           rel="noreferrer"
           className="flex items-center gap-1.5 text-sm font-semibold text-gray-900 hover:underline dark:text-neutral-50"
         >
-          <GithubIcon className="h-4 w-4" />@{github.username}
+          <GithubIcon className="h-4 w-4" />
+          @{github.username}
+          <ExternalLink className="h-3 w-3 text-gray-400 dark:text-neutral-500" />
         </a>
         <p className="text-xs text-gray-400 dark:text-neutral-500">
-          {total} contributions in the past year
+          <span className="font-semibold text-gray-600 dark:text-neutral-300">{total}</span>{" "}
+          contributions in the past year
         </p>
       </div>
 
       <div className="mt-3 grid grid-cols-3 gap-3">
-        <StatTile label="Followers" value={github.followers} />
-        <StatTile label="Stars" value={github.stars} />
-        <StatTile label="Public repos" value={github.publicRepos} />
+        <StatTile icon={Users} label="Followers" value={github.followers} />
+        <StatTile icon={Star} label="Stars" value={github.stars} />
+        <StatTile icon={FolderGit2} label="Public repos" value={github.publicRepos} />
       </div>
 
-      <div className="mt-4 flex flex-wrap gap-1">
+      <div className="mt-4 flex flex-wrap gap-3">
         {github.topLanguages.map((lang) => (
           <span
             key={lang}
-            className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-600 dark:bg-neutral-800 dark:text-neutral-300"
+            className="flex items-center gap-1.5 text-xs font-medium text-gray-600 dark:text-neutral-300"
           >
+            <span
+              className="h-2 w-2 shrink-0 rounded-full"
+              style={{ backgroundColor: languageColor(lang) }}
+            />
             {lang}
           </span>
         ))}
       </div>
 
       <div className="mt-4 overflow-x-auto">
-        <div className="grid w-max grid-flow-col grid-rows-7 gap-[3px]">
+        <div className="flex gap-[3px]">
+          {weeks.map((_, wi) => (
+            <span
+              key={wi}
+              className="w-2.5 shrink-0 text-[10px] whitespace-nowrap text-gray-400 dark:text-neutral-500"
+            >
+              {monthLabels.find((m) => m.weekIndex === wi)?.label}
+            </span>
+          ))}
+        </div>
+        <div className="mt-1 grid w-max grid-flow-col grid-rows-7 gap-[3px]">
           {weeks.flat().map((day, i) =>
             day.count === -1 ? (
               <div key={i} className="h-2.5 w-2.5" />
