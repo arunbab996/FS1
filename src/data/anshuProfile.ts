@@ -129,6 +129,8 @@ export const anshuProfile: TalentProfile = {
       school: "Rajiv Gandhi Prodoyogiki Vishwavidyalaya, Bhopal",
       badge: "Bachelor Degree",
       degree: "Bachelor of Technology (B.Tech.)",
+      detail: "Foundational engineering degree ahead of a 19-year career spanning Microsoft, Amazon, and VMware.",
+      mock: true,
     },
     {
       school: "MIT Sloan School of Management",
@@ -140,6 +142,8 @@ export const anshuProfile: TalentProfile = {
       school: "Otto-von-Guericke University Magdeburg",
       badge: "Others",
       degree: "MS",
+      detail: "Technical master's degree completed prior to relocating for a US engineering-leadership career.",
+      mock: true,
     },
   ],
   pedigree: [

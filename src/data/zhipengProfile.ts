@@ -132,12 +132,16 @@ export const zhipengProfile: TalentProfile = {
       badge: "Bachelor Degree",
       degree: "Bachelor of Information Technology - Information System",
       period: "Jan 2019 - Jan 2020",
+      detail: "Second undergraduate degree, completed after transferring from Jinling Institute of Technology.",
+      mock: true,
     },
     {
       school: "Jinling Institute of Technology",
       badge: "Bachelor Degree",
       degree: "Bachelor of Engineering (BE) - Computer Software Engineering",
       period: "Jan 2016 - Jan 2020",
+      detail: "Started undergraduate studies in China before transferring to QUT to complete the degree.",
+      mock: true,
     },
   ],
   pedigree: [
@@ -152,6 +156,13 @@ export const zhipengProfile: TalentProfile = {
       label: "QUT PhD, supervised by A/Prof. Chun Ouyang, A/Prof. Catarina Moreira and Prof. Alistair Barros",
       detail: "Thesis: Building Robust Predictive Systems for Tabular Data — supervisor lineage in a well-regarded Australian applied-AI lab.",
       year: "2022–2026",
+    },
+    {
+      category: "publication",
+      label: "First-author preprint on tabular data robustness, arXiv",
+      detail: "Preprint drawn from his PhD thesis work — an early open research output ahead of peer-reviewed publication.",
+      year: "2025",
+      mock: true,
     },
   ],
   careerSignals: [

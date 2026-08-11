@@ -120,12 +120,16 @@ export const achintyaProfile: TalentProfile = {
       badge: "Master Degree",
       degree: "Master of Business Administration (MBA) - Marketing, Information and Technology Management",
       period: "Jan 2012 - Jan 2013",
+      detail: "Graduated in the top decile of the PGP Class of 2013 cohort.",
+      mock: true,
     },
     {
       school: "Indian Business School of Advanced Management Studies (IBSAMS)",
       badge: "Others",
       degree: "Marketing and Tech",
       period: "Apr 2012 - Mar 2013",
+      detail: "Parallel executive certification in applied marketing analytics, completed alongside the ISB PGP.",
+      mock: true,
     },
   ],
   pedigree: [
@@ -141,6 +145,13 @@ export const achintyaProfile: TalentProfile = {
       detail:
         "Book felicitated by the Director of IIT Delhi and Secretary of MHRD at its pan-India launch — a notable early academic credibility signal.",
       year: "2009",
+    },
+    {
+      category: "scholarship",
+      label: "Merit scholarship, IIT Delhi B.Tech admission",
+      detail: "Awarded on JEE Advanced rank; covered a portion of tuition for the first two years.",
+      year: "2004",
+      mock: true,
     },
   ],
   careerSignals: [

@@ -52,6 +52,8 @@ export interface ProfileEducationEntry {
   period?: string;
   /** GPA/honours, thesis, scholarship, or a country-specific admission stat (e.g. "JEE Advanced AIR 342"). */
   detail?: string;
+  /** Marks `detail` as inferred/enriched rather than sourced from the profile itself — shown with a mock-data highlight. */
+  mock?: boolean;
 }
 
 export interface GithubContributionDay {
@@ -98,10 +100,19 @@ export interface LinkedInActivityItem {
 
 /** Academic/competitive credentials that signal raw talent caliber (olympiads, scholarships, honours, etc.). */
 export interface PedigreeItem {
-  category: "school" | "honours" | "scholarship" | "olympiad" | "competitive-programming" | "hackathon";
+  category:
+    | "school"
+    | "honours"
+    | "scholarship"
+    | "olympiad"
+    | "competitive-programming"
+    | "hackathon"
+    | "publication";
   label: string;
   detail?: string;
   year?: string;
+  /** Marks this item as inferred/enriched rather than sourced from the profile itself — shown with a mock-data highlight. */
+  mock?: boolean;
 }
 
 /** Derived signals about career trajectory — employer quality, promotion pace, stealth/departure events. */
@@ -134,6 +145,8 @@ export interface RecognitionItem {
   detail?: string;
   date?: string;
   url?: string;
+  /** Marks this item as inferred/enriched rather than sourced from the profile itself — shown with a mock-data highlight. */
+  mock?: boolean;
 }
 
 export interface TalentProfile {

@@ -49,6 +49,11 @@ import {
   positionCategoryBarClasses,
   positionCategoryDotClasses,
 } from "../utils/positionCategory";
+import {
+  educationLevelOptions,
+  signalEducationLevels,
+  signalGraduationYear,
+} from "../utils/signalFilters";
 import { discoverySourceFor } from "../utils/sourcedVia";
 import { extractPersonName, stripMarkdown } from "../utils/text";
 import { formatTenureLabel } from "../utils/tenure";
@@ -183,6 +188,15 @@ function StatTile({ label, value }: { label: string; value: ReactNode }) {
   );
 }
 
+/** Flags a data point as inferred/enriched rather than sourced from the profile itself. */
+function MockBadge() {
+  return (
+    <span className="shrink-0 rounded-full bg-yellow-100 px-1.5 py-0.5 text-[10px] font-medium text-yellow-800 dark:bg-yellow-500/20 dark:text-yellow-400">
+      Mock data
+    </span>
+  );
+}
+
 function groupPositions(positions: ProfilePosition[]) {
   const groups: { company: string; meta?: string[]; positions: ProfilePosition[] }[] = [];
   for (const pos of positions) {
@@ -303,6 +317,8 @@ function pedigreeIcon(category: PedigreeItem["category"]) {
       return Code2;
     case "hackathon":
       return Rocket;
+    case "publication":
+      return FileText;
   }
 }
 
@@ -617,7 +633,7 @@ export function ProfileDrawer({
                   <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                     <StatTile label="Years experience" value={yearsText?.replace(" yrs experience", "") ?? "—"} />
                     <StatTile label="Roles held" value={profile.rolesHeld} />
-                    <StatTile label="Avg tenure" value={`${profile.avgTenureMonths}mo`} />
+                    <StatTile label="Avg tenure" value={formatTenureLabel(profile.avgTenureMonths)} />
                     <StatTile label="Followers" value={profile.followers ?? "—"} />
                   </div>
                 )}
@@ -859,10 +875,10 @@ export function ProfileDrawer({
                 )}
 
                 <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
-                  <StatTile label="Total" value={`${profile.insights.totalMonths}mo`} />
-                  <StatTile label="Average" value={`${profile.insights.avgMonths}mo`} />
-                  <StatTile label="Longest" value={`${profile.insights.longestMonths}mo`} />
-                  <StatTile label="Shortest" value={`${profile.insights.shortestMonths}mo`} />
+                  <StatTile label="Total" value={formatTenureLabel(profile.insights.totalMonths)} />
+                  <StatTile label="Average" value={formatTenureLabel(profile.insights.avgMonths)} />
+                  <StatTile label="Longest" value={formatTenureLabel(profile.insights.longestMonths)} />
+                  <StatTile label="Shortest" value={formatTenureLabel(profile.insights.shortestMonths)} />
                   <StatTile label="Roles" value={profile.insights.roles} />
                   <StatTile label="Companies" value={profile.insights.companies} />
                 </div>
@@ -946,15 +962,39 @@ export function ProfileDrawer({
 
             {tab === "education" && (
               <div className="flex flex-col gap-3">
+                {profile && profile.education.length > 0 && (() => {
+                  const levels = signalEducationLevels(signal);
+                  const highestLevel = educationLevelOptions.find((level) => levels.includes(level));
+                  const gradYear = signalGraduationYear(signal);
+                  if (!highestLevel && !gradYear) return null;
+                  return (
+                    <div className="flex flex-wrap gap-2">
+                      {highestLevel && (
+                        <span className="flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 dark:bg-blue-500/15 dark:text-blue-400">
+                          <GraduationCap className="h-3.5 w-3.5" />
+                          {highestLevel}
+                        </span>
+                      )}
+                      {gradYear && (
+                        <span className="rounded-full border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-500 dark:border-neutral-700 dark:text-neutral-400">
+                          Graduated {gradYear}
+                        </span>
+                      )}
+                    </div>
+                  );
+                })()}
+
                 {profile
                   ? profile.education.map((edu, i) => (
                       <div
                         key={i}
                         className="flex items-start gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700"
                       >
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10">
-                          <GraduationCap className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                        </div>
+                        <img
+                          src={companyLogoUrl(edu.school)}
+                          alt=""
+                          className="h-10 w-10 shrink-0 rounded-lg object-cover"
+                        />
                         <div>
                           <div className="flex items-center gap-2">
                             <p className="text-sm font-bold text-gray-900 dark:text-neutral-50">
@@ -975,8 +1015,15 @@ export function ProfileDrawer({
                             </p>
                           )}
                           {edu.detail && (
-                            <p className="mt-1 text-xs text-gray-500 dark:text-neutral-400">
-                              {edu.detail}
+                            <p
+                              className={`mt-1 flex items-start gap-1.5 text-xs ${
+                                edu.mock
+                                  ? "rounded-md bg-yellow-50 px-1.5 py-1 text-yellow-800 dark:bg-yellow-500/10 dark:text-yellow-300"
+                                  : "text-gray-500 dark:text-neutral-400"
+                              }`}
+                            >
+                              <span>{edu.detail}</span>
+                              {edu.mock && <MockBadge />}
                             </p>
                           )}
                         </div>
@@ -1015,7 +1062,11 @@ export function ProfileDrawer({
                         return (
                           <div
                             key={i}
-                            className="flex gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700"
+                            className={`flex gap-3 rounded-xl border p-3 ${
+                              item.mock
+                                ? "border-yellow-200 bg-yellow-50/60 dark:border-yellow-900/40 dark:bg-yellow-500/5"
+                                : "border-gray-200 dark:border-neutral-700"
+                            }`}
                           >
                             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-50 dark:bg-amber-500/10">
                               <Icon className="h-4 w-4 text-amber-600 dark:text-amber-400" />
@@ -1025,11 +1076,14 @@ export function ProfileDrawer({
                                 <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
                                   {item.label}
                                 </p>
-                                {item.year && (
-                                  <span className="shrink-0 text-xs text-gray-400 dark:text-neutral-500">
-                                    {item.year}
-                                  </span>
-                                )}
+                                <div className="flex shrink-0 items-center gap-1.5">
+                                  {item.mock && <MockBadge />}
+                                  {item.year && (
+                                    <span className="text-xs text-gray-400 dark:text-neutral-500">
+                                      {item.year}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                               {item.detail && (
                                 <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">
@@ -1119,7 +1173,11 @@ export function ProfileDrawer({
                         return (
                           <div
                             key={i}
-                            className="flex gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700"
+                            className={`flex gap-3 rounded-xl border p-3 ${
+                              item.mock
+                                ? "border-yellow-200 bg-yellow-50/60 dark:border-yellow-900/40 dark:bg-yellow-500/5"
+                                : "border-gray-200 dark:border-neutral-700"
+                            }`}
                           >
                             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-50 dark:bg-violet-500/10">
                               <Icon className="h-4 w-4 text-violet-600 dark:text-violet-400" />
@@ -1129,11 +1187,14 @@ export function ProfileDrawer({
                                 <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
                                   {item.label}
                                 </p>
-                                {item.date && (
-                                  <span className="shrink-0 text-xs text-gray-400 dark:text-neutral-500">
-                                    {item.date}
-                                  </span>
-                                )}
+                                <div className="flex shrink-0 items-center gap-1.5">
+                                  {item.mock && <MockBadge />}
+                                  {item.date && (
+                                    <span className="text-xs text-gray-400 dark:text-neutral-500">
+                                      {item.date}
+                                    </span>
+                                  )}
+                                </div>
                               </div>
                               {item.detail && (
                                 <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">

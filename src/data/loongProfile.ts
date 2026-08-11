@@ -103,6 +103,13 @@ export const loongProfile: TalentProfile = {
       detail:
         "Honours-level computer science research degree — combined coursework with an academic research thesis before entering industry.",
     },
+    {
+      category: "publication",
+      label: "Honours thesis on distributed systems, ANU",
+      detail: "Research output from the ANU Honours program — the technical foundation underneath three deep-tech companies since.",
+      year: "2015",
+      mock: true,
+    },
   ],
   careerSignals: [
     {

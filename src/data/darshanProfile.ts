@@ -125,6 +125,13 @@ export const darshanProfile: TalentProfile = {
       detail: "Built an AI-assisted code review tool that won Best Technical Execution.",
       year: "2023",
     },
+    {
+      category: "school",
+      label: "ATAR 98.5, ahead of UNSW Biotechnology admission",
+      detail: "Top ~1.5% of the NSW HSC cohort — strong academic baseline underneath the self-taught coding track record.",
+      year: "2020",
+      mock: true,
+    },
   ],
   careerSignals: [
     {
@@ -152,6 +159,15 @@ export const darshanProfile: TalentProfile = {
       label: "Blackbird Giants, Cohort 11",
       detail:
         "Selected into Blackbird Ventures' pre-seed accelerator for early-stage Australian founders — one of ~12 teams in the cohort.",
+    },
+  ],
+  recognition: [
+    {
+      kind: "list",
+      label: "Named in Blackbird's \"Giants C11 founders to watch\" cohort wrap-up",
+      detail: "Cohort highlight feature published alongside the Giants C11 program announcement.",
+      date: "Mar 2026",
+      mock: true,
     },
   ],
   linkedinActivity: [

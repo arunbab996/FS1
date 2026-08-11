@@ -294,12 +294,16 @@ export const skyProfile: TalentProfile = {
       badge: "Others",
       degree: "Non-degree program",
       period: "Jan 2019 - Feb 2019",
+      detail: "Short professional certificate program, outside a formal degree pathway.",
+      mock: true,
     },
     {
       school: "Republic Polytechnic",
       badge: "Others",
       degree: "Diploma of Education",
       period: "Jan 2016 - Jan 2019",
+      detail: "Diploma-level qualification predating his shift into full-time content creation and Web3 building.",
+      mock: true,
     },
   ],
   careerSignals: [

@@ -86,12 +86,34 @@ export const paulynProfile: TalentProfile = {
       badge: "Master Degree",
       degree: "Master's Degree - Information Technology, Major in Business Information Systems",
       period: "Jan 2015 - Jan 2017",
+      detail: "Completed part-time while working full-time in early QA/support roles.",
+      mock: true,
     },
     {
       school: "De La Salle University",
       badge: "Bachelor Degree",
       degree: "Bachelor's Degree - Philosophy",
       period: "Jan 2008 - Jan 2013",
+      detail: "Unconventional route into software testing — analytical/critical-reasoning training predates any technical degree.",
+      mock: true,
+    },
+  ],
+  pedigree: [
+    {
+      category: "school",
+      label: "De La Salle University, Manila",
+      detail: "Admitted via DLSU's competitive entrance exam (DLSUCET) — one of the Philippines' top private universities.",
+      year: "2008",
+      mock: true,
+    },
+  ],
+  recognition: [
+    {
+      kind: "speaking",
+      label: "Panelist, Sydney QA & Test Automation Meetup",
+      detail: "Spoke about balancing manual and automated testing across the airline and fintech domains.",
+      date: "2024",
+      mock: true,
     },
   ],
   careerSignals: [
