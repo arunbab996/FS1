@@ -175,8 +175,10 @@ export interface SignalFilters {
   seniorityLevel: string | null;
   educationLevels: string[];
   fieldOfStudy: string;
+  technical: "technical" | "non-technical" | null;
   graduationYear: RangeFilter;
   yearsOfExperience: RangeFilter;
+  age: RangeFilter;
   score: ScoreFilter;
   statuses: string[];
   assignedTo: string[];
@@ -206,8 +208,10 @@ export const emptyFilters: SignalFilters = {
   seniorityLevel: null,
   educationLevels: [],
   fieldOfStudy: "",
+  technical: null,
   graduationYear: emptyRangeFilter,
   yearsOfExperience: emptyRangeFilter,
+  age: emptyRangeFilter,
   score: emptyScoreFilter,
   statuses: [],
   assignedTo: [],
@@ -229,8 +233,10 @@ export function activeFilterCount(filters: SignalFilters): number {
     (filters.seniorityLevel !== null ? 1 : 0) +
     (filters.educationLevels.length > 0 ? 1 : 0) +
     (filters.fieldOfStudy.trim().length > 0 ? 1 : 0) +
+    (filters.technical !== null ? 1 : 0) +
     (isRangeFilterActive(filters.graduationYear) ? 1 : 0) +
     (isRangeFilterActive(filters.yearsOfExperience) ? 1 : 0) +
+    (isRangeFilterActive(filters.age) ? 1 : 0) +
     (filters.countries.length > 0 ? 1 : 0) +
     (filters.locations.length > 0 ? 1 : 0) +
     (filters.education.length > 0 ? 1 : 0) +
@@ -313,7 +319,7 @@ export function signalSeniorityLevels(signal: Signal): string[] {
 }
 
 /** Keyword heuristic over degree text/badge — there's no separate structured "level" field. */
-function classifyEducationLevel(text: string): (typeof educationLevelOptions)[number] {
+export function classifyEducationLevel(text: string): (typeof educationLevelOptions)[number] {
   const t = text.toLowerCase();
   if (t.includes("phd") || t.includes("doctor")) return "PhD";
   if (t.includes("master") || t.includes("mba")) return "Master's";
@@ -330,6 +336,20 @@ export function signalEducationLevels(signal: Signal): string[] {
   return [...new Set(signal.education.map((e) => classifyEducationLevel(e.role)))];
 }
 
+const technicalDegreeKeywords =
+  /computer science|software engineering|computer engineering|information technology|informatics|comp sci|electrical engineering|data science|\bcs\b/;
+
+/** Keyword heuristic over degree text — true if any degree looks CompSci-adjacent. This is the whole
+ * "technical" rule for now: no separate structured field for it. */
+export function signalIsTechnical(signal: Signal): boolean {
+  if (signal.profile) {
+    return signal.profile.education.some(
+      (e) => technicalDegreeKeywords.test(e.degree.toLowerCase()) || (e.badge ? technicalDegreeKeywords.test(e.badge.toLowerCase()) : false),
+    );
+  }
+  return signal.education.some((e) => technicalDegreeKeywords.test(e.role.toLowerCase()));
+}
+
 /** Most recent graduation year, parsed from a profile education entry's period (e.g. "Jan 2021 -
  * Dec 2023" -> 2023). Only available for signals with a full profile — "Present" (still studying)
  * and signals without profile/period data return null. */
@@ -344,6 +364,23 @@ export function signalGraduationYear(signal: Signal): number | null {
     })
     .filter((y): y is number => y !== null);
   return years.length ? Math.max(...years) : null;
+}
+
+const currentYear = 2026;
+
+/** Rough estimated age from a completed degree's graduation year, assuming a typical graduation age
+ * of 22 — prefers the Bachelor's entry (most reliable anchor), else falls back to the earliest
+ * completed degree. An estimate, not a real age; only available for signals with a full profile and
+ * at least one completed (non-"Present") education entry. */
+export function signalEstimatedAge(signal: Signal): number | null {
+  if (!signal.profile) return null;
+  const completed = signal.profile.education.filter((e) => e.period && !e.period.includes("Present"));
+  if (completed.length === 0) return null;
+  const bachelors = completed.find((e) => classifyEducationLevel(e.badge ?? e.degree) === "Bachelor's");
+  const reference = bachelors ?? completed[completed.length - 1];
+  const match = reference.period!.match(/\d{4}(?!.*\d{4})/);
+  if (!match) return null;
+  return currentYear - parseInt(match[0], 10) + 22;
 }
 
 function parseMetaNumber(companyMeta: string[] | undefined, prefix: string): number | null {
@@ -544,8 +581,12 @@ export function signalMatchesFilters(signal: Signal, filters: SignalFilters): bo
   }
   if (!matchesAny(filters.educationLevels, signalEducationLevels(signal))) return false;
   if (!matchesFieldOfStudy(signal, filters.fieldOfStudy)) return false;
+  if (filters.technical !== null && signalIsTechnical(signal) !== (filters.technical === "technical")) {
+    return false;
+  }
   if (!matchesRange(signalGraduationYear(signal), filters.graduationYear)) return false;
   if (!matchesRange(signalYearsExperience(signal), filters.yearsOfExperience)) return false;
+  if (!matchesRange(signalEstimatedAge(signal), filters.age)) return false;
   if (filters.sources.length > 0) {
     const source = signalSource(signal);
     if (!source || !filters.sources.includes(source)) return false;

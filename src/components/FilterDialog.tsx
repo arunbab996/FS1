@@ -109,7 +109,8 @@ function categoryCount(id: CategoryId, filters: SignalFilters): number {
       filters.currentJobTitles.length +
       filters.pastJobTitles.length +
       (filters.seniorityLevel !== null ? 1 : 0) +
-      (isRangeFilterActive(filters.yearsOfExperience) ? 1 : 0)
+      (isRangeFilterActive(filters.yearsOfExperience) ? 1 : 0) +
+      (isRangeFilterActive(filters.age) ? 1 : 0)
     );
   }
   if (id === "education") {
@@ -117,6 +118,7 @@ function categoryCount(id: CategoryId, filters: SignalFilters): number {
       filters.education.length +
       filters.educationLevels.length +
       (filters.fieldOfStudy.trim().length > 0 ? 1 : 0) +
+      (filters.technical !== null ? 1 : 0) +
       (isRangeFilterActive(filters.graduationYear) ? 1 : 0)
     );
   }
@@ -635,9 +637,9 @@ export function FilterDialog({
             {activeCategory === "countries" && renderOptionList("countries", options.countries)}
             {activeCategory === "locations" && renderOptionList("locations", options.locations)}
             {activeCategory === "education" && (
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-2">
                 <div>
-                  <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     School
                   </span>
                   <SearchSelect
@@ -648,8 +650,8 @@ export function FilterDialog({
                   />
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
-                  <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Education level
                   </span>
                   <ChipMultiSelect
@@ -659,8 +661,28 @@ export function FilterDialog({
                   />
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
-                  <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                    Technical
+                  </span>
+                  <select
+                    value={draft.technical ?? "any"}
+                    onChange={(e) =>
+                      setDraft({
+                        ...draft,
+                        technical: e.target.value === "any" ? null : (e.target.value as "technical" | "non-technical"),
+                      })
+                    }
+                    className="cursor-pointer rounded-full border border-gray-200 bg-white py-2 pr-8 pl-3.5 text-sm text-gray-700 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+                  >
+                    <option value="any">All</option>
+                    <option value="technical">Technical</option>
+                    <option value="non-technical">Non-technical</option>
+                  </select>
+                </div>
+
+                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Field of study
                   </span>
                   <input
@@ -672,8 +694,8 @@ export function FilterDialog({
                   />
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
-                  <span className="mb-3 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Graduation year
                   </span>
                   <RangePanel
@@ -834,6 +856,21 @@ export function FilterDialog({
                     step={0.5}
                     anyLabel="All"
                     valueLabel="Years"
+                  />
+                </div>
+
+                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
+                  <span className="mb-3 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                    Age
+                  </span>
+                  <RangePanel
+                    filter={draft.age}
+                    onChange={(age) => setDraft({ ...draft, age })}
+                    min={18}
+                    max={70}
+                    step={1}
+                    anyLabel="All"
+                    valueLabel="Age"
                   />
                 </div>
               </div>
