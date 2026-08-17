@@ -407,16 +407,12 @@ export function TopBar({
           <button
             type="button"
             onClick={() => setDialogOpen(true)}
-            className={`flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border px-3 py-1 text-sm font-medium transition-colors ${
-              count > 0
-                ? "border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 dark:border-blue-500/30 dark:bg-blue-500/15 dark:text-blue-300 dark:hover:bg-blue-500/25"
-                : "border-gray-200 bg-white text-gray-700 hover:bg-gray-50 dark:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
-            }`}
+            className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg border border-transparent bg-[linear-gradient(90deg,#ef4444,#f97316,#eab308,#22c55e,#3b82f6,#8b5cf6,#ec4899)] px-3 py-1 text-sm font-medium text-white shadow-sm transition-opacity hover:opacity-90"
           >
             <ListFilter className="h-3.5 w-3.5" />
             Filters
             {count > 0 && (
-              <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-blue-600 px-1 text-[11px] font-semibold text-white dark:bg-blue-500">
+              <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-white/90 px-1 text-[11px] font-semibold text-gray-900">
                 {count}
               </span>
             )}
