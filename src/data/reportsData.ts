@@ -27,9 +27,9 @@ export const REPORT_CHANNELS: { id: ReportChannel; label: string }[] = [
   { id: "yc", label: "YC" },
   { id: "ph", label: "Product Hunt" },
   { id: "pl", label: "Peerlist" },
-  { id: "fp", label: "FP" },
-  { id: "bl", label: "BL" },
-  { id: "hn", label: "HN" },
+  { id: "fp", label: "Futurepedia" },
+  { id: "bl", label: "Beta List" },
+  { id: "hn", label: "Hacker News" },
 ];
 
 export type TimeRange = "week" | "month" | "quarter" | "year";
@@ -226,10 +226,7 @@ export const userActivityAnnualStats: UserActivityAnnual[] = [
   { user: "Raynard Lao", reviewed: 1620, shortlisted: 204, callsSetUp: 48 },
   { user: "Hongfei Xia", reviewed: 1240, shortlisted: 158, callsSetUp: 37 },
   { user: "Roy Ong", reviewed: 980, shortlisted: 112, callsSetUp: 26 },
-  { user: "Jonathan Hodson", reviewed: 560, shortlisted: 64, callsSetUp: 15 },
   { user: "Alex Rankin", reviewed: 340, shortlisted: 38, callsSetUp: 9 },
-  { user: "Benjamin Dunphy", reviewed: 420, shortlisted: 47, callsSetUp: 11 },
-  { user: "David Bridge", reviewed: 275, shortlisted: 29, callsSetUp: 6 },
 ];
 
 /** A lead an analyst reached out to, or a call set up with — sampled from real signal data for authenticity. */
