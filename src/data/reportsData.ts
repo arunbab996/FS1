@@ -57,7 +57,7 @@ export interface ChannelCount {
 
 /**
  * How much raw data a channel needs to review before one signal is worth pushing to the
- * platform. Curated/referral channels (Strategy, YC, PH…) are near-1:1 — someone already
+ * platform. Curated/referral channels (Strategy, YC, PH…) are near-1:1 since someone already
  * vetted the lead. Broad automated scrapes (LinkedIn, Twitter, OSS, EV) review a lot of noise
  * for every signal that clears the bar.
  */
@@ -82,7 +82,7 @@ export interface CountryAnnualStats {
   founderMeetingRate: number;
 }
 
-// Annualized base figures — deliberately mirrors the lopsided real-world shape Alex flagged:
+// Annualized base figures, deliberately mirroring the lopsided real-world shape Alex flagged:
 // the US/India/Australia dominate volume, while SE Asia markets like Thailand/Vietnam/Philippines
 // are thin enough that it's genuinely unclear whether that's low activity or thin coverage.
 export const countryAnnualStats: CountryAnnualStats[] = [
@@ -222,14 +222,14 @@ export interface UserActivityAnnual {
 }
 
 export const userActivityAnnualStats: UserActivityAnnual[] = [
+  { user: "Alex Rankin", reviewed: 1980, shortlisted: 234, callsSetUp: 58 },
   { user: "Joshua Lim", reviewed: 1840, shortlisted: 216, callsSetUp: 54 },
   { user: "Raynard Lao", reviewed: 1620, shortlisted: 204, callsSetUp: 48 },
   { user: "Hongfei Xia", reviewed: 1240, shortlisted: 158, callsSetUp: 37 },
   { user: "Roy Ong", reviewed: 980, shortlisted: 112, callsSetUp: 26 },
-  { user: "Alex Rankin", reviewed: 340, shortlisted: 38, callsSetUp: 9 },
 ];
 
-/** A lead an analyst reached out to, or a call set up with — sampled from real signal data for authenticity. */
+/** A lead an analyst reached out to, or a call set up with, sampled from real signal data for authenticity. */
 export interface ActivityLead {
   person: string;
   company: string;

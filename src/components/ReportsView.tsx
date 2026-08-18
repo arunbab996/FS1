@@ -185,11 +185,11 @@ interface HeatSelection {
 /**
  * Interactive country × channel heatmap of the signal-to-noise ratio (signals pushed to the
  * platform ÷ total data reviewed). Hover for a quick peek, click a tile to pin the full
- * plain-language breakdown in the side panel — built for a non-technical reader, not just analysts.
+ * plain-language breakdown in the side panel, built for a non-technical reader, not just analysts.
  */
 function SignalQualityHeatmap({ rows }: { rows: CountryRangeStats[] }) {
   const [selected, setSelected] = useState<HeatSelection | null>(null);
-  // Show every channel, even ones with no data at all for the current range/filters — a
+  // Show every channel, even ones with no data at all for the current range/filters. A
   // missing column reads as "this source doesn't exist," a blank one reads as "no data yet."
   const sorted = [...rows].sort((a, b) => b.totalSourced - a.totalSourced);
 
@@ -303,7 +303,7 @@ function SignalQualityHeatmap({ rows }: { rows: CountryRangeStats[] }) {
                     {REPORT_CHANNELS.find((c) => c.id === selected.channel)?.label}
                   </strong>{" "}
                   pushed <strong>{selected.pushed.toLocaleString()}</strong> signals to the platform out of{" "}
-                  <strong>{selected.reviewed.toLocaleString()}</strong> reviewed — a{" "}
+                  <strong>{selected.reviewed.toLocaleString()}</strong> reviewed, a{" "}
                   <strong>{selected.rate}%</strong> signal-to-noise ratio
                   {selected.rate >= 45
                     ? ", one of the cleaner channels for this market."
@@ -431,7 +431,7 @@ function SignalByCountryTable({ rows }: { rows: CountryRangeStats[] }) {
   );
 }
 
-/** One connected pipeline instead of three look-alike tiles — each stage flows into the next with its conversion rate off the previous stage. */
+/** One connected pipeline instead of three look-alike tiles: each stage flows into the next with its conversion rate off the previous stage. */
 function FunnelSummaryStrip({
   reviewed,
   shortlisted,
@@ -796,12 +796,12 @@ export function ReportsView() {
                 <TrendingUp className="mt-0.5 h-4 w-4 shrink-0" />
                 <p>
                   <strong>{topCountry.country}</strong> accounts for <strong>{topShare}%</strong> of all signals
-                  sourced {rangeLabel} — the highest of any market.
+                  sourced {rangeLabel}, the highest of any market.
                   {gaps.length > 0 && (
                     <>
                       {" "}
                       Meanwhile <strong>{gaps.map((g) => g.country).join(", ")}</strong>{" "}
-                      {gaps.length === 1 ? "shows" : "show"} unusually low volume — that could mean genuinely few
+                      {gaps.length === 1 ? "shows" : "show"} unusually low volume, which could mean genuinely few
                       signals there, or thin channel coverage worth double-checking.
                     </>
                   )}

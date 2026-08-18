@@ -156,7 +156,7 @@ export function AnalystProfileDrawer({
 
             <div className="flex-1 overflow-y-auto p-5">
               <p className="mb-3 text-xs text-gray-400 dark:text-neutral-600">
-                A recent sample — not the full {stats.reviewed.toLocaleString()}-signal list.
+                A recent sample, not the full {stats.reviewed.toLocaleString()}-signal list.
               </p>
               <div className="flex flex-col gap-6">
                 <Section
@@ -186,7 +186,7 @@ export function AnalystProfileDrawer({
             <div className="shrink-0 border-t border-gray-200 px-5 py-3 dark:border-neutral-700">
               <p className="flex items-center gap-1.5 text-xs text-gray-400 dark:text-neutral-600">
                 <Briefcase className="h-3.5 w-3.5" />
-                Mock activity for illustration — not yet wired to real per-analyst tracking.
+                Mock activity for illustration, not yet wired to real per-analyst tracking.
               </p>
             </div>
           </div>
