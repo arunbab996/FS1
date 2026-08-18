@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { FooterBar } from "./components/FooterBar";
 import { InboxView } from "./components/InboxView";
+import { ReportsView } from "./components/ReportsView";
 import { Sidebar } from "./components/Sidebar";
 import { SignalTable } from "./components/SignalTable";
 import { SignalTile } from "./components/SignalTile";
@@ -94,6 +95,8 @@ function App() {
               onReviewSavedSearch={handleReviewSavedSearch}
               onGoToEquitySignals={() => setActiveView("equity-signals")}
             />
+          ) : activeView === "reports" ? (
+            <ReportsView />
           ) : (
             <>
               <TopBar
@@ -144,7 +147,7 @@ function App() {
             </>
           )}
 
-          <FooterBar />
+          {activeView !== "reports" && <FooterBar />}
         </div>
       </div>
     </div>

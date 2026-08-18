@@ -18,7 +18,7 @@ import {
   Crosshair,
 } from "lucide-react";
 
-export type NavView = "equity-signals" | "inbox";
+export type NavView = "equity-signals" | "inbox" | "reports";
 
 export interface NavItem {
   label: string;
@@ -43,7 +43,7 @@ export const navItems: NavItem[] = [
   { label: "Traction", icon: TrendingUp },
   { label: "Scout", icon: Telescope, badge: "99+" },
   { label: "Watcher", icon: Eye },
-  { label: "Reports", icon: FileText },
+  { label: "Reports", icon: FileText, view: "reports" },
   { label: "FAQ", icon: HelpCircle },
   { label: "Crosshair", icon: Crosshair },
 ];
