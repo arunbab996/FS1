@@ -40,8 +40,8 @@ const REPORT_TABS: { id: ReportTab; label: string }[] = [
 ];
 
 const SUB_TABS: { id: SubTab; label: string }[] = [
-  { id: "country", label: "Signal By Country" },
-  { id: "source-country", label: "Source by Country" },
+  { id: "country", label: "Signal Source by Country" },
+  { id: "source-country", label: "Funnel by Country" },
 ];
 
 function pct(numerator: number, denominator: number): number {
@@ -175,8 +175,8 @@ function heatColor(rate: number): string {
 const HEAT_GRADIENT = `linear-gradient(90deg, ${heatColor(0)}, ${heatColor(50)}, ${heatColor(100)})`;
 
 interface HeatSelection {
-  country: string;
-  channel: ReportChannel;
+  id: string;
+  label: string;
   pushed: number;
   reviewed: number;
   rate: number;
@@ -187,15 +187,77 @@ interface HeatSelection {
  * platform ÷ total data reviewed). Hover for a quick peek, click a tile to pin the full
  * plain-language breakdown in the side panel, built for a non-technical reader, not just analysts.
  */
+/** A single heatmap tile — shared by the per-country/channel grid and the Total row/column so both look and behave the same way. */
+function HeatCell({
+  pushed,
+  reviewed,
+  label,
+  highlight = false,
+  isSelected = false,
+  onClick,
+}: {
+  pushed: number;
+  reviewed: number;
+  label: string;
+  highlight?: boolean;
+  isSelected?: boolean;
+  onClick?: () => void;
+}) {
+  const hasData = reviewed > 0;
+  const rate = hasData ? Math.round((pushed / reviewed) * 1000) / 10 : 0;
+  const ring = isSelected
+    ? "ring-2 ring-offset-1 ring-gray-900 dark:ring-neutral-50 dark:ring-offset-neutral-900"
+    : highlight
+      ? "ring-2 ring-offset-1 ring-indigo-500 dark:ring-indigo-400 dark:ring-offset-neutral-900"
+      : "";
+
+  const tile = (
+    <button
+      type="button"
+      disabled={!hasData || !onClick}
+      onClick={onClick}
+      style={hasData ? { backgroundColor: heatColor(rate) } : undefined}
+      className={`flex h-11 w-11 items-center justify-center rounded-lg text-xs font-semibold transition-transform ${
+        hasData
+          ? `text-white ${onClick ? "cursor-pointer hover:scale-110" : ""}`
+          : "cursor-default border border-dashed border-gray-200 bg-gray-50 text-gray-300 dark:border-neutral-700 dark:bg-neutral-800/40 dark:text-neutral-600"
+      } ${ring}`}
+    >
+      {hasData ? `${Math.round(rate)}` : ""}
+    </button>
+  );
+
+  if (!hasData) return tile;
+
+  return (
+    <HoverPopup
+      variant="card"
+      width={200}
+      trigger={tile}
+      content={
+        <div className="text-xs">
+          <p className="font-semibold text-gray-900 dark:text-neutral-50">{label}</p>
+          <p className="mt-1 text-gray-500 dark:text-neutral-400">
+            {pushed.toLocaleString()} pushed / {reviewed.toLocaleString()} reviewed
+          </p>
+          <p className="mt-0.5 font-semibold" style={{ color: heatColor(rate) }}>
+            {rate}% signal
+          </p>
+        </div>
+      }
+    />
+  );
+}
+
 function SignalQualityHeatmap({ rows }: { rows: CountryRangeStats[] }) {
   const [selected, setSelected] = useState<HeatSelection | null>(null);
   // Show every channel, even ones with no data at all for the current range/filters. A
   // missing column reads as "this source doesn't exist," a blank one reads as "no data yet."
   const sorted = [...rows].sort((a, b) => b.totalSourced - a.totalSourced);
 
-  function select(country: string, channel: ReportChannel, pushed: number, reviewed: number) {
+  function select(id: string, label: string, pushed: number, reviewed: number) {
     const rate = reviewed > 0 ? Math.round((pushed / reviewed) * 1000) / 10 : 0;
-    setSelected({ country, channel, pushed, reviewed, rate });
+    setSelected({ id, label, pushed, reviewed, rate });
   }
 
   return (
@@ -219,65 +281,122 @@ function SignalQualityHeatmap({ rows }: { rows: CountryRangeStats[] }) {
                     </div>
                   </th>
                 ))}
+                <th className="w-11 rounded-t-lg bg-indigo-50/70 pb-1.5 dark:bg-indigo-500/10">
+                  <div className="mx-auto flex h-7 w-11 items-center justify-center text-[10px] font-semibold tracking-wide text-indigo-600 uppercase dark:text-indigo-400">
+                    Total
+                  </div>
+                </th>
               </tr>
             </thead>
             <tbody>
-              {sorted.map((row) => (
-                <tr key={row.country}>
-                  <td className="sticky left-0 bg-white pr-2 text-right text-xs font-medium whitespace-nowrap text-gray-700 dark:bg-neutral-900 dark:text-neutral-200">
-                    <span className="inline-flex items-center gap-1.5">
-                      {countryFlag(row.country)} {row.country}
-                    </span>
-                  </td>
-                  {REPORT_CHANNELS.map((c) => {
+              {sorted.map((row) => {
+                const rowTotal = REPORT_CHANNELS.reduce(
+                  (acc, c) => {
                     const cell = row.review[c.id];
-                    const hasData = (cell?.reviewed ?? 0) > 0;
-                    const rate = hasData ? Math.round((cell!.pushed / cell!.reviewed) * 1000) / 10 : 0;
-                    const isSelected = selected?.country === row.country && selected.channel === c.id;
-                    const tile = (
-                      <button
-                        type="button"
-                        disabled={!hasData}
-                        onClick={() => hasData && select(row.country, c.id, cell!.pushed, cell!.reviewed)}
-                        style={hasData ? { backgroundColor: heatColor(rate) } : undefined}
-                        className={`flex h-11 w-11 items-center justify-center rounded-lg text-xs font-semibold transition-transform ${
-                          hasData
-                            ? "text-white cursor-pointer hover:scale-110"
-                            : "cursor-default border border-dashed border-gray-200 bg-gray-50 text-gray-300 dark:border-neutral-700 dark:bg-neutral-800/40 dark:text-neutral-600"
-                        } ${isSelected ? "ring-2 ring-offset-1 ring-gray-900 dark:ring-neutral-50 dark:ring-offset-neutral-900" : ""}`}
-                      >
-                        {hasData ? `${Math.round(rate)}` : ""}
-                      </button>
+                    return { pushed: acc.pushed + (cell?.pushed ?? 0), reviewed: acc.reviewed + (cell?.reviewed ?? 0) };
+                  },
+                  { pushed: 0, reviewed: 0 },
+                );
+                const rowTotalId = `${row.country}::total`;
+                return (
+                  <tr key={row.country}>
+                    <td className="sticky left-0 bg-white pr-2 text-right text-xs font-medium whitespace-nowrap text-gray-700 dark:bg-neutral-900 dark:text-neutral-200">
+                      <span className="inline-flex items-center gap-1.5">
+                        {countryFlag(row.country)} {row.country}
+                      </span>
+                    </td>
+                    {REPORT_CHANNELS.map((c) => {
+                      const cell = row.review[c.id];
+                      const id = `${row.country}::${c.id}`;
+                      const label = `${countryFlag(row.country)} ${row.country} · ${c.label}`;
+                      return (
+                        <td key={c.id} className="p-0 text-center">
+                          <HeatCell
+                            pushed={cell?.pushed ?? 0}
+                            reviewed={cell?.reviewed ?? 0}
+                            label={label}
+                            isSelected={selected?.id === id}
+                            onClick={() => select(id, label, cell?.pushed ?? 0, cell?.reviewed ?? 0)}
+                          />
+                        </td>
+                      );
+                    })}
+                    <td className="rounded-lg bg-indigo-50/70 p-0 text-center dark:bg-indigo-500/10">
+                      <HeatCell
+                        pushed={rowTotal.pushed}
+                        reviewed={rowTotal.reviewed}
+                        label={`${countryFlag(row.country)} ${row.country} · Total`}
+                        highlight
+                        isSelected={selected?.id === rowTotalId}
+                        onClick={() =>
+                          select(
+                            rowTotalId,
+                            `${countryFlag(row.country)} ${row.country} · Total`,
+                            rowTotal.pushed,
+                            rowTotal.reviewed,
+                          )
+                        }
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+              <tr>
+                <td className="sticky left-0 bg-indigo-50/70 pr-2 text-right text-xs font-medium whitespace-nowrap text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400">
+                  Total
+                </td>
+                {REPORT_CHANNELS.map((c) => {
+                  const colTotal = sorted.reduce(
+                    (acc, row) => {
+                      const cell = row.review[c.id];
+                      return {
+                        pushed: acc.pushed + (cell?.pushed ?? 0),
+                        reviewed: acc.reviewed + (cell?.reviewed ?? 0),
+                      };
+                    },
+                    { pushed: 0, reviewed: 0 },
+                  );
+                  const colTotalId = `total::${c.id}`;
+                  const colTotalLabel = `${c.label} · Total`;
+                  return (
+                    <td key={c.id} className="rounded-lg bg-indigo-50/70 p-0 text-center dark:bg-indigo-500/10">
+                      <HeatCell
+                        pushed={colTotal.pushed}
+                        reviewed={colTotal.reviewed}
+                        label={colTotalLabel}
+                        highlight
+                        isSelected={selected?.id === colTotalId}
+                        onClick={() => select(colTotalId, colTotalLabel, colTotal.pushed, colTotal.reviewed)}
+                      />
+                    </td>
+                  );
+                })}
+                <td className="rounded-lg bg-indigo-100/80 p-0 text-center dark:bg-indigo-500/20">
+                  {(() => {
+                    const grandTotal = sorted.reduce(
+                      (acc, row) =>
+                        REPORT_CHANNELS.reduce((rowAcc, c) => {
+                          const cell = row.review[c.id];
+                          return {
+                            pushed: rowAcc.pushed + (cell?.pushed ?? 0),
+                            reviewed: rowAcc.reviewed + (cell?.reviewed ?? 0),
+                          };
+                        }, acc),
+                      { pushed: 0, reviewed: 0 },
                     );
                     return (
-                      <td key={c.id} className="p-0 text-center">
-                        {hasData ? (
-                          <HoverPopup
-                            variant="card"
-                            width={200}
-                            trigger={tile}
-                            content={
-                              <div className="text-xs">
-                                <p className="font-semibold text-gray-900 dark:text-neutral-50">
-                                  {countryFlag(row.country)} {row.country} · {c.label}
-                                </p>
-                                <p className="mt-1 text-gray-500 dark:text-neutral-400">
-                                  {cell!.pushed.toLocaleString()} pushed / {cell!.reviewed.toLocaleString()} reviewed
-                                </p>
-                                <p className="mt-0.5 font-semibold" style={{ color: heatColor(rate) }}>
-                                  {rate}% signal
-                                </p>
-                              </div>
-                            }
-                          />
-                        ) : (
-                          tile
-                        )}
-                      </td>
+                      <HeatCell
+                        pushed={grandTotal.pushed}
+                        reviewed={grandTotal.reviewed}
+                        label="Grand total"
+                        highlight
+                        isSelected={selected?.id === "grand-total"}
+                        onClick={() => select("grand-total", "Grand total", grandTotal.pushed, grandTotal.reviewed)}
+                      />
                     );
-                  })}
-                </tr>
-              ))}
+                  })()}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -298,10 +417,7 @@ function SignalQualityHeatmap({ rows }: { rows: CountryRangeStats[] }) {
             {selected ? (
               <div className="flex items-start justify-between gap-3">
                 <p className="text-sm text-gray-700 dark:text-neutral-200">
-                  <strong>
-                    {countryFlag(selected.country)} {selected.country} ·{" "}
-                    {REPORT_CHANNELS.find((c) => c.id === selected.channel)?.label}
-                  </strong>{" "}
+                  <strong>{selected.label}</strong>{" "}
                   pushed <strong>{selected.pushed.toLocaleString()}</strong> signals to the platform out of{" "}
                   <strong>{selected.reviewed.toLocaleString()}</strong> reviewed, a{" "}
                   <strong>{selected.rate}%</strong> signal-to-noise ratio
