@@ -33,7 +33,7 @@ type SubTab = "country" | "source-country";
 
 const REPORT_TABS: { id: ReportTab; label: string }[] = [
   { id: "ess", label: "ESS" },
-  { id: "outbound", label: "Outbound Progress" },
+  { id: "outbound", label: "Leaderboard" },
   { id: "aggregated", label: "Aggregated Signals Data" },
   { id: "shortlist", label: "Shortlist Report" },
   { id: "agent-review", label: "Signal Agent Review" },
