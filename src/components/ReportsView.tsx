@@ -27,13 +27,15 @@ import { initials, sourcerColor } from "../utils/analystAvatar";
 import { countryFlag } from "../utils/flags";
 import { AnalystProfileDrawer } from "./AnalystProfileDrawer";
 import { HoverPopup } from "./HoverPopup";
+import { SignalQualityInsights } from "./SignalQualityInsights";
 
-type ReportTab = "ess" | "outbound" | "aggregated" | "shortlist" | "agent-review";
+type ReportTab = "ess" | "outbound" | "signal-quality" | "aggregated" | "shortlist" | "agent-review";
 type SubTab = "country" | "source-country";
 
 const REPORT_TABS: { id: ReportTab; label: string }[] = [
   { id: "ess", label: "ESS" },
   { id: "outbound", label: "Leaderboard" },
+  { id: "signal-quality", label: "Signal Quality" },
   { id: "aggregated", label: "Aggregated Signals Data" },
   { id: "shortlist", label: "Shortlist Report" },
   { id: "agent-review", label: "Signal Agent Review" },
@@ -880,6 +882,8 @@ export function ReportsView() {
 
         {reportTab === "outbound" ? (
           <TeamActivityGrid rows={teamRows} onSelectUser={setSelectedUser} />
+        ) : reportTab === "signal-quality" ? (
+          <SignalQualityInsights range={range} />
         ) : reportTab !== "ess" ? (
           <ComingSoon label={REPORT_TABS.find((t) => t.id === reportTab)!.label} />
         ) : (
