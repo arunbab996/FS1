@@ -52,13 +52,13 @@ function ProfileAvatar({ hasCustomPhoto, avatarUrl }: { hasCustomPhoto: boolean;
       <img
         src={avatarUrl}
         alt={CURRENT_USER_NAME}
-        className="h-20 w-20 rounded-full object-cover ring-1 ring-black/5 dark:ring-white/10"
+        className="h-16 w-16 rounded-full object-cover ring-1 ring-black/5 dark:ring-white/10"
       />
     );
   }
   return (
     <div
-      className={`flex h-20 w-20 items-center justify-center rounded-full text-xl font-semibold text-white ${sourcerColor(CURRENT_USER_NAME)}`}
+      className={`flex h-16 w-16 items-center justify-center rounded-full text-lg font-semibold text-white ${sourcerColor(CURRENT_USER_NAME)}`}
     >
       {initials(CURRENT_USER_NAME)}
     </div>
@@ -126,9 +126,9 @@ function AccountHeader() {
           onClick={() => inputRef.current?.click()}
           disabled={busy}
           aria-label="Change profile photo"
-          className="absolute right-0 bottom-0 flex h-7 w-7 cursor-pointer items-center justify-center rounded-full border-2 border-white bg-gray-900 text-white shadow-sm transition-all hover:scale-105 hover:bg-gray-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-wait dark:border-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-white"
+          className="absolute right-0 bottom-0 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full border-2 border-white bg-gray-900 text-white shadow-sm transition-all hover:scale-105 hover:bg-gray-700 focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-wait dark:border-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-white"
         >
-          <Camera className="h-3.5 w-3.5" />
+          <Camera className="h-3 w-3" />
         </button>
         <input
           ref={inputRef}
@@ -147,7 +147,7 @@ function AccountHeader() {
           <Mail className="h-3.5 w-3.5 shrink-0" />
           {CURRENT_USER_EMAIL}
         </p>
-        <div className="mt-2 flex items-center gap-3">
+        <div className="mt-1.5 flex items-center gap-3">
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
@@ -198,9 +198,9 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+    <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
       <div className="flex items-start gap-3">
-        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10">
+        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10">
           <Icon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
         </span>
         <div className="min-w-0">
@@ -243,8 +243,8 @@ function NotificationRow({
   onChange: () => void;
 }) {
   return (
-    <div className="-mx-2.5 flex items-center gap-3 rounded-lg px-2.5 py-3.5 transition-colors hover:bg-gray-50 dark:hover:bg-neutral-900/60">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-400 dark:bg-neutral-800 dark:text-neutral-500">
+    <div className="-mx-2.5 flex items-center gap-3 rounded-lg px-2.5 py-2 transition-colors hover:bg-gray-50 dark:hover:bg-neutral-900/60">
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-400 dark:bg-neutral-800 dark:text-neutral-500">
         <Icon className="h-4 w-4" />
       </span>
       <div className="min-w-0 flex-1">
@@ -326,7 +326,7 @@ function SignalAutoAssignSection() {
       description="What signals get routed to you automatically."
       info="Tell us what you're looking for and hit save. New signals that match get routed to you automatically."
     >
-      <div className="mt-4">
+      <div className="mt-3">
         <div className="flex items-center justify-between gap-3">
           <label className={FIELD_LABEL}>
             Type of signal you'd like to be assigned <span className="text-red-500">*</span>
@@ -357,12 +357,12 @@ function SignalAutoAssignSection() {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           disabled={!editing}
-          rows={3}
-          className={`mt-2 resize-none p-3 ${FIELD_INPUT}`}
+          rows={2}
+          className={`mt-1.5 resize-none p-2.5 ${FIELD_INPUT}`}
         />
       </div>
 
-      <div className="relative mt-5">
+      <div className="relative mt-3">
         <label className={FIELD_LABEL}>
           Investment categories <span className="text-red-500">*</span>
         </label>
@@ -370,7 +370,7 @@ function SignalAutoAssignSection() {
           type="button"
           disabled={!editing}
           onClick={() => setCategoryMenuOpen((v) => !v)}
-          className={`mt-2 flex cursor-pointer items-center justify-between px-3 py-2.5 text-left disabled:cursor-default ${FIELD_INPUT}`}
+          className={`mt-1.5 flex cursor-pointer items-center justify-between px-3 py-2 text-left disabled:cursor-default ${FIELD_INPUT}`}
         >
           <span className="flex flex-wrap gap-1.5">
             {categories.length > 0 ? (
@@ -420,8 +420,8 @@ export function ProfileSettings() {
   const [slackNotif, setSlackNotif] = useState(true);
 
   return (
-    <div className="flex-1 overflow-y-auto px-8 py-10">
-      <div className="mx-auto flex max-w-xl flex-col gap-5">
+    <div className="flex-1 overflow-y-auto px-8 py-4">
+      <div className="mx-auto flex max-w-xl flex-col gap-2.5">
         <div>
           <h1 className="text-lg font-semibold text-gray-900 dark:text-neutral-50">Profile &amp; settings</h1>
           <p className="mt-0.5 text-sm text-gray-500 dark:text-neutral-400">
@@ -430,13 +430,13 @@ export function ProfileSettings() {
         </div>
 
         <Section icon={UserRound} label="Profile" description="Your name, email, and photo.">
-          <div className="mt-4">
+          <div className="mt-3">
             <AccountHeader />
           </div>
         </Section>
 
         <Section icon={Bell} label="Notifications" description="Choose how you hear about new signals.">
-          <div className="mt-2 flex flex-col divide-y divide-gray-100 dark:divide-neutral-800">
+          <div className="mt-1 flex flex-col divide-y divide-gray-100 dark:divide-neutral-800">
             <NotificationRow
               icon={Mail}
               label="Email notification"
