@@ -198,14 +198,14 @@ function Section({
   children: ReactNode;
 }) {
   return (
-    <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
+    <section className="rounded-xl border border-gray-200 bg-white p-3.5 shadow-sm dark:border-neutral-800 dark:bg-neutral-900">
       <div className="flex items-start gap-3">
-        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10">
-          <Icon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10">
+          <Icon className="h-[18px] w-[18px] text-blue-600 dark:text-blue-400" />
         </span>
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
-            <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">{label}</p>
+            <p className="text-[15px] font-semibold text-gray-900 dark:text-neutral-50">{label}</p>
             {info && (
               <HoverPopup
                 width={220}
@@ -420,7 +420,7 @@ export function ProfileSettings() {
   const [slackNotif, setSlackNotif] = useState(true);
 
   return (
-    <div className="flex-1 overflow-y-auto px-8 py-4">
+    <div className="flex-1 overflow-y-auto px-8 py-3">
       <div className="mx-auto flex max-w-xl flex-col gap-2.5">
         <div className="mb-2">
           <h1 className="text-lg font-semibold text-gray-900 dark:text-neutral-50">Profile &amp; settings</h1>
