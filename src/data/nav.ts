@@ -18,7 +18,7 @@ import {
   Crosshair,
 } from "lucide-react";
 
-export type NavView = "equity-signals" | "inbox" | "reports";
+export type NavView = "equity-signals" | "inbox" | "reports" | "profile";
 
 export interface NavItem {
   label: string;

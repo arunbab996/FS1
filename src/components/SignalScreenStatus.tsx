@@ -1,13 +1,8 @@
 import { CircleCheck, Eye } from "lucide-react";
 import { useState } from "react";
 import type { Signal } from "../types";
-import { personPhotoUrl } from "../utils/avatars";
-import { CURRENT_USER_AVATAR_SEED, CURRENT_USER_NAME } from "../utils/currentUser";
+import { avatarUrlFor, CURRENT_USER_NAME, useCurrentUserAvatarUrl } from "../utils/currentUser";
 import { HoverPopup } from "./HoverPopup";
-
-function avatarSeedFor(name: string): string {
-  return name === CURRENT_USER_NAME ? CURRENT_USER_AVATAR_SEED : name;
-}
 
 function ViewedByCard({ viewers }: { viewers: string[] }) {
   return (
@@ -20,7 +15,7 @@ function ViewedByCard({ viewers }: { viewers: string[] }) {
           {viewers.map((name) => (
             <div key={name} className="flex items-center gap-2">
               <img
-                src={personPhotoUrl(avatarSeedFor(name))}
+                src={avatarUrlFor(name)}
                 alt={name}
                 className="h-6 w-6 shrink-0 rounded-full object-cover"
               />
@@ -50,6 +45,7 @@ export function SignalScreenStatus({
   onScreen?: () => void;
 }) {
   const [viewedBy, setViewedBy] = useState<string[]>(signal.viewedBy ?? []);
+  const [currentUserAvatarUrl] = useCurrentUserAvatarUrl();
   const screened = viewedBy.includes(CURRENT_USER_NAME);
 
   function handleScreen() {
@@ -85,7 +81,7 @@ export function SignalScreenStatus({
         {screened ? "Screened" : "Screen"}
         {screened && (
           <img
-            src={personPhotoUrl(CURRENT_USER_AVATAR_SEED)}
+            src={currentUserAvatarUrl}
             alt={CURRENT_USER_NAME}
             className="h-4 w-4 shrink-0 rounded-full object-cover"
           />

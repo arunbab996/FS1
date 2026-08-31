@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { FooterBar } from "./components/FooterBar";
 import { InboxView } from "./components/InboxView";
+import { ProfileSettings } from "./components/ProfileSettings";
 import { ReportsView } from "./components/ReportsView";
 import { Sidebar } from "./components/Sidebar";
 import { SignalTable } from "./components/SignalTable";
@@ -97,6 +98,8 @@ function App() {
             />
           ) : activeView === "reports" ? (
             <ReportsView />
+          ) : activeView === "profile" ? (
+            <ProfileSettings />
           ) : (
             <>
               <TopBar
@@ -147,7 +150,7 @@ function App() {
             </>
           )}
 
-          {activeView !== "reports" && <FooterBar />}
+          {activeView !== "reports" && activeView !== "profile" && <FooterBar />}
         </div>
       </div>
     </div>

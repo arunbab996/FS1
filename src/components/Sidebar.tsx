@@ -1,8 +1,7 @@
-import { ChevronDown, Command, LogOut, Moon, Search, Sun } from "lucide-react";
+import { ChevronDown, Command, LogOut, Moon, Search, Sun, UserRound } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { navItems, type NavView } from "../data/nav";
-import { personPhotoUrl } from "../utils/avatars";
-import { CURRENT_USER_AVATAR_SEED, CURRENT_USER_NAME } from "../utils/currentUser";
+import { CURRENT_USER_NAME, useCurrentUserAvatarUrl } from "../utils/currentUser";
 
 function MiniToggle({ checked, onChange }: { checked: boolean; onChange: () => void }) {
   return (
@@ -41,6 +40,7 @@ export function Sidebar({
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [avatarUrl] = useCurrentUserAvatarUrl();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -138,6 +138,22 @@ export function Sidebar({
       >
         {menuOpen && (
           <div className="absolute bottom-full left-3 z-20 mb-2 w-64 rounded-xl border border-gray-200 bg-white p-3 shadow-xl dark:border-neutral-700 dark:bg-neutral-800">
+            <button
+              type="button"
+              onClick={() => {
+                onSelectView("profile");
+                setMenuOpen(false);
+              }}
+              className={`flex w-full cursor-pointer items-center gap-2 rounded-lg px-1 py-1.5 text-left text-sm transition-colors ${
+                activeView === "profile"
+                  ? "font-medium text-gray-900 dark:text-neutral-50"
+                  : "text-gray-700 hover:text-gray-900 dark:text-neutral-200 dark:hover:text-neutral-50"
+              }`}
+            >
+              <UserRound className="h-4 w-4 shrink-0" />
+              View profile
+            </button>
+            <div className="my-2 border-t border-gray-100 dark:border-neutral-700" />
             <p className="px-1 pb-2 text-[11px] font-semibold tracking-wide text-gray-400 uppercase dark:text-neutral-500">
               Display settings
             </p>
@@ -155,7 +171,7 @@ export function Sidebar({
           className="flex min-w-0 flex-1 cursor-pointer items-center gap-2.5 rounded-lg text-left"
         >
           <img
-            src={personPhotoUrl(CURRENT_USER_AVATAR_SEED)}
+            src={avatarUrl}
             alt="AB"
             className="h-8 w-8 shrink-0 rounded-full object-cover"
           />
