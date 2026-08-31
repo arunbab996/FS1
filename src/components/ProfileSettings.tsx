@@ -422,7 +422,7 @@ export function ProfileSettings() {
   return (
     <div className="flex-1 overflow-y-auto px-8 py-4">
       <div className="mx-auto flex max-w-xl flex-col gap-2.5">
-        <div>
+        <div className="mb-2">
           <h1 className="text-lg font-semibold text-gray-900 dark:text-neutral-50">Profile &amp; settings</h1>
           <p className="mt-0.5 text-sm text-gray-500 dark:text-neutral-400">
             Manage your account and preferences.
