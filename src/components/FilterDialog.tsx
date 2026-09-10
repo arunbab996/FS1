@@ -23,6 +23,7 @@ import {
   companySizeRanges,
   datePresets,
   educationLevelOptions,
+  MOCK_TODAY,
   emptyFilters,
   emptyRangeFilter,
   emptyScoreFilter,
@@ -488,7 +489,9 @@ export function FilterDialog({
   const [draft, setDraft] = useState<SignalFilters>(filters);
   const [activeCategory, setActiveCategory] = useState<CategoryId>("signalTypes");
   const [search, setSearch] = useState("");
-  const [calendarMonth, setCalendarMonth] = useState(() => new Date());
+  const [calendarMonth, setCalendarMonth] = useState(
+    () => new Date(MOCK_TODAY.getFullYear(), MOCK_TODAY.getMonth(), 1),
+  );
 
   // Re-sync the working draft from the last-applied filters every time the dialog opens,
   // so edits made without hitting Apply are discarded rather than lingering.
@@ -1034,7 +1037,7 @@ function DatePanel({
   calendarMonth: Date;
   onCalendarMonthChange: (date: Date) => void;
 }) {
-  const todayISO = useMemo(() => toISODate(new Date()), []);
+  const todayISO = useMemo(() => toISODate(MOCK_TODAY), []);
   const cells = useMemo(() => getCalendarCells(calendarMonth), [calendarMonth]);
 
   function selectPreset(preset: (typeof datePresets)[number]) {

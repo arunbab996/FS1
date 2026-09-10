@@ -15,12 +15,52 @@ import { countryFlag, countryShortName } from "../utils/flags";
 import {
   activeFilterCount,
   emptyFilters,
+  type DatePreset,
   type SavedSearch,
   type SignalFilters,
 } from "../utils/signalFilters";
 import { FilterDialog, type FilterOptions } from "./FilterDialog";
 
 export type ViewMode = "cards" | "table";
+
+const timeScopeOptions: { id: DatePreset; label: string }[] = [
+  { id: "Today", label: "Today" },
+  { id: "This week", label: "This week" },
+  { id: "All dates", label: "All" },
+];
+
+/** Quick date-scope control — a shortcut for the three most common Signal Date presets. Stays in
+ * sync with the full Signal Date filter in the dialog; shows nothing selected when a different
+ * preset (e.g. "Last month") or a custom range is active. */
+function TimeScopeToggle({
+  preset,
+  onChange,
+}: {
+  preset: DatePreset;
+  onChange: (preset: DatePreset) => void;
+}) {
+  return (
+    <div className="flex shrink-0 items-center gap-0.5">
+      {timeScopeOptions.map((opt) => {
+        const active = preset === opt.id;
+        return (
+          <button
+            key={opt.id}
+            type="button"
+            onClick={() => onChange(opt.id)}
+            className={`cursor-pointer rounded-full px-3 py-1 text-sm font-medium whitespace-nowrap transition-colors ${
+              active
+                ? "bg-gray-900 text-white dark:bg-neutral-100 dark:text-neutral-900"
+                : "text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+            }`}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
 type ViewBy = "saved" | "country";
 const viewByOptions: { id: ViewBy; label: string }[] = [
   { id: "saved", label: "Saved search" },
@@ -356,24 +396,31 @@ export function TopBar({
         <h1 className="whitespace-nowrap text-lg font-semibold text-gray-900 dark:text-neutral-50">
           Equity Signals
         </h1>
-        <div className="relative w-full min-w-0">
-          <button
-            type="button"
-            onClick={runSearch}
-            aria-label="Search"
-            className="absolute top-1/2 left-3 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-neutral-300"
-          >
-            <Search className="h-3.5 w-3.5" />
-          </button>
-          <input
-            type="text"
-            value={searchDraft}
-            onChange={(e) => setSearchDraft(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter") runSearch();
-            }}
-            placeholder="Search in All Signals..."
-            className="w-full rounded-lg border border-gray-200 bg-gray-50 py-1.5 pr-3 pl-9 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-400 focus:bg-white focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:bg-neutral-800"
+        <div className="flex w-full min-w-0 items-center gap-2.5">
+          <div className="relative min-w-0 flex-1">
+            <button
+              type="button"
+              onClick={runSearch}
+              aria-label="Search"
+              className="absolute top-1/2 left-3 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-neutral-300"
+            >
+              <Search className="h-3.5 w-3.5" />
+            </button>
+            <input
+              type="text"
+              value={searchDraft}
+              onChange={(e) => setSearchDraft(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") runSearch();
+              }}
+              placeholder="Search in All Signals..."
+              className="w-full rounded-lg border border-gray-200 bg-gray-50 py-1.5 pr-3 pl-9 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-400 focus:bg-white focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:bg-neutral-800"
+            />
+          </div>
+          <span className="h-5 w-px shrink-0 bg-gray-200 dark:bg-neutral-700" />
+          <TimeScopeToggle
+            preset={filters.date.preset}
+            onChange={(preset) => onFiltersChange({ ...filters, date: { preset } })}
           />
         </div>
 

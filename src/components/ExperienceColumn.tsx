@@ -1,6 +1,10 @@
+import { EyeOff } from "lucide-react";
 import { useRef, useState, type ReactNode } from "react";
 import type { ExperienceEntry } from "../types";
 import { companyLogoUrl } from "../utils/avatars";
+
+/** Placeholder "companies" for someone in stealth or between roles — no real logo to show. */
+const stealthLabels = new Set(["—", "Exploring", "Stealth", "Stealth Startup"]);
 
 function EntryRow({
   entry,
@@ -9,19 +13,19 @@ function EntryRow({
   entry: ExperienceEntry;
   trailing?: ReactNode;
 }) {
-  const isBlank = entry.company === "—";
+  const isStealth = stealthLabels.has(entry.company);
 
   return (
-    <div className="flex items-center gap-1.5">
-      {isBlank ? (
-        <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-gray-200 text-xs text-gray-400 dark:bg-neutral-700 dark:text-neutral-400">
-          —
+    <div className="flex items-center gap-2">
+      {isStealth ? (
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-md bg-purple-50 text-purple-600 dark:bg-purple-500/15 dark:text-purple-400">
+          <EyeOff className="h-4 w-4" />
         </div>
       ) : (
         <img
           src={companyLogoUrl(entry.company)}
           alt=""
-          className="h-5 w-5 shrink-0 rounded bg-white object-cover"
+          className="h-9 w-9 shrink-0 rounded-md bg-white object-cover"
         />
       )}
       <div className="min-w-0 flex-1">

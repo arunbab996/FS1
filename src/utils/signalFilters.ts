@@ -144,7 +144,8 @@ export const companySizeRanges = [
 
 export const datePresets = [
   "All dates",
-  "Last week",
+  "Today",
+  "This week",
   "Last 2 weeks",
   "Last month",
   "Last 3 months",
@@ -407,9 +408,12 @@ export function signalCompanyFoundedYears(signal: Signal): number[] {
     .filter((n): n is number => n !== null);
 }
 
+/** The demo's fixed "now" — the mock signals are all dated relative to this, not the real clock. */
+export const MOCK_TODAY = new Date(2026, 6, 27);
+
 /** The mock data only carries relative labels ("Today"/"Yesterday"), so map them to real calendar dates. */
 const dateGroupCalendarDates: Record<Signal["dateGroup"], Date> = {
-  "Today · Jul 27": new Date(2026, 6, 27),
+  "Today · Jul 27": MOCK_TODAY,
   "Yesterday · Jul 26": new Date(2026, 6, 26),
 };
 
@@ -436,12 +440,14 @@ function addDays(date: Date, days: number): Date {
 }
 
 function dateRangeForFilter(filter: DateFilter): [Date, Date] | null {
-  const today = new Date();
+  const today = MOCK_TODAY;
   switch (filter.preset) {
     case "All dates":
       return null;
-    case "Last week":
-      return [addDays(today, -7), today];
+    case "Today":
+      return [today, today];
+    case "This week":
+      return [addDays(today, -6), today];
     case "Last 2 weeks":
       return [addDays(today, -14), today];
     case "Last month":
