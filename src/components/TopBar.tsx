@@ -396,31 +396,24 @@ export function TopBar({
         <h1 className="whitespace-nowrap text-lg font-semibold text-gray-900 dark:text-neutral-50">
           Equity Signals
         </h1>
-        <div className="flex w-full min-w-0 items-center gap-2.5">
-          <div className="relative min-w-0 flex-1">
-            <button
-              type="button"
-              onClick={runSearch}
-              aria-label="Search"
-              className="absolute top-1/2 left-3 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-neutral-300"
-            >
-              <Search className="h-3.5 w-3.5" />
-            </button>
-            <input
-              type="text"
-              value={searchDraft}
-              onChange={(e) => setSearchDraft(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") runSearch();
-              }}
-              placeholder="Search in All Signals..."
-              className="w-full rounded-lg border border-gray-200 bg-gray-50 py-1.5 pr-3 pl-9 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-400 focus:bg-white focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:bg-neutral-800"
-            />
-          </div>
-          <span className="h-5 w-px shrink-0 bg-gray-200 dark:bg-neutral-700" />
-          <TimeScopeToggle
-            preset={filters.date.preset}
-            onChange={(preset) => onFiltersChange({ ...filters, date: { preset } })}
+        <div className="relative w-full min-w-0">
+          <button
+            type="button"
+            onClick={runSearch}
+            aria-label="Search"
+            className="absolute top-1/2 left-3 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-neutral-300"
+          >
+            <Search className="h-3.5 w-3.5" />
+          </button>
+          <input
+            type="text"
+            value={searchDraft}
+            onChange={(e) => setSearchDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") runSearch();
+            }}
+            placeholder="Search in All Signals..."
+            className="w-full rounded-lg border border-gray-200 bg-gray-50 py-1.5 pr-3 pl-9 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-400 focus:bg-white focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:placeholder:text-neutral-500 dark:focus:bg-neutral-800"
           />
         </div>
 
@@ -564,7 +557,12 @@ export function TopBar({
           )}
         </div>
 
-        <div className="flex shrink-0 items-center gap-2 pl-2">
+        <div className="flex shrink-0 items-center gap-3 pl-2">
+          <TimeScopeToggle
+            preset={filters.date.preset}
+            onChange={(preset) => onFiltersChange({ ...filters, date: { preset } })}
+          />
+          <span className="h-4 w-px shrink-0 bg-gray-200 dark:bg-neutral-700" />
           <span className="text-xs text-gray-400 dark:text-neutral-500">View by:</span>
           <ViewBySelect value={viewBy} onChange={setViewBy} />
         </div>
