@@ -557,14 +557,16 @@ export function TopBar({
           )}
         </div>
 
-        <div className="flex shrink-0 items-center gap-3 pl-2">
+        <div className="flex shrink-0 items-center gap-4 pl-2">
           <TimeScopeToggle
             preset={filters.date.preset}
             onChange={(preset) => onFiltersChange({ ...filters, date: { preset } })}
           />
           <span className="h-4 w-px shrink-0 bg-gray-200 dark:bg-neutral-700" />
-          <span className="text-xs text-gray-400 dark:text-neutral-500">View by:</span>
-          <ViewBySelect value={viewBy} onChange={setViewBy} />
+          <div className="flex shrink-0 items-center gap-2">
+            <span className="text-sm text-gray-400 dark:text-neutral-500">View by:</span>
+            <ViewBySelect value={viewBy} onChange={setViewBy} />
+          </div>
         </div>
       </div>
 
