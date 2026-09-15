@@ -46,10 +46,6 @@ import type {
 } from "../types";
 import { companyLogoUrl, personPhotoUrl } from "../utils/avatars";
 import {
-  positionCategoryBarClasses,
-  positionCategoryDotClasses,
-} from "../utils/positionCategory";
-import {
   educationLevelOptions,
   signalEducationLevels,
   signalGraduationYear,
@@ -297,10 +293,10 @@ const linkedinActivityLabel: Record<LinkedInActivityItem["kind"], string> = {
   reaction: "Reaction",
 };
 
-const linkedinActivityTextClasses: Record<LinkedInActivityItem["kind"], string> = {
-  post: "text-blue-600 dark:text-blue-400",
-  comment: "text-cyan-600 dark:text-cyan-400",
-  reaction: "text-pink-600 dark:text-pink-400",
+const linkedinActivityBadgeClasses: Record<LinkedInActivityItem["kind"], string> = {
+  post: "bg-blue-50 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400",
+  comment: "bg-cyan-50 text-cyan-600 dark:bg-cyan-500/15 dark:text-cyan-400",
+  reaction: "bg-pink-50 text-pink-600 dark:bg-pink-500/15 dark:text-pink-400",
 };
 
 function pedigreeIcon(category: PedigreeItem["category"]) {
@@ -382,7 +378,7 @@ export function ProfileDrawer({
   onClose: () => void;
 }) {
   const [tab, setTab] = useState<Tab>("overview");
-  const [showEarlier, setShowEarlier] = useState(false);
+  const [showAllRoles, setShowAllRoles] = useState(true);
   const profile = signal.profile;
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -411,7 +407,7 @@ export function ProfileDrawer({
   useEffect(() => {
     if (open) {
       setTab("overview");
-      setShowEarlier(false);
+      setShowAllRoles(true);
     }
   }, [open]);
 
@@ -439,8 +435,11 @@ export function ProfileDrawer({
   ];
 
   const groupedPositions = profile ? groupPositions(profile.positions) : [];
-  const mainGroups = groupedPositions.filter((g) => g.company !== "Earlier roles");
-  const earlierGroup = groupedPositions.find((g) => g.company === "Earlier roles");
+  const VISIBLE_ROLE_GROUPS = 5;
+  const hiddenRoleGroups = Math.max(0, groupedPositions.length - VISIBLE_ROLE_GROUPS);
+  const visibleGroups = showAllRoles
+    ? groupedPositions
+    : groupedPositions.slice(0, VISIBLE_ROLE_GROUPS);
 
   return (
     <>
@@ -691,7 +690,7 @@ export function ProfileDrawer({
             {tab === "experience" && (
               <div className="flex flex-col gap-5">
                 {profile
-                  ? mainGroups.map((group, gi) => {
+                  ? visibleGroups.map((group, gi) => {
                       const totalMonths = group.positions.reduce((sum, p) => sum + p.months, 0);
                       // "$0" funding/valuation on a company card just means LinkedIn has nothing
                       // on file — showing it as a badge reads as "raised nothing", which is noise.
@@ -736,9 +735,7 @@ export function ProfileDrawer({
                           <div className="mt-3 flex flex-col gap-3 border-l-2 border-gray-100 pl-4 dark:border-neutral-800">
                             {group.positions.map((pos, pi) => (
                               <div key={pi} className="relative">
-                                <span
-                                  className={`absolute top-1.5 -left-[21px] h-2 w-2 rounded-full ${positionCategoryDotClasses(pos.category)}`}
-                                />
+                                <span className="absolute top-1.5 -left-[21px] h-2 w-2 rounded-full bg-gray-300 dark:bg-neutral-600" />
                                 <div className="flex items-start justify-between gap-3">
                                   <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
                                     {pos.title}
@@ -784,43 +781,17 @@ export function ProfileDrawer({
                       </div>
                     ))}
 
-                {earlierGroup && (
-                  <div className="rounded-xl border border-gray-200 p-4 dark:border-neutral-700">
-                    <button
-                      type="button"
-                      onClick={() => setShowEarlier((v) => !v)}
-                      className="flex w-full cursor-pointer items-center justify-between gap-2 text-left"
-                    >
-                      <span className="text-sm font-bold text-gray-900 dark:text-neutral-50">
-                        Earlier roles
-                      </span>
-                      <span className="flex shrink-0 items-center gap-1 text-xs font-medium text-blue-600 dark:text-blue-400">
-                        {showEarlier ? "Show less" : `Show ${earlierGroup.positions.length}`}
-                        <ChevronDown
-                          className={`h-3.5 w-3.5 transition-transform ${showEarlier ? "rotate-180" : ""}`}
-                        />
-                      </span>
-                    </button>
-                    {showEarlier && (
-                      <div className="mt-3 flex flex-col gap-3 border-l-2 border-gray-100 pl-4 dark:border-neutral-800">
-                        {earlierGroup.positions.map((pos, pi) => (
-                          <div key={pi} className="relative">
-                            <span
-                              className={`absolute top-1.5 -left-[21px] h-2 w-2 rounded-full ${positionCategoryDotClasses(pos.category)}`}
-                            />
-                            <div className="flex items-start justify-between gap-3">
-                              <p className="text-sm font-medium text-gray-800 dark:text-neutral-200">
-                                {pos.title}
-                              </p>
-                              <span className="shrink-0 text-xs whitespace-nowrap text-gray-400 dark:text-neutral-500">
-                                {pos.period}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
+                {profile && hiddenRoleGroups > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setShowAllRoles((v) => !v)}
+                    className="flex w-full cursor-pointer items-center justify-center gap-1 rounded-xl border border-gray-200 py-2.5 text-xs font-semibold text-blue-600 hover:bg-gray-50 dark:border-neutral-700 dark:text-blue-400 dark:hover:bg-neutral-800/60"
+                  >
+                    {showAllRoles ? "Show less" : `Show ${hiddenRoleGroups} more roles`}
+                    <ChevronDown
+                      className={`h-3.5 w-3.5 transition-transform ${showAllRoles ? "rotate-180" : ""}`}
+                    />
+                  </button>
                 )}
               </div>
             )}
@@ -926,34 +897,6 @@ export function ProfileDrawer({
                             className="h-9 w-9 rounded-lg border border-gray-200 object-cover dark:border-neutral-700"
                           />
                         </Tooltip>
-                      ))}
-                  </div>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                    Tenure per role
-                  </h3>
-                  <div className="mt-3 flex flex-col gap-2.5">
-                    {[...profile.positions]
-                      .sort((a, b) => b.months - a.months)
-                      .map((pos, i) => (
-                        <div key={i} className="flex items-center gap-3">
-                          <p className="w-40 shrink-0 truncate text-xs text-gray-600 dark:text-neutral-300">
-                            {pos.title}
-                          </p>
-                          <div className="h-2 flex-1 overflow-hidden rounded-full bg-gray-100 dark:bg-neutral-800">
-                            <div
-                              className={`h-full rounded-full ${positionCategoryBarClasses(pos.category)}`}
-                              style={{
-                                width: `${(pos.months / profile.insights.longestMonths) * 100}%`,
-                              }}
-                            />
-                          </div>
-                          <span className="w-10 shrink-0 text-right text-xs text-gray-400 dark:text-neutral-500">
-                            {pos.months}mo
-                          </span>
-                        </div>
                       ))}
                   </div>
                 </div>
@@ -1229,9 +1172,9 @@ export function ProfileDrawer({
                   return (
                     <div
                       key={i}
-                      className="overflow-hidden rounded-xl border border-gray-200 dark:border-neutral-700"
+                      className="rounded-xl border border-gray-200 transition-shadow hover:shadow-sm dark:border-neutral-700"
                     >
-                      <div className="flex items-center gap-2.5 p-3 pb-2">
+                      <div className="flex items-start gap-2.5 p-3 pb-2">
                         {signal.useGenericAvatar ? (
                           <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-700">
                             <User className="h-4.5 w-4.5 text-gray-400 dark:text-neutral-400" />
@@ -1244,20 +1187,34 @@ export function ProfileDrawer({
                           />
                         )}
                         <div className="min-w-0 flex-1">
-                          <p className="truncate text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                            {name}
-                          </p>
-                          <p
-                            className={`flex items-center gap-1 text-xs font-medium ${linkedinActivityTextClasses[item.kind]}`}
+                          <div className="flex items-center justify-between gap-2">
+                            <p className="truncate text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                              {name}
+                            </p>
+                            <span className="flex shrink-0 items-center gap-1.5">
+                              <span className="text-xs text-gray-400 dark:text-neutral-500">
+                                {item.date}
+                              </span>
+                              <Tooltip label="View on LinkedIn">
+                                <a
+                                  href={item.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  aria-label="View on LinkedIn"
+                                  className="text-gray-400 hover:text-blue-600 dark:text-neutral-500 dark:hover:text-blue-400"
+                                >
+                                  <ExternalLink className="h-3.5 w-3.5" />
+                                </a>
+                              </Tooltip>
+                            </span>
+                          </div>
+                          <span
+                            className={`mt-1 inline-flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[11px] font-semibold ${linkedinActivityBadgeClasses[item.kind]}`}
                           >
                             <Icon className="h-3 w-3" />
                             {linkedinActivityLabel[item.kind]}
                             {item.reaction ? ` · ${item.reaction}` : ""}
-                            <span className="text-gray-300 dark:text-neutral-600">·</span>
-                            <span className="font-normal text-gray-400 dark:text-neutral-500">
-                              {item.date}
-                            </span>
-                          </p>
+                          </span>
                         </div>
                       </div>
                       <div className="px-3 pb-3">
@@ -1265,15 +1222,6 @@ export function ProfileDrawer({
                           {item.preview}
                         </p>
                       </div>
-                      <a
-                        href={item.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-center gap-1.5 border-t border-gray-100 py-2 text-xs font-semibold text-blue-600 hover:bg-gray-50 dark:border-neutral-800 dark:text-blue-400 dark:hover:bg-neutral-800/60"
-                      >
-                        View on LinkedIn
-                        <ExternalLink className="h-3 w-3" />
-                      </a>
                     </div>
                   );
                 })}
