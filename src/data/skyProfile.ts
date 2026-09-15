@@ -1,4 +1,15 @@
-import type { TalentProfile } from "../types";
+import type { InteractionPerson, TalentProfile } from "../types";
+
+const hongfei: InteractionPerson = {
+  name: "Hongfei Xia",
+  initials: "HX",
+  colorClasses: "bg-cyan-100 text-cyan-700 dark:bg-cyan-500/20 dark:text-cyan-400",
+};
+const skyWee: InteractionPerson = {
+  name: "Sky Wee",
+  initials: "SW",
+  colorClasses: "bg-pink-100 text-pink-700 dark:bg-pink-500/20 dark:text-pink-400",
+};
 
 export const skyProfile: TalentProfile = {
   titleLine:
@@ -450,6 +461,49 @@ export const skyProfile: TalentProfile = {
       kind: "status",
       text: 'Status changed to "Auto Passed" by dev@january.capital',
       date: "3 months ago",
+    },
+  ],
+  interactions: [
+    {
+      kind: "linkedin",
+      action: "Sent",
+      campaign: "[FS] HX - Web3 KOLs",
+      from: hongfei,
+      to: skyWee,
+      preview: "Hi Sky, loved your Binance KOL partnership work — would love 15 minutes to hear about Nexawork AI.",
+      time: "09:12",
+      direction: "Outbound",
+      date: "5 months ago",
+    },
+    {
+      kind: "linkedin",
+      action: "Opened",
+      campaign: "[FS] HX - Web3 KOLs",
+      from: hongfei,
+      to: skyWee,
+      time: "14:40",
+      direction: "Outbound",
+      date: "5 months ago",
+    },
+    {
+      kind: "linkedin",
+      action: "Invite Accepted",
+      campaign: "[FS] HX - Web3 KOLs",
+      from: hongfei,
+      to: skyWee,
+      time: "09:02",
+      direction: "Outbound",
+      date: "5 months ago",
+    },
+    {
+      kind: "linkedin",
+      action: "Invite Done",
+      campaign: "[FS] HX - Web3 KOLs",
+      from: hongfei,
+      to: skyWee,
+      time: "08:55",
+      direction: "Outbound",
+      date: "5 months ago",
     },
   ],
 };

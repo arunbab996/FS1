@@ -87,6 +87,74 @@ export interface ProfileActivityItem {
   tags?: string[];
 }
 
+/** A short-form person reference for the Interactions timeline — just enough to render an initials chip. */
+export interface InteractionPerson {
+  name: string;
+  initials: string;
+  /** Tailwind bg/text pair for the initials chip, e.g. "bg-amber-100 text-amber-700". Kept consistent per person across the timeline. */
+  colorClasses: string;
+}
+
+interface InteractionBase {
+  date: string;
+}
+
+/** One outbound/inbound LinkedIn touchpoint — an invite, a message, or a passive open/visit. */
+export interface LinkedInTouchpoint extends InteractionBase {
+  kind: "linkedin";
+  action: "Sent" | "Replied" | "Opened" | "Invite Accepted" | "Invite Done" | "Visit Done";
+  /** The outreach sequence/campaign this belongs to, e.g. "[FS] RL - Stealth". */
+  campaign: string;
+  from: InteractionPerson;
+  to: InteractionPerson;
+  /** Message text — omitted for passive actions like Opened/Visit Done. */
+  preview?: string;
+  time: string;
+  direction: "Outbound" | "Inbound";
+}
+
+/** One inbound/outbound email in the thread. */
+export interface EmailInteraction extends InteractionBase {
+  kind: "email";
+  from: InteractionPerson & { domain: string };
+  to: string[];
+  subject: string;
+  direction: "Outbound" | "Inbound";
+}
+
+/** A calendar meeting tied to this signal. */
+export interface MeetingInteraction extends InteractionBase {
+  kind: "meeting";
+  title: string;
+  status: "Confirmed" | "Tentative" | "Cancelled";
+  /** Pre-split for the day-tile layout, e.g. month "JUL", day "23", weekday "Thu". */
+  month: string;
+  day: string;
+  weekday: string;
+  organizer: InteractionPerson;
+  attendees: InteractionPerson[];
+  durationLabel: string;
+  timeRange: string;
+}
+
+/** An AI-generated meeting summary — action items, tags, and who attended. */
+export interface MeetingNotesInteraction extends InteractionBase {
+  kind: "meeting-notes";
+  attendees: InteractionPerson[];
+  actionItems: { text: string; done: boolean }[];
+  hashtags: string[];
+  mentionedAttendees: string[];
+  extraMentionCount?: number;
+  author: InteractionPerson;
+  tags: { label: string; tone: "stage" | "temperature" | "visibility" }[];
+}
+
+export type InteractionItem =
+  | LinkedInTouchpoint
+  | EmailInteraction
+  | MeetingInteraction
+  | MeetingNotesInteraction;
+
 /** The talent's own recent activity on LinkedIn — posts, comments, and reactions. */
 export interface LinkedInActivityItem {
   kind: "post" | "comment" | "reaction";
@@ -189,6 +257,8 @@ export interface TalentProfile {
   lastConnectedDate?: string;
   lastStatus?: string;
   activity: ProfileActivityItem[];
+  /** Rich touchpoint timeline (LinkedIn, email, meetings, meeting notes) shown in the Interactions tab. Omit when there's none to show. */
+  interactions?: InteractionItem[];
 }
 
 export interface Signal {

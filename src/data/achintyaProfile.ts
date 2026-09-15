@@ -1,4 +1,15 @@
-import type { TalentProfile } from "../types";
+import type { InteractionPerson, TalentProfile } from "../types";
+
+const joshuaLim: InteractionPerson = {
+  name: "Joshua Lim",
+  initials: "JL",
+  colorClasses: "bg-teal-100 text-teal-700 dark:bg-teal-500/20 dark:text-teal-400",
+};
+const achintya: InteractionPerson = {
+  name: "Achintya Gupta",
+  initials: "AG",
+  colorClasses: "bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-400",
+};
 
 export const achintyaProfile: TalentProfile = {
   titleLine:
@@ -231,6 +242,39 @@ export const achintyaProfile: TalentProfile = {
       kind: "connected",
       text: "Co-Founder and CEO of Reo.Dev, Achintya Gupta just connected with 3one4",
       date: "Yesterday",
+    },
+  ],
+  interactions: [
+    {
+      kind: "linkedin",
+      action: "Sent",
+      campaign: "[FS] JL - Dev Tools",
+      from: joshuaLim,
+      to: achintya,
+      preview: "Hi Achintya, Reo.Dev's approach to dev-analytics looks sharp — open to a quick intro call?",
+      time: "11:05",
+      direction: "Outbound",
+      date: "1 week ago",
+    },
+    {
+      kind: "linkedin",
+      action: "Invite Accepted",
+      campaign: "[FS] JL - Dev Tools",
+      from: joshuaLim,
+      to: achintya,
+      time: "10:50",
+      direction: "Outbound",
+      date: "1 week ago",
+    },
+    {
+      kind: "linkedin",
+      action: "Invite Done",
+      campaign: "[FS] JL - Dev Tools",
+      from: joshuaLim,
+      to: achintya,
+      time: "10:40",
+      direction: "Outbound",
+      date: "1 week ago",
     },
   ],
 };

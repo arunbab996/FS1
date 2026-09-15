@@ -1,5 +1,33 @@
-import type { TalentProfile } from "../types";
+import type { InteractionPerson, TalentProfile } from "../types";
 import { generateContributions } from "../utils/github";
+
+// Consistent per-person chip color across the Interactions timeline.
+const personColors = {
+  raynard: "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400",
+  darshan: "bg-rose-100 text-rose-700 dark:bg-rose-500/20 dark:text-rose-400",
+  darsh: "bg-violet-100 text-violet-700 dark:bg-violet-500/20 dark:text-violet-400",
+  justin: "bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-400",
+  ateeq: "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-400",
+};
+
+const personRaynard: InteractionPerson = {
+  name: "Raynard Lao",
+  initials: "RL",
+  colorClasses: personColors.raynard,
+};
+const personDarshanP: InteractionPerson = {
+  name: "Darshan P.",
+  initials: "DP",
+  colorClasses: personColors.darshan,
+};
+const personDarshanPatel: InteractionPerson = {
+  name: "Darshan Patel",
+  initials: "DP",
+  colorClasses: personColors.darshan,
+};
+const personDarsh: InteractionPerson = { name: "Darsh", initials: "DA", colorClasses: personColors.darsh };
+const personJustin: InteractionPerson = { name: "Justin K", initials: "JK", colorClasses: personColors.justin };
+const personAteeq: InteractionPerson = { name: "Ateeq", initials: "AT", colorClasses: personColors.ateeq };
 
 export const darshanProfile: TalentProfile = {
   titleLine: "Founder · Quant Data Engineer at ASX | Blackbird Giants C11",
@@ -288,6 +316,210 @@ export const darshanProfile: TalentProfile = {
       kind: "meeting",
       text: "Darshan Patel <> Raynard Lao - Intro Call (Confirmed)",
       date: "Jul 23, 2026 · 01:30 - 02:00",
+    },
+  ],
+  interactions: [
+    {
+      kind: "email",
+      from: { name: "Darsh5920", initials: "DA", colorClasses: personColors.darsh, domain: "gmail.com" },
+      to: ["Raynard"],
+      subject: "Re: Darshan Patel <> Raynard Lao - Intro Call",
+      direction: "Inbound",
+      date: "11 Aug 2026",
+    },
+    {
+      kind: "meeting",
+      title: "Darshan Patel <> Raynard Lao - Intro Call",
+      status: "Confirmed",
+      month: "AUG",
+      day: "11",
+      weekday: "Tue",
+      organizer: personRaynard,
+      attendees: [personDarsh, personAteeq, personJustin, personRaynard],
+      durationLabel: "30m",
+      timeRange: "06:30 — 07:00",
+      date: "11 Aug 2026",
+    },
+    {
+      kind: "meeting-notes",
+      attendees: [personDarshanPatel, personJustin, personAteeq],
+      actionItems: [
+        {
+          text: "Raynard to discuss internally with the January Capital team and provide a steer on whether to move forward with investment",
+          done: false,
+        },
+        { text: "Team to finalize pricing strategy for the live bidding platform...", done: false },
+      ],
+      hashtags: ["#Active", "#meeting-note", "#NOTION", "#Founder(Active)"],
+      mentionedAttendees: ["Darshan Patel", "Justin K", "Ateeq"],
+      extraMentionCount: 1,
+      author: personRaynard,
+      tags: [
+        { label: "Founder (Active)", tone: "stage" },
+        { label: "Active", tone: "temperature" },
+        { label: "Public", tone: "visibility" },
+      ],
+      date: "11 Aug 2026",
+    },
+    {
+      kind: "email",
+      from: { name: "Darsh5920", initials: "DA", colorClasses: personColors.darsh, domain: "gmail.com" },
+      to: ["Raynard"],
+      subject: "Re: Darshan Patel <> Raynard Lao - Intro Call",
+      direction: "Inbound",
+      date: "11 Aug 2026",
+    },
+    {
+      kind: "email",
+      from: { name: "Raynard", initials: "RA", colorClasses: personColors.raynard, domain: "january.capital" },
+      to: ["Justin Shakergayen", "Darsh5920", "Ateeq"],
+      subject: "Darshan Patel <> Raynard Lao - Intro Call",
+      direction: "Outbound",
+      date: "10 Aug 2026",
+    },
+    {
+      kind: "linkedin",
+      action: "Replied",
+      campaign: "[FS] RL - Stealth",
+      from: personRaynard,
+      to: personDarshanP,
+      preview:
+        "Hi Raynard, I wanted to book in some time with the team again regarding Boa - Marine Parts Procurement. Just using the link above to lock in a slot.",
+      time: "02:50",
+      direction: "Outbound",
+      date: "31 Jul 2026",
+    },
+    {
+      kind: "linkedin",
+      action: "Replied",
+      campaign: "[FS] RL - Stealth",
+      from: personRaynard,
+      to: personDarshanP,
+      preview: "Hi Raynard, we are just waiting in the zoom call waiting room! Looking forward to our chat",
+      time: "01:34",
+      direction: "Outbound",
+      date: "23 Jul 2026",
+    },
+    {
+      kind: "meeting",
+      title: "Darshan Patel <> Raynard Lao - Intro Call",
+      status: "Confirmed",
+      month: "JUL",
+      day: "23",
+      weekday: "Thu",
+      organizer: personRaynard,
+      attendees: [personDarsh, personRaynard, personAteeq, personJustin],
+      durationLabel: "30m",
+      timeRange: "01:30 — 02:00",
+      date: "23 Jul 2026",
+    },
+    {
+      kind: "meeting-notes",
+      attendees: [personDarshanPatel, personJustin, personAteeq, { ...personDarsh, name: "Darsh" }],
+      actionItems: [
+        { text: "Schedule a follow-up call in approximately two weeks", done: false },
+        {
+          text: "Team to build and demo an MVP of the procurement platform within two weeks, and onboard early LOI customers...",
+          done: false,
+        },
+      ],
+      hashtags: ["#meeting-note", "#NOTION", "#Warm", "#Founder(Prospective)"],
+      mentionedAttendees: ["Darshan Patel", "Justin K", "Ateeq"],
+      extraMentionCount: 2,
+      author: personRaynard,
+      tags: [
+        { label: "Founder (Prospective)", tone: "stage" },
+        { label: "Warm", tone: "temperature" },
+        { label: "Public", tone: "visibility" },
+      ],
+      date: "23 Jul 2026",
+    },
+    {
+      kind: "linkedin",
+      action: "Sent",
+      campaign: "[FS] RL - Stealth",
+      from: personRaynard,
+      to: personDarshanP,
+      preview:
+        "Hey Darshan, am easy so whichever works best for you guys! Let me leave a link to my calendar for us to find a time",
+      time: "02:50",
+      direction: "Outbound",
+      date: "13 Jul 2026",
+    },
+    {
+      kind: "linkedin",
+      action: "Replied",
+      campaign: "[FS] RL - Stealth",
+      from: personRaynard,
+      to: personDarshanP,
+      preview:
+        "Hi yes! Could you please send a link and I'll book myself in 🙂. Sorry for not getting back to you, I was just coordinating with my cofounders.",
+      time: "11:47",
+      direction: "Outbound",
+      date: "10 Jul 2026",
+    },
+    {
+      kind: "linkedin",
+      action: "Opened",
+      campaign: "[FS] RL - Stealth",
+      from: personRaynard,
+      to: personDarshanP,
+      time: "11:47",
+      direction: "Outbound",
+      date: "10 Jul 2026",
+    },
+    {
+      kind: "linkedin",
+      action: "Sent",
+      campaign: "[FS] RL - Stealth",
+      from: personRaynard,
+      to: personDarshanP,
+      preview:
+        "Hi Darshan, just wanted to check-in again if you'd be open for the quick chat? Would be great to connect sometime this week or early next if you have 30 minutes to spare. Looking forward to hopefully chatting!",
+      time: "11:35",
+      direction: "Outbound",
+      date: "10 Jul 2026",
+    },
+    {
+      kind: "linkedin",
+      action: "Sent",
+      campaign: "[FS] RL - Stealth",
+      from: personRaynard,
+      to: personDarshanP,
+      preview: "Hey Darshan!",
+      time: "11:33",
+      direction: "Outbound",
+      date: "7 Jul 2026",
+    },
+    {
+      kind: "linkedin",
+      action: "Invite Accepted",
+      campaign: "[FS] RL - Stealth",
+      from: personRaynard,
+      to: personDarshanP,
+      time: "11:25",
+      direction: "Outbound",
+      date: "6 Jul 2026",
+    },
+    {
+      kind: "linkedin",
+      action: "Invite Done",
+      campaign: "[FS] RL - Stealth",
+      from: personRaynard,
+      to: personDarshanP,
+      time: "11:09",
+      direction: "Outbound",
+      date: "6 Jul 2026",
+    },
+    {
+      kind: "linkedin",
+      action: "Visit Done",
+      campaign: "[FS] RL - Stealth",
+      from: personRaynard,
+      to: personDarshanP,
+      time: "11:06",
+      direction: "Outbound",
+      date: "6 Jul 2026",
     },
   ],
 };

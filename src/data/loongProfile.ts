@@ -1,5 +1,16 @@
-import type { TalentProfile } from "../types";
+import type { InteractionPerson, TalentProfile } from "../types";
 import { generateContributions } from "../utils/github";
+
+const alexRankin: InteractionPerson = {
+  name: "Alex Rankin",
+  initials: "AR",
+  colorClasses: "bg-amber-100 text-amber-700 dark:bg-amber-500/20 dark:text-amber-400",
+};
+const loongWang: InteractionPerson = {
+  name: "Loong Wang",
+  initials: "LW",
+  colorClasses: "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400",
+};
 
 export const loongProfile: TalentProfile = {
   titleLine: "CEO & Founder · Rethinking drug design one byte at a time.",
@@ -196,6 +207,70 @@ export const loongProfile: TalentProfile = {
       kind: "status",
       text: "Loong Wang left QDX and started Metal as CEO and Founder",
       date: "Last Monday",
+    },
+  ],
+  interactions: [
+    {
+      kind: "linkedin",
+      action: "Replied",
+      campaign: "[FS] AR - Metal",
+      from: alexRankin,
+      to: loongWang,
+      preview: "Sounds good — Thursday 2pm works well. I'll send a calendar link now.",
+      time: "16:20",
+      direction: "Outbound",
+      date: "3 weeks ago",
+    },
+    {
+      kind: "meeting",
+      title: "Loong Wang <> Alex Rankin - Intro Call",
+      status: "Confirmed",
+      month: "JUN",
+      day: "18",
+      weekday: "Thu",
+      organizer: alexRankin,
+      attendees: [alexRankin, loongWang],
+      durationLabel: "30m",
+      timeRange: "14:00 — 14:30",
+      date: "3 weeks ago",
+    },
+    {
+      kind: "meeting-notes",
+      attendees: [loongWang, alexRankin],
+      actionItems: [
+        { text: "Alex to circulate deck internally and gauge partner interest", done: false },
+        { text: "Loong to share Metal's latest cap table and burn rate", done: true },
+      ],
+      hashtags: ["#meeting-note", "#NOTION", "#Warm", "#Founder(Active)"],
+      mentionedAttendees: ["Loong Wang"],
+      author: alexRankin,
+      tags: [
+        { label: "Founder (Active)", tone: "stage" },
+        { label: "Warm", tone: "temperature" },
+        { label: "Public", tone: "visibility" },
+      ],
+      date: "3 weeks ago",
+    },
+    {
+      kind: "linkedin",
+      action: "Sent",
+      campaign: "[FS] AR - Metal",
+      from: alexRankin,
+      to: loongWang,
+      preview: "Hey Loong, congrats on Metal — would love to grab 30 minutes to hear the story.",
+      time: "09:45",
+      direction: "Outbound",
+      date: "4 weeks ago",
+    },
+    {
+      kind: "linkedin",
+      action: "Invite Accepted",
+      campaign: "[FS] AR - Metal",
+      from: alexRankin,
+      to: loongWang,
+      time: "09:30",
+      direction: "Outbound",
+      date: "4 weeks ago",
     },
   ],
 };

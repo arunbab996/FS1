@@ -1,8 +1,8 @@
 import {
   Award,
   Briefcase,
-  Calendar,
   ChevronDown,
+  CircleUser,
   Code2,
   ExternalLink,
   Eye,
@@ -17,10 +17,8 @@ import {
   MessageSquare,
   Mic,
   Newspaper,
-  Reply,
   Rocket,
   School,
-  Search,
   Send,
   Sparkles,
   Star,
@@ -53,10 +51,12 @@ import {
 import { extractPersonName, stripMarkdown } from "../utils/text";
 import { formatTenureLabel } from "../utils/tenure";
 import { tagColorClasses, tagIcon } from "../utils/tags";
+import { AssignInvestorButton } from "./AssignInvestorButton";
 import { GithubActivityGraph } from "./GithubActivityGraph";
 import { GithubIcon } from "./icons/GithubIcon";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
+import { InteractionsTimeline } from "./InteractionsTimeline";
 import { TagInfoCard } from "./TagInfoCard";
 import { Tooltip } from "./Tooltip";
 
@@ -256,23 +256,72 @@ function founderDnaCopy(dna: NonNullable<ReturnType<typeof computeFounderDna>>) 
   return { title, detail: detailParts.join(" — ") };
 }
 
-function activityIcon(kind: ProfileActivityItem["kind"]) {
-  switch (kind) {
-    case "sourced":
-      return Search;
-    case "connected":
-      return Handshake;
-    case "linkedin-sent":
-      return Send;
-    case "linkedin-replied":
-      return Reply;
-    case "linkedin-opened":
-      return Eye;
-    case "meeting":
-      return Calendar;
-    case "status":
-      return Sparkles;
-  }
+/**
+ * Roomier, single-panel take on the activity feed — used to headline the Insights tab.
+ * The first tag on an item (when present) is read as who it's assigned to, e.g. an
+ * analyst/investor name — styled the same way AssignInvestorButton renders an assignment,
+ * with the rest of the tags as plain status pills. Untagged rows get a real, working
+ * "Assign investor" button instead, since that's the only per-signal assignment we store.
+ */
+function InteractionsPanel({ items, signal }: { items: ProfileActivityItem[]; signal: Signal }) {
+  return (
+    <div className="divide-y divide-gray-100 rounded-xl border border-gray-200 dark:divide-neutral-800 dark:border-neutral-700">
+      {items.map((item, i) => {
+        const [assignee, ...statusTags] = item.tags ?? [];
+        return (
+          <div key={i} className="flex items-center gap-2.5 px-3 py-2">
+            <span className="w-5 shrink-0 text-center text-base leading-none">
+              {item.kind === "sourced" ? "🔍" : "🤝"}
+            </span>
+            <p className="min-w-0 flex-1 truncate text-sm text-gray-700 dark:text-neutral-300">
+              {item.text}
+              <span className="text-gray-300 dark:text-neutral-600"> · </span>
+              <span className="text-gray-400 dark:text-neutral-500">{item.date}</span>
+            </p>
+            <div className="flex shrink-0 items-center gap-1.5">
+              {assignee ? (
+                <>
+                  <span className="flex items-center gap-1 rounded-full bg-blue-50 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-blue-700 dark:bg-blue-500/15 dark:text-blue-400">
+                    <CircleUser className="h-3.5 w-3.5 shrink-0" />
+                    {assignee}
+                  </span>
+                  {statusTags.map((t) => (
+                    <span
+                      key={t}
+                      className="rounded-full bg-rose-50 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-rose-600 dark:bg-rose-500/15 dark:text-rose-400"
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </>
+              ) : (
+                <AssignInvestorButton signal={signal} />
+              )}
+              {item.direction && (
+                <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-gray-500 dark:bg-neutral-800 dark:text-neutral-400">
+                  {item.direction}
+                </span>
+              )}
+              <button
+                type="button"
+                aria-label="Open"
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 dark:border-neutral-700 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-300"
+              >
+                <ExternalLink className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                aria-label="Send message"
+                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 dark:border-neutral-700 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-300"
+              >
+                <Send className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 function linkedinActivityIcon(kind: LinkedInActivityItem["kind"]) {
@@ -428,7 +477,7 @@ export function ProfileDrawer({
     ...(profile?.linkedinActivity?.length
       ? ([{ id: "social", label: "Social Activity" }] as const)
       : []),
-    ...(profile?.activity.length
+    ...(profile?.interactions?.length
       ? ([{ id: "interactions", label: "Interactions" }] as const)
       : []),
   ];
@@ -542,7 +591,16 @@ export function ProfileDrawer({
           <div className="flex shrink-0 gap-4 overflow-x-auto border-b border-gray-200 px-5 [scrollbar-width:none] dark:border-neutral-700 [&::-webkit-scrollbar]:hidden">
             {tabs.map((t) => (
               <TabButton key={t.id} active={tab === t.id} onClick={() => setTab(t.id)}>
-                {t.label}
+                <span
+                  aria-label={t.id === "interactions" ? "Has past interactions" : undefined}
+                  className={
+                    t.id === "interactions"
+                      ? "animate-interaction-glow rounded-full px-1.5 py-0.5"
+                      : undefined
+                  }
+                >
+                  {t.label}
+                </span>
               </TabButton>
             ))}
           </div>
@@ -749,6 +807,20 @@ export function ProfileDrawer({
 
             {tab === "insights" && profile && (
               <div className="flex flex-col gap-5">
+                {(() => {
+                  const sourcingActivity = profile.activity.filter(
+                    (a) => a.kind === "sourced" || a.kind === "connected",
+                  );
+                  return sourcingActivity.length ? (
+                    <div>
+                      <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                        Signals
+                      </h3>
+                      <InteractionsPanel items={sourcingActivity} signal={signal} />
+                    </div>
+                  ) : null;
+                })()}
+
                 {profile.behavioralSignals?.length ? (
                   <div>
                     <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-neutral-50">
@@ -1179,45 +1251,8 @@ export function ProfileDrawer({
               </div>
             )}
 
-            {tab === "interactions" && profile && (
-              <div className="flex flex-col gap-3">
-                {profile.activity.map((item, i) => {
-                  const Icon = activityIcon(item.kind);
-                  return (
-                    <div
-                      key={i}
-                      className="flex gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700"
-                    >
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800">
-                        <Icon className="h-3.5 w-3.5 text-gray-500 dark:text-neutral-400" />
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-sm text-gray-700 dark:text-neutral-300">{item.text}</p>
-                        {item.tags && (
-                          <div className="mt-1.5 flex flex-wrap gap-1.5">
-                            {item.tags.map((t) => (
-                              <span
-                                key={t}
-                                className="rounded-full bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-700 dark:bg-blue-500/15 dark:text-blue-400"
-                              >
-                                {t}
-                              </span>
-                            ))}
-                          </div>
-                        )}
-                        <div className="mt-1.5 flex items-center gap-2 text-xs text-gray-400 dark:text-neutral-500">
-                          <span>{item.date}</span>
-                          {item.direction && (
-                            <span className="rounded-full bg-gray-100 px-1.5 py-0.5 text-[10px] font-medium text-gray-500 dark:bg-neutral-800 dark:text-neutral-400">
-                              {item.direction}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+            {tab === "interactions" && profile?.interactions && (
+              <InteractionsTimeline items={profile.interactions} />
             )}
           </div>
         </div>
