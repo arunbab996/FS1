@@ -50,7 +50,6 @@ import {
   signalEducationLevels,
   signalGraduationYear,
 } from "../utils/signalFilters";
-import { discoverySourceFor } from "../utils/sourcedVia";
 import { extractPersonName, stripMarkdown } from "../utils/text";
 import { formatTenureLabel } from "../utils/tenure";
 import { tagColorClasses, tagIcon } from "../utils/tags";
@@ -634,54 +633,6 @@ export function ProfileDrawer({
                     <StatTile label="Roles held" value={profile.rolesHeld} />
                     <StatTile label="Avg tenure" value={formatTenureLabel(profile.avgTenureMonths)} />
                     <StatTile label="Followers" value={profile.followers ?? "—"} />
-                  </div>
-                )}
-
-                {profile &&
-                (profile.lastAnalystConnection ||
-                  profile.lastConnectedDate ||
-                  profile.lastStatus) ? (
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                      Sourcing
-                    </h3>
-                    <div className="mt-2 grid grid-cols-3 gap-3">
-                      <div className="rounded-xl border border-gray-200 bg-gray-50 p-3 dark:border-neutral-700 dark:bg-neutral-800">
-                        <p className="text-[11px] font-semibold tracking-wide text-gray-400 uppercase dark:text-neutral-500">
-                          Last analyst
-                        </p>
-                        <p className="mt-1 text-sm font-medium text-gray-900 dark:text-neutral-50">
-                          {profile.lastAnalystConnection ?? "—"}
-                        </p>
-                      </div>
-                      <div className="rounded-xl border border-gray-200 bg-gray-50 p-3 dark:border-neutral-700 dark:bg-neutral-800">
-                        <p className="text-[11px] font-semibold tracking-wide text-gray-400 uppercase dark:text-neutral-500">
-                          Last connected
-                        </p>
-                        <p className="mt-1 text-sm font-medium text-gray-900 dark:text-neutral-50">
-                          {profile.lastConnectedDate ?? "—"}
-                        </p>
-                      </div>
-                      <div className="rounded-xl border border-gray-200 bg-gray-50 p-3 dark:border-neutral-700 dark:bg-neutral-800">
-                        <p className="text-[11px] font-semibold tracking-wide text-gray-400 uppercase dark:text-neutral-500">
-                          Last status
-                        </p>
-                        <p className="mt-1 text-sm font-medium text-gray-900 dark:text-neutral-50">
-                          {profile.lastStatus ?? "—"}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                      Sourcing
-                    </h3>
-                    <p className="mt-1.5 text-sm text-gray-700 dark:text-neutral-300">
-                      {signal.sourcedBy
-                        ? `Sourced by ${signal.sourcedBy}`
-                        : `Sourced via ${discoverySourceFor(signal.id)}`}
-                    </p>
                   </div>
                 )}
               </div>
