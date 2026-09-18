@@ -140,7 +140,7 @@ function HighlightCard({
 
 function StatChip({ icon: Icon, label }: { icon: typeof Briefcase; label: string }) {
   return (
-    <span className="flex items-center gap-1.5 rounded-full border border-gray-200 px-2.5 py-1 text-xs text-gray-600 dark:border-neutral-700 dark:text-neutral-300">
+    <span className="flex items-center gap-1.5 rounded-full bg-gray-50 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-neutral-800 dark:text-neutral-300">
       <Icon className="h-3.5 w-3.5 text-gray-400 dark:text-neutral-500" />
       {label}
     </span>
@@ -514,19 +514,19 @@ export function ProfileDrawer({
             <div className="flex items-start justify-between">
               <div className="flex items-start gap-3">
                 {signal.useGenericAvatar ? (
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gray-200 dark:bg-neutral-700">
+                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-gray-200 ring-2 ring-gray-100 dark:bg-neutral-700 dark:ring-neutral-800">
                     <User className="h-8 w-8 text-gray-400 dark:text-neutral-400" />
                   </div>
                 ) : (
                   <img
                     src={signal.photoUrl ?? personPhotoUrl(signal.id)}
                     alt={signal.avatarInitials}
-                    className="h-16 w-16 shrink-0 rounded-full object-cover"
+                    className="h-16 w-16 shrink-0 rounded-full object-cover ring-2 ring-gray-100 dark:ring-neutral-800"
                   />
                 )}
                 <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-bold text-gray-900 dark:text-neutral-50">
+                  <div className="flex items-center gap-1">
+                    <h2 className="mr-1 text-xl font-bold text-gray-900 dark:text-neutral-50">
                       {name}
                     </h2>
                     {signal.linkedinUrl && (
@@ -535,7 +535,7 @@ export function ProfileDrawer({
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="View LinkedIn"
-                        className="text-gray-600 hover:text-gray-900 dark:text-neutral-300 dark:hover:text-neutral-50"
+                        className="rounded-md p-1 text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-50"
                       >
                         <LinkedinIcon className="h-4 w-4" />
                       </a>
@@ -546,16 +546,20 @@ export function ProfileDrawer({
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="View GitHub"
-                        className="text-gray-400 hover:text-gray-700 dark:text-neutral-500 dark:hover:text-neutral-200"
+                        className="rounded-md p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-200"
                       >
                         <GithubIcon className="h-4 w-4" />
                       </a>
                     ) : (
-                      <GithubIcon className="h-4 w-4 text-gray-300 dark:text-neutral-700" />
+                      <span className="rounded-md p-1 text-gray-300 dark:text-neutral-700">
+                        <GithubIcon className="h-4 w-4" />
+                      </span>
                     )}
-                    <TwitterIcon className="h-4 w-4 text-gray-400 dark:text-neutral-500" />
+                    <span className="rounded-md p-1 text-gray-400 dark:text-neutral-500">
+                      <TwitterIcon className="h-4 w-4" />
+                    </span>
                   </div>
-                  <p className="mt-0.5 text-sm text-gray-500 dark:text-neutral-400">
+                  <p className="mt-1 text-sm text-gray-500 dark:text-neutral-400">
                     {profile?.titleLine ?? stripMarkdown(signal.headline)}
                   </p>
                 </div>
