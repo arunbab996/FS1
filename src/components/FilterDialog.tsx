@@ -3,6 +3,7 @@ import {
   Briefcase,
   Building2,
   Calendar,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Gauge,
@@ -183,7 +184,7 @@ function CheckboxList({
             value={search}
             onChange={(e) => onSearchChange?.(e.target.value)}
             placeholder={`Search ${(searchLabel ?? "").toLowerCase()}...`}
-            className="w-full rounded-lg border border-gray-200 bg-white py-1.5 pr-2.5 pl-8 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder:text-neutral-500"
+            className="w-full rounded-lg border border-gray-200 bg-white py-1.5 pr-2.5 pl-8 text-sm text-gray-700 placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder:text-neutral-500"
           />
         </div>
       )}
@@ -283,7 +284,7 @@ function SearchSelect({
           }}
           onFocus={() => setOpen(true)}
           placeholder={placeholder}
-          className="w-full rounded-lg border border-gray-200 bg-white py-1.5 pr-2.5 pl-8 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder:text-neutral-500"
+          className="w-full rounded-lg border border-gray-200 bg-white py-1.5 pr-2.5 pl-8 text-sm text-gray-700 placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-200 dark:placeholder:text-neutral-500"
         />
         {open && query.trim() && (
           <div className="absolute top-full left-0 z-10 mt-1 max-h-64 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-neutral-700 dark:bg-neutral-800">
@@ -346,6 +347,23 @@ function ScopeToggle({
   );
 }
 
+/** Native <select> with the OS chevron swapped for one that matches the app's icon set. */
+function StyledSelect({
+  className,
+  fullWidth,
+  children,
+  ...props
+}: React.SelectHTMLAttributes<HTMLSelectElement> & { fullWidth?: boolean }) {
+  return (
+    <div className={`relative ${fullWidth ? "w-full" : "inline-block"}`}>
+      <select {...props} className={`w-full appearance-none ${className ?? ""}`}>
+        {children}
+      </select>
+      <ChevronDown className="pointer-events-none absolute top-1/2 right-3 h-3.5 w-3.5 -translate-y-1/2 text-gray-400 dark:text-neutral-500" />
+    </div>
+  );
+}
+
 /** Generic operator + value(s) numeric filter panel — same shape as ScorePanel, reused for fields like years of experience. */
 function RangePanel({
   filter,
@@ -373,13 +391,13 @@ function RangePanel({
   }
 
   const selectClasses =
-    "cursor-pointer rounded-full border border-gray-200 bg-white py-2 pr-8 pl-3.5 text-sm text-gray-700 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200";
+    "cursor-pointer rounded-full border border-gray-200 bg-white py-2 pr-8 pl-3.5 text-sm text-gray-700 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-200";
   const inputClasses =
-    "rounded-full border border-gray-200 bg-white px-3.5 py-2 text-sm text-gray-800 placeholder:text-gray-400 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500";
+    "rounded-full border border-gray-200 bg-white px-3.5 py-2 text-sm text-gray-800 placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500";
 
   return (
-    <div className="flex items-center gap-2">
-      <select
+    <div className="flex flex-wrap items-center gap-2">
+      <StyledSelect
         value={filter.operator ?? "any"}
         onChange={(e) => selectOperator(e.target.value)}
         className={selectClasses}
@@ -390,7 +408,7 @@ function RangePanel({
             {scoreOperatorLabels[op]}
           </option>
         ))}
-      </select>
+      </StyledSelect>
 
       {filter.operator && filter.operator !== "range" && (
         <input
@@ -631,7 +649,7 @@ export function FilterDialog({
           </div>
 
           <div className="min-w-0 flex-1 overflow-y-auto border-l border-gray-200 bg-gray-50 p-4 dark:border-neutral-800 dark:bg-black/20">
-            <h3 className="mb-2 text-sm font-semibold text-gray-900 dark:text-neutral-50">
+            <h3 className="mb-3 border-b border-gray-200 pb-2 text-lg font-bold text-gray-900 dark:border-neutral-700 dark:text-neutral-50">
               {activeMeta.label}
             </h3>
 
@@ -640,7 +658,7 @@ export function FilterDialog({
             {activeCategory === "countries" && renderOptionList("countries", options.countries)}
             {activeCategory === "locations" && renderOptionList("locations", options.locations)}
             {activeCategory === "education" && (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-4">
                 <div>
                   <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     School
@@ -653,7 +671,7 @@ export function FilterDialog({
                   />
                 </div>
 
-                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                <div className="border-t border-gray-200 pt-3 dark:border-neutral-700">
                   <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Education level
                   </span>
@@ -664,40 +682,43 @@ export function FilterDialog({
                   />
                 </div>
 
-                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
-                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                    Technical
-                  </span>
-                  <select
-                    value={draft.technical ?? "any"}
-                    onChange={(e) =>
-                      setDraft({
-                        ...draft,
-                        technical: e.target.value === "any" ? null : (e.target.value as "technical" | "non-technical"),
-                      })
-                    }
-                    className="cursor-pointer rounded-full border border-gray-200 bg-white py-2 pr-8 pl-3.5 text-sm text-gray-700 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
-                  >
-                    <option value="any">All</option>
-                    <option value="technical">Technical</option>
-                    <option value="non-technical">Non-technical</option>
-                  </select>
+                <div className="grid grid-cols-2 gap-4 border-t border-gray-200 pt-3 dark:border-neutral-700">
+                  <div>
+                    <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Technical
+                    </span>
+                    <StyledSelect
+                      value={draft.technical ?? "any"}
+                      onChange={(e) =>
+                        setDraft({
+                          ...draft,
+                          technical: e.target.value === "any" ? null : (e.target.value as "technical" | "non-technical"),
+                        })
+                      }
+                      fullWidth
+                      className="cursor-pointer rounded-full border border-gray-200 bg-white py-2 pr-8 pl-3.5 text-sm text-gray-700 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-200"
+                    >
+                      <option value="any">All</option>
+                      <option value="technical">Technical</option>
+                      <option value="non-technical">Non-technical</option>
+                    </StyledSelect>
+                  </div>
+
+                  <div>
+                    <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Field of study
+                    </span>
+                    <input
+                      type="text"
+                      value={draft.fieldOfStudy}
+                      onChange={(e) => setDraft({ ...draft, fieldOfStudy: e.target.value })}
+                      placeholder="e.g. Computer Science, Biotechnology..."
+                      className="w-full rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500"
+                    />
+                  </div>
                 </div>
 
-                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
-                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                    Field of study
-                  </span>
-                  <input
-                    type="text"
-                    value={draft.fieldOfStudy}
-                    onChange={(e) => setDraft({ ...draft, fieldOfStudy: e.target.value })}
-                    placeholder="e.g. Computer Science, Biotechnology..."
-                    className="w-full rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-600"
-                  />
-                </div>
-
-                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                <div className="border-t border-gray-200 pt-3 dark:border-neutral-700">
                   <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Graduation year
                   </span>
@@ -717,7 +738,7 @@ export function FilterDialog({
             {activeCategory === "assignedTo" && renderOptionList("assignedTo", options.assignedTo)}
 
             {activeCategory === "companies" && (
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-4">
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Company name
@@ -743,7 +764,7 @@ export function FilterDialog({
                   )}
                 />
 
-                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                <div className="border-t border-gray-200 pt-3 dark:border-neutral-700">
                   <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Company industry
                   </span>
@@ -755,7 +776,7 @@ export function FilterDialog({
                   />
                 </div>
 
-                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
+                <div className="border-t border-gray-200 pt-3 dark:border-neutral-700">
                   <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Company size
                   </span>
@@ -766,38 +787,40 @@ export function FilterDialog({
                   />
                 </div>
 
-                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
-                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                    Founded year
-                  </span>
-                  <RangePanel
-                    filter={draft.companyFoundedYear}
-                    onChange={(companyFoundedYear) => setDraft({ ...draft, companyFoundedYear })}
-                    min={1900}
-                    max={2030}
-                    step={1}
-                    anyLabel="All"
-                    valueLabel="Year"
-                  />
-                </div>
+                <div className="grid grid-cols-2 gap-4 border-t border-gray-200 pt-3 dark:border-neutral-700">
+                  <div>
+                    <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Founded year
+                    </span>
+                    <RangePanel
+                      filter={draft.companyFoundedYear}
+                      onChange={(companyFoundedYear) => setDraft({ ...draft, companyFoundedYear })}
+                      min={1900}
+                      max={2030}
+                      step={1}
+                      anyLabel="All"
+                      valueLabel="Year"
+                    />
+                  </div>
 
-                <div className="border-t border-gray-200 pt-2.5 dark:border-neutral-700">
-                  <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                    Company tagline
-                  </span>
-                  <input
-                    type="text"
-                    value={draft.companyTagline}
-                    onChange={(e) => setDraft({ ...draft, companyTagline: e.target.value })}
-                    placeholder="e.g. AI-powered analytics, Fintech for SMBs..."
-                    className="w-full rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-600"
-                  />
+                  <div>
+                    <span className="mb-1.5 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Company tagline
+                    </span>
+                    <input
+                      type="text"
+                      value={draft.companyTagline}
+                      onChange={(e) => setDraft({ ...draft, companyTagline: e.target.value })}
+                      placeholder="e.g. AI-powered analytics, Fintech for SMBs..."
+                      className="w-full rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500"
+                    />
+                  </div>
                 </div>
               </div>
             )}
 
             {activeCategory === "experience" && (
-              <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
@@ -824,11 +847,11 @@ export function FilterDialog({
                   </div>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
+                <div className="border-t border-gray-200 pt-3 dark:border-neutral-700">
                   <span className="mb-2 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Seniority level
                   </span>
-                  <select
+                  <StyledSelect
                     value={draft.seniorityLevel ?? "any"}
                     onChange={(e) =>
                       setDraft({
@@ -836,7 +859,7 @@ export function FilterDialog({
                         seniorityLevel: e.target.value === "any" ? null : e.target.value,
                       })
                     }
-                    className="cursor-pointer rounded-full border border-gray-200 bg-white py-2 pr-8 pl-3.5 text-sm text-gray-700 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200"
+                    className="cursor-pointer rounded-full border border-gray-200 bg-white py-2 pr-8 pl-3.5 text-sm text-gray-700 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-200"
                   >
                     <option value="any">All</option>
                     {seniorityLevelOptions.map((level) => (
@@ -844,10 +867,10 @@ export function FilterDialog({
                         {level}
                       </option>
                     ))}
-                  </select>
+                  </StyledSelect>
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
+                <div className="border-t border-gray-200 pt-3 dark:border-neutral-700">
                   <span className="mb-3 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Years of experience
                   </span>
@@ -862,7 +885,7 @@ export function FilterDialog({
                   />
                 </div>
 
-                <div className="border-t border-gray-200 pt-4 dark:border-neutral-700">
+                <div className="border-t border-gray-200 pt-3 dark:border-neutral-700">
                   <span className="mb-3 block text-sm font-semibold text-gray-900 dark:text-neutral-50">
                     Age
                   </span>
@@ -955,10 +978,11 @@ function ScorePanel({
     <div className="flex max-w-xs flex-col gap-4">
       <label className="flex flex-col gap-1">
         <span className="text-xs font-medium text-gray-500 dark:text-neutral-400">Condition</span>
-        <select
+        <StyledSelect
           value={score.operator ?? "any"}
           onChange={(e) => selectOperator(e.target.value)}
-          className="w-full cursor-pointer rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
+          fullWidth
+          className="cursor-pointer rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-100"
         >
           <option value="any">Any score</option>
           {scoreOperators.map((op) => (
@@ -966,7 +990,7 @@ function ScorePanel({
               {scoreOperatorLabels[op]}
             </option>
           ))}
-        </select>
+        </StyledSelect>
       </label>
 
       {score.operator && score.operator !== "range" && (
@@ -982,7 +1006,7 @@ function ScorePanel({
             onChange={(e) =>
               onChange({ ...score, value: e.target.value === "" ? null : Number(e.target.value) })
             }
-            className="w-32 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-600"
+            className="w-32 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500"
           />
         </label>
       )}
@@ -1001,7 +1025,7 @@ function ScorePanel({
               onChange={(e) =>
                 onChange({ ...score, min: e.target.value === "" ? null : Number(e.target.value) })
               }
-              className="w-24 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-600"
+              className="w-24 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500"
             />
           </label>
           <span className="mt-5 text-gray-300 dark:text-neutral-600">–</span>
@@ -1017,7 +1041,7 @@ function ScorePanel({
               onChange={(e) =>
                 onChange({ ...score, max: e.target.value === "" ? null : Number(e.target.value) })
               }
-              className="w-24 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-600"
+              className="w-24 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 placeholder:text-gray-400 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-500"
             />
           </label>
         </div>
@@ -1097,14 +1121,14 @@ function DatePanel({
               type="date"
               value={date.customStart ?? ""}
               onChange={(e) => onChange({ ...date, customStart: e.target.value })}
-              className="min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
+              className="min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-100"
             />
             <span className="shrink-0 text-gray-300 dark:text-neutral-600">–</span>
             <input
               type="date"
               value={date.customEnd ?? ""}
               onChange={(e) => onChange({ ...date, customEnd: e.target.value })}
-              className="min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
+              className="min-w-0 flex-1 rounded-lg border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-800 hover:border-gray-300 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none dark:border-neutral-700 dark:hover:border-neutral-600 dark:bg-neutral-900 dark:text-neutral-100"
             />
           </div>
 
