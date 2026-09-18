@@ -100,18 +100,48 @@ body {
   animation: signal-flicker 2.6s ease-in-out infinite;
 }
 
-@keyframes interaction-glow {
-  0%,
-  100% {
-    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
-  }
-  50% {
-    box-shadow: 0 0 6px 2px rgba(220, 38, 38, 0.45);
+@property --interaction-border-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes interaction-border-spin {
+  to {
+    --interaction-border-angle: 360deg;
   }
 }
 
-.animate-interaction-glow {
-  animation: interaction-glow 2.4s ease-in-out infinite;
+.animate-interaction-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.animate-interaction-border::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border-radius: 7px;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--interaction-border-angle),
+    transparent 0deg,
+    transparent 260deg,
+    #92700f 285deg,
+    #f4cd63 305deg,
+    #fff3c4 315deg,
+    #f4cd63 325deg,
+    #92700f 345deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: interaction-border-spin 2.8s linear infinite;
+  pointer-events: none;
+  z-index: -1;
 }
 
 @keyframes inbox-row-in {

@@ -601,7 +601,7 @@ export function ProfileDrawer({
                   aria-label={t.id === "interactions" ? "Has past interactions" : undefined}
                   className={
                     t.id === "interactions"
-                      ? "animate-interaction-glow rounded-full px-1.5 py-0.5"
+                      ? "animate-interaction-border rounded-md px-1.5 py-0.5"
                       : undefined
                   }
                 >
