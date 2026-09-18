@@ -56,7 +56,7 @@ function LinkedInRow({ item }: { item: LinkedInTouchpoint }) {
   const meta = linkedinActionMeta(item.action);
   const Icon = meta.icon;
   return (
-    <div className="rounded-xl border border-gray-200 p-3 dark:border-neutral-700">
+    <div className="rounded-xl border border-gray-200 p-3 transition-shadow hover:shadow-sm dark:border-neutral-700">
       <div className="flex items-start gap-3">
         <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${meta.classes}`}>
           <Icon className="h-4 w-4" />
@@ -97,7 +97,7 @@ function LinkedInRow({ item }: { item: LinkedInTouchpoint }) {
 
 function EmailRow({ item }: { item: EmailInteraction }) {
   return (
-    <div className="rounded-xl border border-gray-200 p-3 dark:border-neutral-700">
+    <div className="rounded-xl border border-gray-200 p-3 transition-shadow hover:shadow-sm dark:border-neutral-700">
       <div className="flex items-start gap-3">
         <PersonChip person={item.from} />
         <div className="min-w-0 flex-1">
@@ -123,10 +123,18 @@ function EmailRow({ item }: { item: EmailInteraction }) {
   );
 }
 
+const meetingStatusTileClasses: Record<MeetingInteraction["status"], string> = {
+  Confirmed: "border-emerald-200 bg-emerald-50 dark:border-emerald-900/50 dark:bg-emerald-500/10",
+  Tentative: "border-amber-200 bg-amber-50 dark:border-amber-900/50 dark:bg-amber-500/10",
+  Cancelled: "border-gray-200 bg-gray-50 dark:border-neutral-700 dark:bg-neutral-800",
+};
+
 function MeetingRow({ item }: { item: MeetingInteraction }) {
   return (
-    <div className="flex gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700">
-      <div className="flex w-11 shrink-0 flex-col items-center justify-center rounded-lg border border-gray-200 py-1 dark:border-neutral-700">
+    <div className="flex gap-3 rounded-xl border border-gray-200 p-3 transition-shadow hover:shadow-sm dark:border-neutral-700">
+      <div
+        className={`flex w-11 shrink-0 flex-col items-center justify-center rounded-lg border py-1 ${meetingStatusTileClasses[item.status]}`}
+      >
         <span className="text-[10px] font-semibold tracking-wide text-gray-400 uppercase dark:text-neutral-500">
           {item.month}
         </span>
@@ -164,7 +172,7 @@ function MeetingRow({ item }: { item: MeetingInteraction }) {
 
 function MeetingNotesCard({ item }: { item: MeetingNotesInteraction }) {
   return (
-    <div className="rounded-xl border border-gray-200 p-3 dark:border-neutral-700">
+    <div className="rounded-xl border border-gray-200 p-3 transition-shadow hover:shadow-sm dark:border-neutral-700">
       <div className="flex flex-wrap items-center gap-3">
         {item.attendees.map((a, i) => (
           <span key={i} className="flex items-center gap-1.5 text-xs font-medium text-gray-700 dark:text-neutral-300">
@@ -174,9 +182,6 @@ function MeetingNotesCard({ item }: { item: MeetingNotesInteraction }) {
         ))}
       </div>
       <p className="mt-3 text-[10px] font-bold tracking-wide text-gray-400 uppercase dark:text-neutral-500">
-        Summary
-      </p>
-      <p className="mt-2 text-[10px] font-bold tracking-wide text-gray-400 uppercase dark:text-neutral-500">
         Action Items
       </p>
       <div className="mt-1.5 flex flex-col gap-1.5">
@@ -294,16 +299,27 @@ export function InteractionsTimeline({ items }: { items: InteractionItem[] }) {
         </button>
       </div>
 
-      <div className="flex flex-col gap-4 border-l-2 border-gray-100 pl-4 dark:border-neutral-800">
-        {visible.map((item, i) => (
-          <div key={i} className="relative">
-            <span className="absolute top-4 -left-[21px] h-2 w-2 rounded-full bg-gray-300 dark:bg-neutral-600" />
-            {item.kind === "linkedin" && <LinkedInRow item={item} />}
-            {item.kind === "email" && <EmailRow item={item} />}
-            {item.kind === "meeting" && <MeetingRow item={item} />}
-            {item.kind === "meeting-notes" && <MeetingNotesCard item={item} />}
-          </div>
-        ))}
+      <div className="flex flex-col gap-3 border-l-2 border-gray-200 pl-5 dark:border-neutral-700">
+        {visible.map((item, i) => {
+          const isNewDay = i === 0 || visible[i - 1].date !== item.date;
+          return (
+            <div key={i}>
+              {isNewDay && (
+                <div className={`relative flex items-center gap-2 pb-2 ${i === 0 ? "" : "pt-1"}`}>
+                  <span className="absolute -left-[25px] h-2.5 w-2.5 rounded-full border-2 border-gray-900 bg-white dark:border-neutral-100 dark:bg-neutral-900" />
+                  <span className="text-[10px] font-bold tracking-wide text-gray-900 uppercase dark:text-neutral-100">
+                    {item.date}
+                  </span>
+                  <div className="h-px flex-1 bg-gray-100 dark:bg-neutral-800" />
+                </div>
+              )}
+              {item.kind === "linkedin" && <LinkedInRow item={item} />}
+              {item.kind === "email" && <EmailRow item={item} />}
+              {item.kind === "meeting" && <MeetingRow item={item} />}
+              {item.kind === "meeting-notes" && <MeetingNotesCard item={item} />}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
