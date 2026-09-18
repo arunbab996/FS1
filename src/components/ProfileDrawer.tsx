@@ -51,7 +51,6 @@ import {
 import { extractPersonName, stripMarkdown } from "../utils/text";
 import { formatTenureLabel } from "../utils/tenure";
 import { tagColorClasses, tagIcon } from "../utils/tags";
-import { AssignInvestorButton } from "./AssignInvestorButton";
 import { GithubActivityGraph } from "./GithubActivityGraph";
 import { GithubIcon } from "./icons/GithubIcon";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
@@ -258,25 +257,25 @@ function founderDnaCopy(dna: NonNullable<ReturnType<typeof computeFounderDna>>) 
 
 /**
  * Roomier, single-panel take on the activity feed — used to headline the Insights tab.
- * The first tag on an item (when present) is read as who it's assigned to, e.g. an
- * analyst/investor name — styled the same way AssignInvestorButton renders an assignment,
- * with the rest of the tags as plain status pills. Untagged rows get a real, working
- * "Assign investor" button instead, since that's the only per-signal assignment we store.
+ * The first tag on an item (when present) is read as who that specific touchpoint is
+ * attributed to, with the rest of the tags as plain status pills. Untagged rows show a
+ * static "Assign investor" pill instead — this is per-touchpoint history, not the
+ * signal's current (single, shared) investor assignment, so it can't reuse AssignInvestorButton.
  */
-function InteractionsPanel({ items, signal }: { items: ProfileActivityItem[]; signal: Signal }) {
+function InteractionsPanel({ items }: { items: ProfileActivityItem[] }) {
   return (
     <div className="divide-y divide-gray-100 rounded-xl border border-gray-200 dark:divide-neutral-800 dark:border-neutral-700">
       {items.map((item, i) => {
         const [assignee, ...statusTags] = item.tags ?? [];
         return (
-          <div key={i} className="flex items-center gap-2.5 px-3 py-2">
-            <span className="w-5 shrink-0 text-center text-base leading-none">
+          <div key={i} className="flex items-center gap-3 px-3 py-2.5">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gray-50 text-sm dark:bg-neutral-800">
               {item.kind === "sourced" ? "🔍" : "🤝"}
-            </span>
+            </div>
             <p className="min-w-0 flex-1 truncate text-sm text-gray-700 dark:text-neutral-300">
               {item.text}
               <span className="text-gray-300 dark:text-neutral-600"> · </span>
-              <span className="text-gray-400 dark:text-neutral-500">{item.date}</span>
+              <span className="text-xs text-gray-400 dark:text-neutral-500">{item.date}</span>
             </p>
             <div className="flex shrink-0 items-center gap-1.5">
               {assignee ? (
@@ -295,27 +294,34 @@ function InteractionsPanel({ items, signal }: { items: ProfileActivityItem[]; si
                   ))}
                 </>
               ) : (
-                <AssignInvestorButton signal={signal} />
+                <span className="flex items-center gap-1.5 rounded-lg bg-gray-900 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-white dark:bg-neutral-100 dark:text-neutral-900">
+                  <UserPlus className="h-3.5 w-3.5" />
+                  Assign investor
+                </span>
               )}
               {item.direction && (
                 <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-gray-500 dark:bg-neutral-800 dark:text-neutral-400">
                   {item.direction}
                 </span>
               )}
-              <button
-                type="button"
-                aria-label="Open"
-                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 dark:border-neutral-700 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-300"
-              >
-                <ExternalLink className="h-3.5 w-3.5" />
-              </button>
-              <button
-                type="button"
-                aria-label="Send message"
-                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 dark:border-neutral-700 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-300"
-              >
-                <Send className="h-3.5 w-3.5" />
-              </button>
+              {i === 0 && (
+                <>
+                  <button
+                    type="button"
+                    aria-label="Open"
+                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 dark:border-neutral-700 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-300"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                  </button>
+                  <button
+                    type="button"
+                    aria-label="Send message"
+                    className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-gray-600 dark:border-neutral-700 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-300"
+                  >
+                    <Send className="h-3.5 w-3.5" />
+                  </button>
+                </>
+              )}
             </div>
           </div>
         );
@@ -816,10 +822,19 @@ export function ProfileDrawer({
                       <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-neutral-50">
                         Signals
                       </h3>
-                      <InteractionsPanel items={sourcingActivity} signal={signal} />
+                      <InteractionsPanel items={sourcingActivity} />
                     </div>
                   ) : null;
                 })()}
+
+                {profile.github && (
+                  <div>
+                    <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      GitHub activity
+                    </h3>
+                    <GithubActivityGraph github={profile.github} githubUrl={signal.githubUrl} />
+                  </div>
+                )}
 
                 {profile.behavioralSignals?.length ? (
                   <div>
@@ -858,15 +873,6 @@ export function ProfileDrawer({
                     </div>
                   </div>
                 ) : null}
-
-                {profile.github && (
-                  <div>
-                    <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                      GitHub activity
-                    </h3>
-                    <GithubActivityGraph github={profile.github} githubUrl={signal.githubUrl} />
-                  </div>
-                )}
 
                 <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
                   <StatTile label="Total" value={formatTenureLabel(profile.insights.totalMonths)} />
