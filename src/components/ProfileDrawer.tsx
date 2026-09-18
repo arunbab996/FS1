@@ -54,6 +54,7 @@ import { tagColorClasses, tagIcon } from "../utils/tags";
 import { GithubActivityGraph } from "./GithubActivityGraph";
 import { GithubIcon } from "./icons/GithubIcon";
 import { LinkedinIcon } from "./icons/LinkedinIcon";
+import { SignalWaveIcon } from "./icons/SignalWaveIcon";
 import { TwitterIcon } from "./icons/TwitterIcon";
 import { InteractionsTimeline } from "./InteractionsTimeline";
 import { TagInfoCard } from "./TagInfoCard";
@@ -270,7 +271,7 @@ function InteractionsPanel({ items }: { items: ProfileActivityItem[] }) {
         return (
           <div key={i} className="flex items-center gap-3 px-3 py-2.5">
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gray-50 text-sm dark:bg-neutral-800">
-              {item.kind === "sourced" ? "🔍" : "🤝"}
+              {item.kind === "sourced" ? "🔍" : item.kind === "connected" ? "🤝" : "📌"}
             </div>
             <p className="min-w-0 flex-1 truncate text-sm text-gray-700 dark:text-neutral-300">
               {item.text}
@@ -821,14 +822,29 @@ export function ProfileDrawer({
                   const sourcingActivity = profile.activity.filter(
                     (a) => a.kind === "sourced" || a.kind === "connected",
                   );
-                  return sourcingActivity.length ? (
+                  const displayActivity = sourcingActivity.length
+                    ? sourcingActivity
+                    : profile.activity.filter((a) => a.kind === "status");
+                  return (
                     <div>
                       <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-neutral-50">
                         Signals
                       </h3>
-                      <InteractionsPanel items={sourcingActivity} />
+                      {displayActivity.length ? (
+                        <InteractionsPanel items={displayActivity} />
+                      ) : (
+                        <div className="flex flex-col items-center justify-center gap-1.5 rounded-xl border border-gray-200 bg-white py-6 text-center dark:border-neutral-700 dark:bg-neutral-900">
+                          <SignalWaveIcon className="h-5 w-5 text-gray-300 dark:text-neutral-600" />
+                          <p className="text-sm font-medium text-gray-500 dark:text-neutral-400">
+                            No signals yet
+                          </p>
+                          <p className="max-w-[260px] text-xs text-gray-400 dark:text-neutral-500">
+                            {stripMarkdown(signal.headline)}
+                          </p>
+                        </div>
+                      )}
                     </div>
-                  ) : null;
+                  );
                 })()}
 
                 {profile.github && (
