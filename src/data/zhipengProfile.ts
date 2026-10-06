@@ -1,5 +1,5 @@
 import type { TalentProfile } from "../types";
-import { generateContributions } from "../utils/github";
+import { zhipengGithub } from "./githubSamples";
 
 export const zhipengProfile: TalentProfile = {
   titleLine: "PHD Candidate · Postdoctoral Research Fellow @ QUT | Full-Stack AI Engineer",
@@ -216,14 +216,7 @@ export const zhipengProfile: TalentProfile = {
       url: "https://www.linkedin.com/posts/aiml-research_tabular-data-activity-7119887654123456789",
     },
   ],
-  github: {
-    username: "zhipeng-he",
-    followers: 42,
-    stars: 118,
-    publicRepos: 23,
-    topLanguages: ["Python", "TypeScript", "Jupyter Notebook"],
-    contributions: generateContributions("zhipeng-he", 371, new Date(2026, 6, 27)),
-  },
+  github: zhipengGithub,
   insights: {
     totalMonths: 65,
     avgMonths: 8,

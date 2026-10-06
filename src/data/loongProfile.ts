@@ -1,5 +1,5 @@
 import type { InteractionPerson, TalentProfile } from "../types";
-import { generateContributions } from "../utils/github";
+import { loongGithub } from "./githubSamples";
 
 const alexRankin: InteractionPerson = {
   name: "Alex Rankin",
@@ -177,14 +177,7 @@ export const loongProfile: TalentProfile = {
       url: "https://www.linkedin.com/posts/enterprisesg_deeptech-activity-7118876543123456789",
     },
   ],
-  github: {
-    username: "bzlwang",
-    followers: 173,
-    stars: 512,
-    publicRepos: 27,
-    topLanguages: ["Haskell", "Java", "SQL"],
-    contributions: generateContributions("bzlwang", 371, new Date(2026, 6, 27)),
-  },
+  github: loongGithub,
   behavioralSignals: [
     {
       kind: "new-directorship",

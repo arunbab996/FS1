@@ -1,5 +1,5 @@
 import type { TalentProfile } from "../types";
-import { generateContributions } from "../utils/github";
+import { anshuGithub } from "./githubSamples";
 
 export const anshuProfile: TalentProfile = {
   titleLine:
@@ -219,14 +219,7 @@ export const anshuProfile: TalentProfile = {
       url: "https://www.linkedin.com/posts/anshubansal_buildinginpublic-activity-7118765432123456789",
     },
   ],
-  github: {
-    username: "anshu-bansal-ai",
-    followers: 211,
-    stars: 340,
-    publicRepos: 18,
-    topLanguages: ["Python", "C++", "CUDA"],
-    contributions: generateContributions("anshu-bansal-ai", 371, new Date(2026, 6, 27)),
-  },
+  github: anshuGithub,
   behavioralSignals: [
     {
       kind: "stealth-mode",

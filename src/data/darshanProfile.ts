@@ -1,5 +1,5 @@
 import type { InteractionPerson, TalentProfile } from "../types";
-import { generateContributions } from "../utils/github";
+import { darshanGithub } from "./githubSamples";
 
 // Consistent per-person chip color across the Interactions timeline.
 const personColors = {
@@ -221,14 +221,7 @@ export const darshanProfile: TalentProfile = {
       url: "https://www.linkedin.com/posts/blackbird-ventures_giants-c11-activity-7119876543123456789",
     },
   ],
-  github: {
-    username: "darshanp-dev",
-    followers: 58,
-    stars: 94,
-    publicRepos: 31,
-    topLanguages: ["TypeScript", "Python", "Rust"],
-    contributions: generateContributions("darshanp-dev", 371, new Date(2026, 6, 27)),
-  },
+  github: darshanGithub,
   behavioralSignals: [
     {
       kind: "new-domain",

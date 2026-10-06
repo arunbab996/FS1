@@ -62,14 +62,123 @@ export interface GithubContributionDay {
   count: number;
 }
 
+export interface GithubBasics {
+  name?: string;
+  bio?: string;
+  company?: string;
+  location?: string;
+  websiteUrl?: string;
+  twitterUsername?: string;
+  socialAccounts: { provider: string; url: string }[];
+  /** ISO timestamp the account was created. */
+  createdAt: string;
+  followers: number;
+  following: number;
+  /** Every public repo they own, forks included. */
+  publicRepos: number;
+  /** Public repos they own that are not forks. */
+  originalRepos: number;
+  /** Stars across their original repos (tutorial/course repos excluded). */
+  totalStars: number;
+  orgs: { login: string; name?: string }[];
+  pinned: { name: string; description?: string; stars: number; language?: string }[];
+}
+
+export interface GithubActivity {
+  totalContributions: number;
+  /** Weeks with at least one contribution, out of the last 52. */
+  activeWeeks: number;
+  commits: number;
+  pullRequests: number;
+  reviews: number;
+  issues: number;
+  /** A count only: GitHub shows what they were to nobody. Zero unless the person opted in. */
+  privateContributions: number;
+  /** About a year of daily counts, oldest first. */
+  calendar: GithubContributionDay[];
+}
+
+export interface GithubMergedPr {
+  /** "owner/name" of the repo the PR landed in. */
+  repo: string;
+  repoStars: number;
+  title: string;
+  mergedAt: string;
+  url: string;
+  /** The repo belongs to an org the person is a public member of. */
+  viaMemberOrg: boolean;
+}
+
+export interface GithubMergedExternal {
+  /** Merged PRs into repos the person doesn't own. */
+  total: number;
+  distinctRepos: number;
+  /** True when `total` is larger than the PRs we paged through, so `distinctRepos` is a floor. */
+  sampled: boolean;
+  /** Of the PRs we looked at, how many went into orgs they belong to. */
+  fromMemberOrgs: number;
+  /** Up to 10, biggest repos first. */
+  top: GithubMergedPr[];
+}
+
+export interface GithubRepoQuality {
+  /** Positive-only: false means "couldn't see tests at the repo root", not "has none". */
+  tests: boolean;
+  ci: boolean;
+  /** SPDX id, "Custom" for a license file GitHub can't classify, null when there's none. */
+  license: string | null;
+  readme: boolean;
+  releases: number;
+}
+
+export interface GithubTopRepo {
+  name: string;
+  description?: string;
+  url: string;
+  stars: number;
+  forks: number;
+  language?: string;
+  pushedAt?: string;
+  topics: string[];
+  quality?: GithubRepoQuality;
+}
+
+export interface GithubLanguageShare {
+  name: string;
+  percent: number;
+  /** Hex color from GitHub's language list, when it gave one. */
+  color?: string;
+}
+
+export interface GithubCommitShare {
+  /** "owner/name". */
+  repo: string;
+  /** Their share of commits among non-bot contributors. */
+  percent: number;
+  /** 1 = top contributor. */
+  rank: number;
+  contributors: number;
+}
+
+/** Everything the GitHub card renders. Each field is something GitHub's API returns, or is computed from what it returns. */
 export interface GithubStats {
   username: string;
-  followers: number;
-  stars: number;
-  publicRepos: number;
-  topLanguages: string[];
-  /** ~1 year of daily contribution counts, oldest first. */
-  contributions: GithubContributionDay[];
+  basics: GithubBasics;
+  activity: GithubActivity;
+  mergedExternal?: GithubMergedExternal;
+  /** Top original repos by stars, up to 5. */
+  topRepos: GithubTopRepo[];
+  languages: GithubLanguageShare[];
+  commitShare: GithubCommitShare[];
+  /** Notable frameworks/libraries found in dependency files. */
+  stack: string[];
+  /** Topic themes, e.g. "AI/ML", "Dev tools". */
+  themes: string[];
+  /** 2-3 sentences, built only from the fields above. */
+  summary: string;
+  /** No public code activity in the last 12 months, no original repos, no merged outside PRs. */
+  noPublicActivity: boolean;
+  fetchedAt: string;
 }
 
 export interface ProfileActivityItem {
