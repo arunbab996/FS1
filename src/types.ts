@@ -417,3 +417,6 @@ export interface Signal {
   /** Rich profile detail shown in the slide-in profile drawer. */
   profile?: TalentProfile;
 }
+
+/** An investor's call on a signal that was routed to their Inbox. */
+export type InboxDecision = "pursue" | "pass";

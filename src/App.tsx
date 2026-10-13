@@ -10,6 +10,7 @@ import { TopBar, type ViewMode } from "./components/TopBar";
 import { demoInboxInvestor } from "./data/inboxInvestor";
 import type { NavView } from "./data/nav";
 import { signals } from "./data/signals";
+import type { InboxDecision } from "./types";
 import {
   deriveFilterOptions,
   emptyFilters,
@@ -28,6 +29,7 @@ function App() {
   const [activeSavedSearchId, setActiveSavedSearchId] = useState<string | null>(null);
   const [activeView, setActiveView] = useState<NavView>("equity-signals");
   const [showInboxSection, setShowInboxSection] = useState(false);
+  const [inboxDecisions, setInboxDecisions] = useState<Record<string, InboxDecision>>({});
 
   const visibleSignals = useMemo(() => signals.filter((signal) => !signal.hidden), []);
   const filterOptions = useMemo(() => deriveFilterOptions(visibleSignals), [visibleSignals]);
@@ -70,6 +72,18 @@ function App() {
     });
   }
 
+  // A null decision clears it, returning the signal to the Inbox.
+  function handleInboxDecide(ids: string[], decision: InboxDecision | null) {
+    setInboxDecisions((prev) => {
+      const next = { ...prev };
+      for (const id of ids) {
+        if (decision) next[id] = decision;
+        else delete next[id];
+      }
+      return next;
+    });
+  }
+
   function handleReviewSavedSearch(search: SavedSearch) {
     handleSelectSavedSearch(search);
     setActiveView("equity-signals");
@@ -93,6 +107,8 @@ function App() {
               investor={demoInboxInvestor}
               signals={visibleSignals}
               savedSearches={savedSearches}
+              decisions={inboxDecisions}
+              onDecide={handleInboxDecide}
               onReviewSavedSearch={handleReviewSavedSearch}
               onGoToEquitySignals={() => setActiveView("equity-signals")}
             />

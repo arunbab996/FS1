@@ -427,10 +427,13 @@ export function ProfileDrawer({
   signal,
   open,
   onClose,
+  footer,
 }: {
   signal: Signal;
   open: boolean;
   onClose: () => void;
+  /** Pinned under the scrolling content, e.g. the Inbox's pursue/pass bar. */
+  footer?: ReactNode;
 }) {
   const [tab, setTab] = useState<Tab>("overview");
   const [showAllRoles, setShowAllRoles] = useState(true);
@@ -1281,6 +1284,12 @@ export function ProfileDrawer({
               <InteractionsTimeline items={profile.interactions} />
             )}
           </div>
+
+          {footer && (
+            <div className="shrink-0 border-t border-gray-200 bg-white px-5 py-3 dark:border-neutral-700 dark:bg-neutral-900">
+              {footer}
+            </div>
+          )}
         </div>
       </div>
     </>
