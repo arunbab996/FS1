@@ -1,0 +1,2731 @@
+{
+ "generated_for_date": "2026-10-15",
+ "note": "Sample output drafted by Claude, not from the OpenAI API. Placeholder data for the prototype.",
+ "people": [
+  {
+   "name": "Avi Singh",
+   "linkedin_url": "https://www.linkedin.com/in/avisingh599",
+   "headline": "Research Scientist at Google DeepMind",
+   "current_title": null,
+   "location": "San Francisco, California, United States",
+   "about": "I am interested in reinforcement learning for large language models. I am generally not interested in quantitative finance jobs. If you do want to chat, please contact me over email instead of LinkedIn.\n\n- Currently a Research Scientist at Google DeepMind, working on RL for Gemini.\n- Previously a Research Scientist at Google Brain, where I worked on deep reinforcement learning and robotics. \n- PhD from UC Berkeley, advised by Sergey Levine. \n- First author on papers published at NeurIPS, ICLR, RSS, CoRL, ICCV, ICRA. \n\nMore info at www.avisingh.org",
+   "credentials": {
+    "career_summary": "Research scientist at Google, Google Brain and DeepMind from 2021 to Aug 2026, after a PhD in deep reinforcement learning and robotics.",
+    "pedigree": [
+     {
+      "title": "UC Berkeley, PhD in Computer Science",
+      "detail": "2016 to 2021, advised by Sergey Levine. Among the world's most selective universities, per school list.",
+      "year": 2021,
+      "tag": "School",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[0].description",
+       "quote": "Advised by Sergey Levine.",
+       "url": null
+      }
+     },
+     {
+      "title": "IIT Kanpur, B.Tech in Electrical Engineering",
+      "detail": "2012 to 2016. IITs take about 1 in 100 of the people who sit India's engineering entrance exam (JEE Main), per school list.",
+      "year": 2016,
+      "tag": "School",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[1].school",
+       "quote": "Indian Institute of Technology, Kanpur",
+       "url": null
+      }
+     },
+     {
+      "title": "First author at NeurIPS, ICLR, RSS, CoRL, ICCV, ICRA",
+      "detail": "Per profile. Research area is deep reinforcement learning and robotics.",
+      "year": null,
+      "tag": "Papers",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "about",
+       "quote": "First author on papers published at NeurIPS, ICLR, RSS, CoRL, ICCV, ICRA.",
+       "url": null
+      }
+     },
+     {
+      "title": "Google DeepMind and Google Brain, Research Scientist",
+      "detail": "Works on RL for Gemini now, earlier on deep reinforcement learning and robotics, per profile.",
+      "year": null,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "about",
+       "quote": "Currently a Research Scientist at Google DeepMind, working on RL for Gemini.",
+       "url": null
+      }
+     }
+    ],
+    "career_signals": [
+     {
+      "title": "Left Google DeepMind in Aug 2026",
+      "detail": "No new role is shown since, about two months ago.",
+      "year": 2026,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[0].end",
+       "quote": "2026-08",
+       "url": null
+      }
+     }
+    ],
+    "affiliations": [],
+    "recognition_media": [],
+    "track_record": []
+   },
+   "founder_dna": {
+    "label": "Not a founder",
+    "subtitle": "no founded startups in the experience list",
+    "ventures_counted": 0,
+    "ventures": []
+   },
+   "experience": [
+    {
+     "company": "Google DeepMind",
+     "title": "Research Scientist",
+     "start": "2023-04",
+     "end": "2026-08",
+     "location": null,
+     "description": "Gemini Thinking / Post-training"
+    },
+    {
+     "company": "Google",
+     "title": "Research Scientist",
+     "start": "2021-09",
+     "end": "2023-04",
+     "location": null,
+     "description": "I am a research scientist at Google Brain, working at the intersection of machine learning and robotics."
+    },
+    {
+     "company": "University of California, Berkeley",
+     "title": "Graduate Student Researcher",
+     "start": "2016-08",
+     "end": "2021-08",
+     "location": null,
+     "description": "Advised by Sergey Levine. Specialization: deep learning and robotics (deep reinforcement learning, imitation learning)."
+    },
+    {
+     "company": "X, The Moonshot Factory",
+     "title": "Research Intern",
+     "start": "2019-05",
+     "end": "2019-09",
+     "location": null,
+     "description": "Worked on a project on multi-task imitation learning (involving hundreds of tasks). Paper published at ICRA 2020. More details at: https://sites.google.com/view/scalable-mili"
+    },
+    {
+     "company": "Virginia Tech",
+     "title": "Research Intern",
+     "start": "2016-05",
+     "end": "2016-07",
+     "location": null,
+     "description": "Worked with Dhruv Batra and Devi Parikh on a visual dialog system. Work was published at CVPR 2017. More info at: https://visualdialog.org/"
+    },
+    {
+     "company": "Cornell University",
+     "title": "Research Intern",
+     "start": "2015-05",
+     "end": "2015-07",
+     "location": null,
+     "description": "Worked with Ashesh Jain and Ashutosh Saxena to build a computer vision pipeline for tracking drivers in cars for ADAS systems. Work was published at ICRA 2016. More info at http://brain4cars.com/"
+    }
+   ],
+   "education": [
+    {
+     "school": "University of California, Berkeley",
+     "qualification": "Doctor of Philosophy (PhD) - Computer Science",
+     "start": "2016-01",
+     "end": "2021-01"
+    },
+    {
+     "school": "Indian Institute of Technology, Kanpur",
+     "qualification": "Bachelor of Technology (B.Tech.) - Electrical Engineering",
+     "start": "2012-01",
+     "end": "2016-01"
+    }
+   ],
+   "skills": [
+    "Computer Vision",
+    "Machine Learning",
+    "Python",
+    "Research",
+    "Robotics"
+   ],
+   "signals": [
+    {
+     "type": "EVERTRACE",
+     "date": "2026-10-14",
+     "card_text": "Potentially building in AI, likely RL-first LLM systems or tooling for training, evaluation, and control of large language models for B2B.",
+     "score": 8.2,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Junior",
+     "ai_reason": "Strong academic background with relevant AI research experience in a Tier A firm, aligning with tech focus.",
+     "ai_pros": [
+      "PhD in Computer Science from a top university",
+      "Experience at Google DeepMind, a leading AI institution"
+     ],
+     "ai_cons": [
+      "Relatively limited years of full-time professional experience",
+      "No direct startup or APAC regional experience"
+     ],
+     "tags": [
+      "PhD or Above",
+      "Technical",
+      "Big Tech experience",
+      "Artificial Intelligence",
+      "Application Software",
+      "B2B",
+      "10 to 14",
+      "Left Position"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Don Liu",
+   "linkedin_url": "https://www.linkedin.com/in/don-liu-54374013",
+   "headline": null,
+   "current_title": "Sensor Electrical Engineer",
+   "location": "Fremont, California, United States",
+   "about": "Sensing Technology – Inductive, ultrasonic, capacitive, air quality, ToF, inertial, mmWave radar, motion & presence, optical, ambient light, sensor ASIC architecture, Modeling, Algorithms for touch and position sensing, Rapid prototyping\n\nSensing System development for mobile & industrial applications - Force -Touch, Haptic feedback, Linear & rotation sensing, Metal type/Material identification, Optical communications/detection, Laser remote sensing, Mass airflow, ultrasonic ranging, \n\nRF and microwave - Radio Architecture, Transceiver design, Cascade analysis, frequency planning, component selection, simulation (transient, circuit-envelop, F-domain, 2.5-D EM), board design & layout, RF PA, TLine couplers & filters\n\nSystem Design - Mobile devices, input devices, Communications systems, Industrial controls, test automation\n\nDiscrete Analog Design – Transistor/component level, High speed, low noise, low distortion opamp applications\n\nPower Management - Design and applications of switching converters, High voltage drivers, High power industrial laser driver, battery management\n\nServo controls – Analog and microcontroller based PID servo \n\nMicrocontrollers – PIC and 8051 family\n\nBoard design – Board level design/Mfr, EMC, Signal integrity\n\nSoftware and firmware – Visual Studio (VB), Assembly languages\n\nEDA Tools – ADS, pSpice, HFSS, PADS-Power PCB, OrCAD CIS, Matlab, Hyperlynx, etc.\n\nInventor of 30 US Patents",
+   "credentials": {
+    "career_summary": "Hardware engineer for over 20 years: RF engineering from 2003, then sensor and system architecture at Texas Instruments, Amazon Lab126 and Meta.",
+    "pedigree": [
+     {
+      "title": "Inventor of 30 US patents",
+      "detail": "Per profile. Work spans sensing, RF and power management.",
+      "year": null,
+      "tag": "Patents",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "about",
+       "quote": "Inventor of 30 US Patents",
+       "url": null
+      }
+     },
+     {
+      "title": "Oregon State University, PhD in Electrical, Electronics and Communications Engineering",
+      "detail": "Education entry runs 1985 to 1992.",
+      "year": 1992,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[1].qualification",
+       "quote": "Ph. D. - Electrical, Electronics and Communications Engineering",
+       "url": null
+      }
+     },
+     {
+      "title": "Amazon Lab126, Sr. Sensor Architect",
+      "detail": "Built mmWave radar and ultrasonic presence detectors, per profile.",
+      "year": null,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[1].description",
+       "quote": "Developed mmWave radar presence detector, ultrasonic presence detector",
+       "url": null
+      }
+     },
+     {
+      "title": "Shanghai Jiao Tong University, BSEE",
+      "detail": "Among the most selective universities in Asia, per school list.",
+      "year": null,
+      "tag": "School",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[0].school",
+       "quote": "Shanghai Jiao Tong University",
+       "url": null
+      }
+     }
+    ],
+    "career_signals": [
+     {
+      "title": "Moved from RF engineering to sensor system architecture",
+      "detail": "Principal RF Engineer roles ran 2003 to 2009. System Architect at Texas Instruments began Sep 2013, then sensor architect at Amazon Lab126 from Jun 2017.",
+      "year": 2013,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[2].description",
+       "quote": "Sensing technology R&D: Inductive and capacitive sensing for consumer and industrial applications",
+       "url": null
+      }
+     },
+     {
+      "title": "Longest tenure was Amazon Lab126, about 5 years",
+      "detail": "Jun 2017 to Aug 2022. Texas Instruments was next at almost 4 years, Sep 2013 to Jun 2017.",
+      "year": 2022,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[1].start",
+       "quote": "2017-06",
+       "url": null
+      }
+     },
+     {
+      "title": "More than 4 years at Meta since 2022",
+      "detail": "Sensor Electrical Engineer at Meta, after Amazon Lab126 as a sensor architect.",
+      "year": 2022,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[0].start",
+       "quote": "2022-01",
+       "url": null
+      }
+     }
+    ],
+    "affiliations": [],
+    "recognition_media": [],
+    "track_record": []
+   },
+   "founder_dna": {
+    "label": "Not a founder",
+    "subtitle": "no founded startups in the experience list",
+    "ventures_counted": 0,
+    "ventures": []
+   },
+   "experience": [
+    {
+     "company": "Meta",
+     "title": "Sensor Electrical Engineer",
+     "start": "2022-01",
+     "end": null,
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Amazon Lab126",
+     "title": "Sr. Sensor Architect",
+     "start": "2017-06",
+     "end": "2022-08",
+     "location": null,
+     "description": "Sensing solution development for detection of motion/presence, range, proximity, ambient light, IMU. Developed mmWave radar presence detector, ultrasonic presence detector, ultrasound 3-D range finder, robot docking sensor. Solved many tough sensing challenges in low signal amplifier, optical sensing, precision servo, precision position sensing, ultrasound presence detection"
+    },
+    {
+     "company": "Texas Instruments",
+     "title": "System Architect, Member of Technical Staff",
+     "start": "2013-09",
+     "end": "2017-06",
+     "location": null,
+     "description": "- Sensing technology R&D: Inductive and capacitive sensing for consumer and industrial applications\n\n- System development: Touch-on-metal keys/buttons, Force of Touch, Gesture, Linear/rotational position, Metal type identification, Material identification, Heart rate monitor with inductive sensor\n\n- Responsibilities - System specification, analysis, modeling, ASIC  architecture, simulation, algorithm, rapid prototyping, demo making, reference designs, on-site customer support"
+    },
+    {
+     "company": "IDT - Integrated Device Technology, Inc.(acquired by Renesas)",
+     "title": "Sr. Applications Engineer",
+     "start": "2009-01",
+     "end": "2013-06",
+     "location": null,
+     "description": "-\tProduct Evaluation systems / boards design, including schematics and PCB, MCU and firmware, PC serial port GUI (via USB serial port)\n-\tComplex, wide-band Engineering Development platforms, testing systems and evaluation systems/boards for IDT’s CMOS and other  timing products\n-\tDeveloped a series of USB-powered device tester/Field programmer/demo-boxes for Engineering, Sales, key customers and FAEs\n-\tDesigns involved include various DC-DC converters, Precision current sensing; Precision & ultra-high speed peak detection; Sub-ppm frequency prescaling & counting; Multi-rail I2C; ADCs & DACs; Precision programmable current source; High-rail, wide-range current sensing; Temperature sensing; Wideband (dc-1GHz) multiplexing, amplification & buffing; Current limiter; wide range frequency synthesizing"
+    },
+    {
+     "company": "Texas Instruments",
+     "title": "Consultant",
+     "start": "2011-01",
+     "end": "2012-01",
+     "location": null,
+     "description": "Mobile Communications Base Station Down Converter for RF Power Amplifier Digital Predistortion. 800MHz and 1800MHz direct conversion down converter, very high dynamic range (90+dB from RF to ADC front), high speed, low distortion opamp, RF and baseband filters"
+    },
+    {
+     "company": "Altierre Corporation",
+     "title": "Principal Radio Frequency Engineer",
+     "start": "2007-07",
+     "end": "2009-01",
+     "location": null,
+     "description": "Developed radio subsystems of a wireless, supermarket retail LCD price tag system.  Cascade analysis, frequency planning, component selection, simulation ( transient, circuit-envelop, F-domain, 2.5-D EM), board design & layout, PF PA, RF-Digital integration, battery management, battery characterization, production testing support. Managed several concurrent projects; managed vendor/customer relationships including Asian MFR/customers.\nCompleted the following designs:\n-\t2.4GHz Access Point Radio (transceiver)\n-\t2.4GHz near-field RFID programmer \n-\tAutomated lithium battery evaluation system\n-\tArchitecture of a triple-loop 3v-to-30v dc-dc converter for lithium battery LCD supply"
+    },
+    {
+     "company": "W5 Networks",
+     "title": "Principal Radio Frequency Engineer",
+     "start": "2005-10",
+     "end": "2007-04",
+     "location": null,
+     "description": "I was responsible for the wireless access point radio transceiver, including Cascade analysis, frequency planning, component selection, simulation ( transient, circuit-envelop, F-domain, 2.5-D EM), board design & layout. I also played the leading role in near-field wireless system architecture, analysis and development. \n-\tUWB (4GHz) band transceiver\n-\tUNII band (5.6GHz) transceiver\n-\tPOE tracking, isolated DC-DC power supply (combining 2 25W POEs)\n-\tHigh power (30W), high efficiency pulsed RF power amplifier\n-\tVery low power near-field electro-magnetic transceiver\n-\tInfrared communication transceiver"
+    },
+    {
+     "company": "Atheros Communications",
+     "title": "Principal Radio Frequency Engineer",
+     "start": "2003-06",
+     "end": "2005-10",
+     "location": null,
+     "description": "As a key contributor in the PHS mobile phone product development I worked with the marketing, IC and production group in specifying the IC functionalities and cost tradeoffs. I was responsible for the evaluation system and later the mobile phone reference design. I also traveled many times to the Asian customer to help them integrating the IC into their platform, and promote a smooth transfer to production.\n-\tReference design of a PHS mobile handset\n-\tIC architecture verification by discrete design emulation\n-\t1.9Ghz RF discrete power amplifiers and ultra-linear detector for polar-loop RF transmitter\n-\t1.9 and 2.4GHz RF power amplifier and LNA\n-\tPrinted antenna (2.4G), printed directional coupler, various filters\n-\tManaged OEM/ODM projects with several Asian customers"
+    },
+    {
+     "company": "Triductor Technology",
+     "title": "Consultant",
+     "start": null,
+     "end": null,
+     "location": null,
+     "description": "ADSL and VDSL trans-hybrid (2-wire to 4-wire) network design and AEF cascade design, involving network/transformer characterization and modeling with ADS, hybrid network synthesis, noise measurement, test and verification"
+    },
+    {
+     "company": "AdValue Photonics Inc",
+     "title": "Consultant",
+     "start": null,
+     "end": null,
+     "location": null,
+     "description": "- Industrial laser controller / driver, involving microconroller, photodiodes, NTC, low-noise amplifier\n- Fiber optic laser wavelength controller, involving thermistor and TEC, microcontroller, Visual Studio GUI, USB-serial port\n- Laser pulse generator, involving microcontroller, programmable delay line, LED/keypad\n- 350V pulse driver for fiber optic laser, involving fly-back DC-DC and FET transistor"
+    },
+    {
+     "company": "Ikanos Communications",
+     "title": "Consultant",
+     "start": null,
+     "end": null,
+     "location": null,
+     "description": "ADSL and VDSL trans-hybrid (2-wire to 4-wire) network design, involving network/transformer characterization and modeling with ADS, hybrid network synthesis, test and verification"
+    }
+   ],
+   "education": [
+    {
+     "school": "Shanghai Jiao Tong University",
+     "qualification": "BSEE - Electrical and Computer Engineering",
+     "start": null,
+     "end": null
+    },
+    {
+     "school": "Oregon State University",
+     "qualification": "Ph. D. - Electrical, Electronics and Communications Engineering",
+     "start": "1985-01",
+     "end": "1992-01"
+    }
+   ],
+   "skills": [],
+   "signals": [
+    {
+     "type": "SELF_SOURCED",
+     "date": "2026-10-15",
+     "card_text": "Was sourced by the team via Lemlist.",
+     "score": 6.8,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Veteran",
+     "ai_reason": "The candidate has extensive experience in electronics and sensor engineering, along with a strong academic background. However, there's limited focus on APAC/SEA startups.",
+     "ai_pros": [
+      "Extensive sensor and electrical engineering experience",
+      "Ph.D. in Electrical Engineering"
+     ],
+     "ai_cons": [
+      "Limited APAC/SEA tech market focus",
+      "No direct alignment with startup or founder roles"
+     ]
+    },
+    {
+     "type": "EVERTRACE",
+     "date": "2026-10-14",
+     "card_text": "Potentially building in IoT hardware, likely custom sensor modules or mixed-signal boards for industrial and device sensing applications.",
+     "score": 6.8,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Veteran",
+     "ai_reason": "The candidate has extensive experience in electronics and sensor engineering, along with a strong academic background. However, there's limited focus on APAC/SEA startups.",
+     "ai_pros": [
+      "Extensive sensor and electrical engineering experience",
+      "Ph.D. in Electrical Engineering"
+     ],
+     "ai_cons": [
+      "Limited APAC/SEA tech market focus",
+      "No direct alignment with startup or founder roles"
+     ],
+     "tags": [
+      "PhD or Above",
+      "Technical",
+      "Big Tech experience",
+      "IoT",
+      "Hardware",
+      "B2B",
+      "More than 19",
+      "Left Position"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Rahul Bhati",
+   "linkedin_url": "https://www.linkedin.com/in/rahulbhati240p",
+   "headline": "CPO @ HILstart (YC F26) | Prev Aquila & Halter",
+   "current_title": "Co-Founder",
+   "location": "United States",
+   "about": "I like solving fun problems, like building flying boats, remote controlled cows, F1-style race cars and shooting lasers at drones to charge them(not kill them, trust me that's much easier).   I've been building hardware for the past 10 years, tackling the most intricate problems with world class teams. I've learnt over the years that hardware is hard, but fun. I'm building HILstart at YC, so you can focus on solving the fun design problems, while your testing runs on autopilot.",
+   "credentials": {
+    "career_summary": "Says he has built hardware for the past 10 years, per profile. Mechatronics engineer at Halter and Aquila from 2022, a founder since May 2026.",
+    "pedigree": [
+     {
+      "title": "Aquila, 5th engineer on the founding team",
+      "detail": "Built the core tech for kilometre-scale wireless laser energy transmission, per profile.",
+      "year": null,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[2].description",
+       "quote": "5th engineer, founding team.",
+       "url": null
+      }
+     }
+    ],
+    "career_signals": [
+     {
+      "title": "Co-founded Hilstart in May 2026, while still at Aquila",
+      "detail": "Hilstart role began May 2026. Aquila role ended Jun 2026, one month later.",
+      "year": 2026,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[0].start",
+       "quote": "2026-05",
+       "url": null
+      }
+     },
+     {
+      "title": "Intern to R&D engineer at Aquila in about a year",
+      "detail": "Mechatronics Intern from Nov 2023, Mechatronics Engineer from Feb 2024, R&D Engineer from Dec 2024 to Jun 2026.",
+      "year": 2024,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[4].title",
+       "quote": "Mechatronics Intern",
+       "url": null
+      }
+     }
+    ],
+    "affiliations": [
+     {
+      "title": "Y Combinator, F26 batch, and backer of Hilstart",
+      "detail": "Hilstart says Backed by Y Combinator, per profile.",
+      "year": 2026,
+      "tag": "Accelerator",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[0].company",
+       "quote": "Hilstart (YC F26)",
+       "url": null
+      }
+     },
+     {
+      "title": "Blackbird, Giants Mentor",
+      "detail": "Mentor role since Apr 2026.",
+      "year": 2026,
+      "tag": "Mentor",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[1].title",
+       "quote": "Giants Mentor",
+       "url": null
+      }
+     }
+    ],
+    "recognition_media": [
+     {
+      "title": "VEX Robotics NZ National Champion",
+      "detail": "Won with VEX team 240p, 2018 to 2019, per profile.",
+      "year": null,
+      "tag": "Award",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[12].description",
+       "quote": "VEX Robotics NZ National Champion",
+       "url": null
+      }
+     },
+     {
+      "title": "World Skills NZ Mobile Robotics, Gold Medal",
+      "detail": "Won with VEX team 240p, per profile.",
+      "year": null,
+      "tag": "Award",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[12].description",
+       "quote": "World Skills NZ Mobile Robotics Gold Medal",
+       "url": null
+      }
+     },
+     {
+      "title": "VEX Robotics World Championship, Division Semi-Finalist",
+      "detail": "Reached with VEX team 240p, per profile.",
+      "year": null,
+      "tag": "Award",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[12].description",
+       "quote": "VEX Robotics World Championship Division Semi-Finalist",
+       "url": null
+      }
+     },
+     {
+      "title": "VEX Robotics, Highest Driver Skills Award (2017)",
+      "detail": "Won with VEX team 2900D, which competed from 2016 to 2018, per profile.",
+      "year": 2017,
+      "tag": "Award",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[13].description",
+       "quote": "Highest Driver Skills Award (2017)",
+       "url": null
+      }
+     }
+    ],
+    "track_record": [
+     {
+      "title": "Halter: buzzer rejection rate cut from 7% to 0.25%",
+      "detail": "Electrical Engineering Intern, Jun 2022 to Mar 2023. Weekly cost savings of $7.5k, per profile.",
+      "year": 2023,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[6].description",
+       "quote": "rejection rate reduction from 7% to 0.25%",
+       "url": null
+      }
+     },
+     {
+      "title": "Aquila: receiver sustained thermal load tripled in three months",
+      "detail": "Mechatronics R&D Engineer, Dec 2024 to Jun 2026. Reached at one-third the temperature delta, per profile.",
+      "year": 2025,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[2].description",
+       "quote": "tripled sustained thermal load at one-third the temperature delta, in three months",
+       "url": null
+      }
+     }
+    ]
+   },
+   "founder_dna": {
+    "label": "First-time founder",
+    "subtitle": "first venture came 5yr into their career, brand new to founding",
+    "ventures_counted": 1,
+    "ventures": [
+     "hilstart"
+    ]
+   },
+   "experience": [
+    {
+     "company": "Hilstart (YC F26)",
+     "title": "Co-Founder",
+     "start": "2026-05",
+     "end": null,
+     "location": null,
+     "description": "Building the physical agent harness for electronics and firmware development.\n\nBacked by Y Combinator \n\nHilstart.io"
+    },
+    {
+     "company": "Blackbird",
+     "title": "Giants Mentor",
+     "start": "2026-04",
+     "end": null,
+     "location": null,
+     "description": "Giving back to the ecosystem that I fell in love with."
+    },
+    {
+     "company": "Aquila",
+     "title": "Mechatronics R&D Engineer",
+     "start": "2024-12",
+     "end": "2026-06",
+     "location": null,
+     "description": "5th engineer, founding team. Aquila shoots lasers at drones, to charge them, not kill them(so much harder). \n\nBuilt the core tech behind kilometre-scale wireless laser energy transmission across many enginerring disciplines.\n\nOn a more techinical note:\n\n•  Owned the company's most critical, least defined engineering challenges from first principles - driving step changes simultaneously across targeting systems, thermal architecture, and UAV receiver integration that advanced every core discipline in the company.\n•  Redesigned the targeting system from scratch - owning end-to-end electromechanical and controls architecture and delivering a vision-based acquisition system with millimetre-level tracking accuracy over kilometre-scale ranges for a safety-critical kW-class laser power beaming application.\n- Built high-precision testing infrastructure for simulated long-range targeting validation using nanometre-precision gantry systems.\n•  Designing a first-principles watercooled system for a hyper weight-constrained UAV receiver that tripled sustained thermal load at one-third the temperature delta, in three months.\n•  Led aerodynamic systems design and UAV integration for fixed-wing(Group 2 drones) laser power beaming - building multi-fidelity models in OpenVSP and feeding real flight data back into simulation to drive requirements across the entire engineering organisation.\n•  Owned drone systems integration across the entire company and multiple product lines - designing and validating custom mechatronics hardware through structured flight testing to prove core technology in flight.\n\nFlying drones, chasing invisible lasers and dreams of a wireless future."
+    },
+    {
+     "company": "Aquila",
+     "title": "Mechatronics Engineer",
+     "start": "2024-02",
+     "end": "2024-12",
+     "location": null,
+     "description": "Driving forward the design, development and execution of targeting systems, testing processes, simulation testing and product market fit for long range wireless energy transmission for drones to unlock infinite flight."
+    },
+    {
+     "company": "Aquila",
+     "title": "Mechatronics Intern",
+     "start": "2023-11",
+     "end": "2024-03",
+     "location": null,
+     "description": "Driving forward the design, development and execution of targeting systems, testing processes, simulation testing and product market fit for long range wireless energy transmission for drones to unlock infinite flight."
+    },
+    {
+     "company": "Halter",
+     "title": "Mechatronics Intern",
+     "start": "2023-02",
+     "end": "2023-10",
+     "location": null,
+     "description": "Making remote controlled cows more reliable. \n\n-Developed, constructed, and validated an array of motion jigs and test rigs from end‑to‑end design for harsh environments(‑30 to 70*C) for A|B and fatigue life testing, helping establish critical mechanical HASS and ALT test framewor baselines for product validation and regression prevention. \n- Exploring potential mechanical innovations for enhancing Halter's products and optimizing production procedures. More details about these can be found on my website at http://www.rahulbhati.com/"
+    },
+    {
+     "company": "Halter",
+     "title": "Electrical Engineering Intern",
+     "start": "2022-06",
+     "end": "2023-03",
+     "location": null,
+     "description": "• Led in‑depth root cause analysis for electronic buzzer component reliability issues, collaborating with the manufacturer to design custom solution parts. \n• Created an interactive GUI for large-scale data collection/visualization in Python and utilized advanced digital signal processing techniques, including Python‑based FFT, to develop and validate an in‑house testing fixture to automate buzzer sound quality test in a quantitative manner.\n• Coordinated cross‑functional teams for seamless production integration of the fixture and test requirements, achieving a rejection rate reduction from 7% to 0.25%. This success resulted in weekly cost savings of $7.5k."
+    },
+    {
+     "company": "University of Auckland Formula SAE Team (FSAE47)",
+     "title": "Electrons Team Member",
+     "start": "2022-02",
+     "end": "2023-03",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "University of Auckland Formula SAE Team (FSAE47)",
+     "title": "Aerodynamics Team Member",
+     "start": "2021-08",
+     "end": "2022-12",
+     "location": null,
+     "description": "Making upside down wings"
+    },
+    {
+     "company": "University of Auckland Formula SAE Team (FSAE47)",
+     "title": "Composites Team Member",
+     "start": "2021-04",
+     "end": "2022-10",
+     "location": null,
+     "description": "• Assist in the manufacturing and design elements of the carbon fibre monocoque chassis, and aerodynamic elements for our upcoming M021 car.\n• Took part in all stages of composite part manufacture from mould preparation, lamination, bagging, jig design and build. Gained experience with a variety of different manufacturing methods such as Infusion, Wet Lamination and using Pre-Impregnated Fibres.\n• Designed and manufactured a safety-critical composites conduit for protecting the driver from high-voltage wiring."
+    },
+    {
+     "company": "FORMULA FORD ",
+     "title": "Track Team Member",
+     "start": "2021-11",
+     "end": "2022-08",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Vessev",
+     "title": "Vehicle Design Intern",
+     "start": "2021-11",
+     "end": "2022-02",
+     "location": null,
+     "description": "If birds can fly why not boats?\n\nDuring my internship with an innovative NZ-based startup, I had the exciting opportunity to focus on designing the world's first electric hydro-foiling ROPAX ferry. It was a fantastic experience, and being part of a team working on cutting-edge solutions for sustainable transportation was genuinely thrilling. The internship provided valuable insights into electric propulsion and hydro foiling, further fueling my passion for high-performance engineering.\n\n• Designed and progressed all things concerning the battery storage compartment into the preliminary design stage, including thermal cooling architecture, ventilation, battery modules racking and packaging of all associated components while outlining a clear installation process.\n• Worked alongside the electrical and structural team to suitably integrate battery modules within the constricted structure whilst allowing the removal of any particular module. Utilized Ansys to process and iterate structural design to ensure it could withstand expected crash loads whilst considering a realistic installation, assembly, and commissioning approach.\n• Utilized Onshape feature scripts to simplify an iterative workflow for global cooling architecture/layout\n\nWorking with people from companies such as ETNZ, Sail GP, Apple, Rocket Lab, Hyperloop, Relativity Space, and Honda Performance Development has tremendously impacted my excitement for engineering."
+    },
+    {
+     "company": "VEX Robotics",
+     "title": "Team 240p - Robot Designer, Builder and Driver",
+     "start": "2018-04",
+     "end": "2019-05",
+     "location": null,
+     "description": "Throughout high school, I competed at a national and international (invitation only) level in the VEX Robotics Competition - one of the largest student robotics competitions in the world.  In my third year of competing, a private team with successful members from the NZ community was formed to strive to push the limits of the competition, with a singular goal of competing at a competitive level at the World Championships. \n\n•  Competed and performed highly in VEX and Beetle Weight Combat Robotics.\n•  Took on inter-disciplinary responsibilities ranging from mechanical design, construction, \n   programming and game strategy. Developed skills in CAD, fabrication, and control theory.\n•  Utilised project management skills to work to time-critical deadlines, using engineering design processes to build a competitive robot for the World Championships in 6 weeks.\n• Programmed robots using C utilizing sensors such as sonars, gyroscopic sensors, potentiometers and line sensors via programming techniques such as PID control in order to assure repeatable and consistent performance with the highest degree of accuracy within the autonomous period.\n\nAwards:- \n• VEX Robotics NZ National Champion\n• VEX Robotics NZ Design Award Winner\n• VEX Robotics World Championship Division Semi-Finalist\n• World Skills NZ Mobile Robotics Gold Medal"
+    },
+    {
+     "company": "VEX Robotics",
+     "title": "Team 2900D - Lead Robot Designer, Builder, Programmer and Driver",
+     "start": "2016-03",
+     "end": "2018-04",
+     "location": null,
+     "description": "Team 2900D \n• World Championship Qualifiers (2018)\n• Highest Driver Skills Award (2017)\n• New Zealand Scrimmage Winner * 5 (2016 - 2018)"
+    }
+   ],
+   "education": [
+    {
+     "school": "Y Combinator",
+     "qualification": "S26",
+     "start": "2026-01",
+     "end": "2026-01"
+    },
+    {
+     "school": "University of Auckland",
+     "qualification": "Bachelor of Engineering - BE - Mechatronics",
+     "start": "2021-01",
+     "end": "2024-01"
+    },
+    {
+     "school": "Onehunga High School ",
+     "qualification": null,
+     "start": "2016-01",
+     "end": "2020-01"
+    }
+   ],
+   "skills": [
+    "LinkedIn Recruiter",
+    "Real-time Control Systems",
+    "Embedded Software Programming",
+    "Product Development",
+    "Control Systems Design",
+    "System Architecture",
+    "Prototyping",
+    "Automation",
+    "Arduino",
+    "Machine Design",
+    "Design for Manufacturing",
+    "Accelerated Life Testing",
+    "Electronic Circuits",
+    "Hardware Development",
+    "SOLIDWORKS",
+    "Teamwork",
+    "Ansys",
+    "Finite Element Analysis (FEA)",
+    "Git",
+    "GitHub",
+    "Soldering",
+    "Altium",
+    "HVAC",
+    "C++",
+    "Signal Processing",
+    "Python (Programming Language)",
+    "Linux",
+    "Printed Circuit Board (PCB) Design",
+    "Rapid Prototyping",
+    "Computer-Aided Design (CAD)",
+    "Analytical Skills",
+    "Autodesk Inventor",
+    "Design",
+    "Problem Solving",
+    "English",
+    "Keyshot",
+    "Autodesk Fusion 360",
+    "Composites",
+    "MATLAB",
+    "Robotics",
+    "Manufacturing",
+    "Onshape",
+    "C (Programming Language)",
+    "3D Printing",
+    "First Aid"
+   ],
+   "signals": [
+    {
+     "type": "INVESTOR_INTEREST",
+     "date": "2026-10-14",
+     "card_text": "Just connected with Anubhav Ghosh from Blackbird",
+     "score": 7.9,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": "Twitter/X",
+     "ai_bucket": "Fresher",
+     "ai_reason": "Fresher with early-stage founder experience in APAC/SEA focus sector and strong internship background.",
+     "ai_pros": [
+      "Co-founder of YC-backed startup",
+      "Strong sector alignment"
+     ],
+     "ai_cons": [
+      "Limited full-time experience",
+      "Education from Tier 4 institution"
+     ]
+    },
+    {
+     "type": "SELF_SOURCED",
+     "date": "2026-07-28",
+     "card_text": "Was sourced by the team via Lemlist.",
+     "score": 7.6,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Fresher",
+     "ai_reason": "The candidate is an early-stage founder with a strong focus on embedded systems in APAC. Y Combinator backing boosts the profile.",
+     "ai_pros": [
+      "Co-founder at a Y Combinator-backed startup",
+      "Experience in technical roles across engineering domains"
+     ],
+     "ai_cons": [
+      "Limited work experience depth due to fresher status",
+      "Education not from a globally elite institution"
+     ]
+    },
+    {
+     "type": "INVESTOR_INTEREST",
+     "date": "2026-04-15",
+     "card_text": "Just connected with Alejandra Romero from Main Sequence Ventures",
+     "score": 6.6,
+     "theme": "Essentials",
+     "data_source": "WORKFLOW",
+     "data_origin": "Crosshair",
+     "ai_bucket": "Fresher",
+     "ai_reason": "Strong internship experiences in tech; moderate education and investment alignment.",
+     "ai_pros": [
+      "Relevant internships in tech firms.",
+      "Strong technical skills in mechatronics."
+     ],
+     "ai_cons": [
+      "Limited full-time professional experience.",
+      "Education from a non-top-tier institution."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Jingjing (Allison) Wei",
+   "linkedin_url": "https://www.linkedin.com/in/allison-wei",
+   "headline": null,
+   "current_title": "Software Engineer III",
+   "location": "San Jose, California, United States",
+   "about": "Software Engineer with 3+ years of Android development experience at Google. Graduated from the University of California, Berkeley with a Master degree in Computer Science. Possesses a wide range of project experiences and programming skills, including Android development with Java and Kotlin, RESTful API and GraphQL, and backend development with Java, SQL.",
+   "credentials": {
+    "career_summary": "Android software engineer: about 3.5 years at Oracle, then Google since Dec 2025.",
+    "pedigree": [
+     {
+      "title": "UC Berkeley, MEng in Electrical Engineering and Computer Sciences",
+      "detail": "2021 to 2022. Among the world's most selective universities, per school list.",
+      "year": 2022,
+      "tag": "School",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[0].qualification",
+       "quote": "Master of Engineering - MEng - Electrical Engineering and Computer Sciences",
+       "url": null
+      }
+     }
+    ],
+    "career_signals": [
+     {
+      "title": "Moved from Oracle to Google in Dec 2025 after about 3.5 years",
+      "detail": "Oracle Software Engineer from Jul 2022 to Dec 2025. Google Software Engineer III since Dec 2025, so under a year in the role.",
+      "year": 2025,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[0].start",
+       "quote": "2025-12",
+       "url": null
+      }
+     }
+    ],
+    "affiliations": [],
+    "recognition_media": [],
+    "track_record": [
+     {
+      "title": "Oracle: unit test coverage raised from 0% to 90%",
+      "detail": "Software Engineer, Jul 2022 to Dec 2025, per profile.",
+      "year": 2025,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[1].description",
+       "quote": "increasing unit test coverage from 0% to 90%",
+       "url": null
+      }
+     }
+    ]
+   },
+   "founder_dna": {
+    "label": "Not a founder",
+    "subtitle": "no founded startups in the experience list",
+    "ventures_counted": 0,
+    "ventures": []
+   },
+   "experience": [
+    {
+     "company": "Google",
+     "title": "Software Engineer III",
+     "start": "2025-12",
+     "end": null,
+     "location": null,
+     "description": "Software Engineer on the AdMob Formats team. Focused on innovating and enhancing the performance, rendering, and user experience of mobile ad formats. Collaborating across SDK and serving teams to develop and launch new ad experiences to millions of users."
+    },
+    {
+     "company": "Oracle",
+     "title": "Software Engineer",
+     "start": "2022-07",
+     "end": "2025-12",
+     "location": null,
+     "description": "- Developed features for public safety management Android Application for police incidents and case reports with Kotlin Android framework, Dependency Injection with Dagger and MVVM architecture.\n- Integrated backend services based on GraphQL and REST API (using Retrofit); Implemented real-time bidirectional communication for client and server using WebSocket; Created Room database entity to store local data.\n- Implemented and enhanced reusable UI components and main UI view with Android native components such as RecyclerView, and material Components to create a modern and intuitive user interface.\n- Stabilized app core functionalities by building unit test infra and increasing unit test coverage from 0% to 90% using JUnit framework, MockK, MockWebServer and apollo-mockserver library;\n- Collaborated with product and UX design team to design and develop new features; Worked in an Agile environment with a Scrum development process and controlled JIRA workflows to deliver high-quality software."
+    }
+   ],
+   "education": [
+    {
+     "school": "University of California, Berkeley",
+     "qualification": "Master of Engineering - MEng - Electrical Engineering and Computer Sciences",
+     "start": "2021-01",
+     "end": "2022-01"
+    },
+    {
+     "school": "Beijing University of Posts and Telecommunications",
+     "qualification": "Bachelor of Engineering - BE - Internet of Things Engineering",
+     "start": "2017-01",
+     "end": "2021-01"
+    }
+   ],
+   "skills": [],
+   "signals": [
+    {
+     "type": "EVERTRACE",
+     "date": "2026-10-14",
+     "card_text": "Jingjing(Allison) Wei left Oracle and started Meletic AI as Founder",
+     "score": 7.5,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Mid",
+     "ai_reason": "Strong experience at top-tier companies like Google and Oracle, solid education credentials, and relevance to AI/SaaS focus sectors.",
+     "ai_pros": [
+      "Work experience at Google, a Tier A company.",
+      "Educational background from recognized top institutions."
+     ],
+     "ai_cons": [
+      "Limited years of experience potentially limiting leadership roles.",
+      "No direct startup or founder experience."
+     ],
+     "ai_summary": "Building Meletic AI, B2B application software in AI, likely ML-powered tools for enterprise mobile and backend workflows.",
+     "tags": [
+      "Master",
+      "Technical",
+      "Big Tech experience",
+      "Application Software",
+      "Artificial Intelligence",
+      "B2B",
+      "0 to 4",
+      "New Company"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Aniket Deshpande",
+   "linkedin_url": "https://www.linkedin.com/in/anideshp",
+   "headline": "Self-optimizing inference cloud for faster, cheaper AI.",
+   "current_title": "Co-Founder & CEO",
+   "location": null,
+   "about": "Building Isoquant, an AI infra platform for B2B teams to run open models via low-cost, low-latency inference APIs with automatic prompt caching.",
+   "credentials": {
+    "career_summary": "Software engineer for about 10 years at Oracle, Adobe and Meta, now a founder since Jul 2026.",
+    "pedigree": [
+     {
+      "title": "Meta Superintelligence Labs, software engineer",
+      "detail": "Worked on Meta AI Search, Personalization, Evals and Agentic Orchestration, per profile.",
+      "year": 2024,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[3].description",
+       "quote": "Meta AI Search, Personalization, Evals, and Agentic Orchestration",
+       "url": null
+      }
+     }
+    ],
+    "career_signals": [
+     {
+      "title": "Left Meta Jan 2026, started AgentFM Jul 2026",
+      "detail": "Meta role ended Jan 2026. AgentFM role began Jul 2026, a gap of half a year.",
+      "year": 2026,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[1].start",
+       "quote": "2026-07",
+       "url": null
+      }
+     },
+     {
+      "title": "About 4 years at Adobe, then Meta from 2024",
+      "detail": "Software Engineer at Adobe from Jul 2020 to Jul 2024. Then Meta Superintelligence Labs, on AI search and agentic orchestration.",
+      "year": 2024,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[4].start",
+       "quote": "2020-07",
+       "url": null
+      }
+     }
+    ],
+    "affiliations": [
+     {
+      "title": "Y Combinator, F26 batch",
+      "detail": "Isoquant and AgentFM are both YC F26 companies. Two in one batch could mean a pivot.",
+      "year": 2026,
+      "tag": "Accelerator",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[0].company",
+       "quote": "Isoquant (YC F26)",
+       "url": null
+      }
+     }
+    ],
+    "recognition_media": [],
+    "track_record": []
+   },
+   "founder_dna": {
+    "label": "First-time founder",
+    "subtitle": "first venture came 10yr into their career, brand new to founding (1 more entry unclear, not counted)",
+    "ventures_counted": 1,
+    "ventures": [
+     "isoquant"
+    ]
+   },
+   "experience": [
+    {
+     "company": "Isoquant (YC F26)",
+     "title": "Co-Founder & CEO",
+     "start": "2026-09",
+     "end": null,
+     "location": null,
+     "description": "Inference"
+    },
+    {
+     "company": "AgentFM (YC F26)",
+     "title": "Co-Founder & CEO",
+     "start": "2026-07",
+     "end": null,
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Meta",
+     "title": "Software Engineer, Applied AI",
+     "start": "2026-01",
+     "end": "2026-01",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Meta",
+     "title": "Software Engineer, Meta Superintelligence Labs",
+     "start": "2024-01",
+     "end": "2026-01",
+     "location": null,
+     "description": "Meta AI Search, Personalization, Evals, and Agentic Orchestration"
+    },
+    {
+     "company": "Adobe",
+     "title": "Software Engineer",
+     "start": "2020-07",
+     "end": "2024-07",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "SAP",
+     "title": "Software Engineer",
+     "start": "2019-06",
+     "end": "2019-08",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Oracle",
+     "title": "Software Engineer",
+     "start": "2016-07",
+     "end": "2018-07",
+     "location": null,
+     "description": ""
+    }
+   ],
+   "education": [
+    {
+     "school": "San Jose State University",
+     "qualification": "Master of Science - Software Engineering",
+     "start": null,
+     "end": null
+    },
+    {
+     "school": "Savitribai Phule Pune University",
+     "qualification": "Bachelor of Science - Computer Science",
+     "start": null,
+     "end": null
+    }
+   ],
+   "skills": [],
+   "signals": [
+    {
+     "type": "EVERTRACE",
+     "date": "2026-10-14",
+     "card_text": "Aniket Deshpande left Meta and started Isoquant (YC F26) as Co-Founder & CEO",
+     "score": 7.7,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Mid",
+     "ai_reason": "The candidate has strong work experience as a co-founder with elite AI company backgrounds, coupled with relevant education and high investment signals.",
+     "ai_pros": [
+      "Co-founding experience at two Y Combinator-backed startups",
+      "Experience at Meta in AI roles"
+     ],
+     "ai_cons": [
+      "Lack of long-term leadership roles in a single organization",
+      "Education from less globally prestigious universities"
+     ],
+     "ai_summary": "Building Isoquant, an AI infra platform for B2B teams to run open models via low-cost, low-latency inference APIs with automatic prompt caching.",
+     "tags": [
+      "Master",
+      "Technical",
+      "YC Alumni",
+      "VC Backed Founder",
+      "Big Tech experience",
+      "Serial Founder",
+      "Application Software",
+      "Artificial Intelligence",
+      "Data and Analytics",
+      "B2B",
+      "10 to 14",
+      "New Company"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Anil Amesur",
+   "linkedin_url": "https://www.linkedin.com/in/anilamesur",
+   "headline": "4x Founder | Cross-Border Payments & Fintech Infrastructure | Social Impact",
+   "current_title": "Founder",
+   "location": "Singapore, Singapore, Singapore, Asia",
+   "about": "I build products from 0 to 1. As a 4x founder and fractional CPO, I've launched several…",
+   "credentials": {
+    "career_summary": "Product builder and founder since 2012, after 2 years as a procurement analyst at GEP Worldwide.",
+    "pedigree": [],
+    "career_signals": [
+     {
+      "title": "Left Popicorn Aug 2024, started OperateX Jul 2025",
+      "detail": "Popicorn role ended Aug 2024. OperateX role began Jul 2025, a gap of under a year.",
+      "year": 2025,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[2].end",
+       "quote": "2024-08",
+       "url": null
+      }
+     },
+     {
+      "title": "Left GEP Worldwide Jun 2012 to found Go Delight",
+      "detail": "GEP Senior Analyst role ran Apr 2010 to Jun 2012. Go Delight Loyalty Management founder role began Jun 2012.",
+      "year": 2012,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[11].end",
+       "quote": "2012-06",
+       "url": null
+      }
+     }
+    ],
+    "affiliations": [
+     {
+      "title": "Antler Singapore, Founder in Residence, and backer of Popicorn",
+      "detail": "Feb 2022 to Apr 2022. Popicorn says Funded by Antler VC, per profile.",
+      "year": 2022,
+      "tag": "Accelerator",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[2].description",
+       "quote": "Funded by Antler VC (Singapore)",
+       "url": null
+      }
+     },
+     {
+      "title": "Startup Leadership Program, Fellow",
+      "detail": "Sep 2012 to Mar 2013. Described as a globally competitive programme for startup founders, per profile.",
+      "year": 2012,
+      "tag": "Fellowship",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[10].description",
+       "quote": "Selected as a fellow in a globally competitive programme for startup founders.",
+       "url": null
+      }
+     }
+    ],
+    "recognition_media": [],
+    "track_record": [
+     {
+      "title": "Techflux: grew the studio to 50+ clients across 10+ countries",
+      "detail": "Founder and Product Director, Sep 2017 to Dec 2022, per profile.",
+      "year": 2022,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[3].description",
+       "quote": "Grew the studio to 50+ clients across 10+ countries",
+       "url": null
+      }
+     },
+     {
+      "title": "Transportex: built a six-person tech team",
+      "detail": "Founder and CEO, Apr 2016 to Sep 2017, per profile.",
+      "year": 2017,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[6].description",
+       "quote": "built a six-person tech team",
+       "url": null
+      }
+     }
+    ]
+   },
+   "founder_dna": {
+    "label": "Serial founder",
+    "subtitle": "6 startups, first one 2yr into their career (1 more entry unclear, not counted)",
+    "ventures_counted": 6,
+    "ventures": [
+     "givpact",
+     "operatex",
+     "popicorn",
+     "techflux",
+     "transportex",
+     "go delight loyalty management"
+    ]
+   },
+   "experience": [
+    {
+     "company": "GivPact",
+     "title": "Founder",
+     "start": "2026-05",
+     "end": null,
+     "location": null,
+     "description": "Proof of impact for charitable giving: transparency that enables donors to see exactly where their money went, and charities to share their impact without the overhead of proving it."
+    },
+    {
+     "company": "OperateX",
+     "title": "Founder & CEO",
+     "start": "2025-07",
+     "end": null,
+     "location": null,
+     "description": "Company-as-a-service for freelancers & remote workers: a platform to invoice clients, collect payments in multiple currencies, and manage expenses through a Singapore entity, without setting up their own. Architected and launched the platform solo from the ground up, handling core payment rails, card issuance, and automated KYC and compliance flows."
+    },
+    {
+     "company": "Popicorn",
+     "title": "Founder & CEO",
+     "start": "2022-12",
+     "end": "2024-08",
+     "location": null,
+     "description": "B2B SaaS platform for angel syndicates to manage their investment networks, set up SPVs to pool capital, and process cross-border investor payments. Owned the full product lifecycle from concept to launch, including product architecture, UX design & development, stakeholder management, and roadmap prioritisation. Funded by Antler VC (Singapore)"
+    },
+    {
+     "company": "Techflux",
+     "title": "Founder & Product Director",
+     "start": "2017-09",
+     "end": "2022-12",
+     "location": null,
+     "description": "Technology consultancy and product studio for founders and startup operators, specialising in fintech infrastructure, workflow automation, and blockchain solutions. Served as fractional CPO for clients, owning the entire process from architecture to delivery. Designed and built products in several industries, including fintech, e-commerce, ed-tech, and IoT. Grew the studio to 50+ clients across 10+ countries."
+    },
+    {
+     "company": "Antler",
+     "title": "Founder in Residence",
+     "start": "2022-02",
+     "end": "2022-04",
+     "location": null,
+     "description": "Selected for Antler's founder programme in Singapore. Raised pre-seed funding for Popicorn."
+    },
+    {
+     "company": "Corona Fund India",
+     "title": "Founder & Director",
+     "start": "2020-03",
+     "end": "2021-03",
+     "location": null,
+     "description": "COVID relief fund built on a peer-to-peer model: Impact Ambassadors ran their own fundraising pages and directed donations to a shortlist of vetted NGOs. Designed the fundraising model and led NGO vetting and onboarding. Raised and distributed funds to three organisations during India's first COVID wave, providing relief for the communities hit hardest and PPE kits for frontline hospital staff."
+    },
+    {
+     "company": "Transportex",
+     "title": "Founder & CEO",
+     "start": "2016-04",
+     "end": "2017-09",
+     "location": null,
+     "description": "Transport management & route optimisation platform that helps companies reduce commute costs and streamline employee transport. Designed the product UX and built a six-person tech team to develop the platform."
+    },
+    {
+     "company": "GoDelight",
+     "title": "Partner",
+     "start": "2014-07",
+     "end": "2017-08",
+     "location": null,
+     "description": "Cloud kitchen offering a modern take on traditional Indian delicacies. Conceptualised the brand, designed the menu, and managed corporate partnerships."
+    },
+    {
+     "company": "Loylty Rewardz Mngt Pvt Ltd",
+     "title": "Senior Manager, Retail Loyalty",
+     "start": "2013-04",
+     "end": "2014-06",
+     "location": null,
+     "description": "Loyalty management company running reward programmes for some of India's largest banks. Joined following the acquisition of the Go Delight app to help build Loylty's product for retailers, shaping it with the tech team and bringing merchants on board."
+    },
+    {
+     "company": "Go Delight Loyalty Management",
+     "title": "Founder",
+     "start": "2012-06",
+     "end": "2013-04",
+     "location": null,
+     "description": "Loyalty platform for restaurants, cafes, and bars to engage and reward their customers. Acquired by Loylty Rewardz."
+    },
+    {
+     "company": "Startup Leadership Program",
+     "title": "Fellow",
+     "start": "2012-09",
+     "end": "2013-03",
+     "location": null,
+     "description": "Selected as a fellow in a globally competitive programme for startup founders."
+    },
+    {
+     "company": "GEP Worldwide",
+     "title": "Senior Analyst",
+     "start": "2010-04",
+     "end": "2012-06",
+     "location": null,
+     "description": "Procurement consulting and technology firm serving global enterprises. Delivered data analysis and compliance spend reporting for client projects."
+    }
+   ],
+   "education": [
+    {
+     "school": "University of Mumbai",
+     "qualification": "Bachelor of Engineering (BE) Mechanical Engineering",
+     "start": "2003-01",
+     "end": "2007-01"
+    }
+   ],
+   "skills": [
+    "FinTech",
+    "Payments",
+    "Cross-border Transactions",
+    "Fundraising",
+    "Angel Investing",
+    "Venture Capital",
+    "Startup Development",
+    "Early-stage Startups",
+    "Entrepreneurship",
+    "Procurement",
+    "Marketing Strategy",
+    "Product Marketing",
+    "Business Development",
+    "Data Analysis",
+    "Business Analytics",
+    "Strategic Sourcing",
+    "Training",
+    "Leadership",
+    "Start-ups",
+    "Analysis",
+    "Vendor Management",
+    "Strategy",
+    "Competitive Analysis",
+    "Management Consulting",
+    "Supply Chain Management",
+    "Outsourcing",
+    "Negotiation",
+    "Analytics",
+    "Business Analysis",
+    "Business Strategy",
+    "Market Research",
+    "Team Management",
+    "CRM",
+    "Product Development",
+    "Customer Relationship Management (CRM)",
+    "Management",
+    "Start-ups Management",
+    "Start Ups",
+    "Customer Relationship Management"
+   ],
+   "signals": [
+    {
+     "type": "EVERTRACE",
+     "date": "2026-10-18",
+     "card_text": "Anil Amesur left Popicorn and started GivPact as Founder",
+     "score": 6.8,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Senior",
+     "ai_reason": "The candidate is an experienced founder with a strong background in tech startups, particularly in fintech and SaaS sectors, though their educational background is less competitive.",
+     "ai_pros": [
+      "Extensive experience as a tech startup founder",
+      "Involvement in fintech and SaaS sectors"
+     ],
+     "ai_cons": [
+      "Education from a tier 4 institution",
+      "Limited formal education credentials"
+     ],
+     "ai_summary": "Building GivPact, a FinTech / charitable giving infra layer verifying donation flows and proof of impact via a direct-to-vendor model for B2B donors.",
+     "tags": [
+      "Bachelor",
+      "Commercial",
+      "Serial Founder",
+      "FinTech",
+      "Application Software",
+      "B2B",
+      "10 to 14",
+      "New Company"
+     ]
+    },
+    {
+     "type": "NEW_COMPANY",
+     "date": "2026-10-14",
+     "card_text": "Previously Founder & CEO of Popicorn, starting as Founder at GivPact",
+     "score": 6.8,
+     "theme": null,
+     "data_source": "SPECTER",
+     "data_origin": "Specter",
+     "ai_bucket": "Senior",
+     "ai_reason": "The candidate is an experienced founder with a strong background in tech startups, particularly in fintech and SaaS sectors, though their educational background is less competitive.",
+     "ai_pros": [
+      "Extensive experience as a tech startup founder",
+      "Involvement in fintech and SaaS sectors"
+     ],
+     "ai_cons": [
+      "Education from a tier 4 institution",
+      "Limited formal education credentials"
+     ]
+    },
+    {
+     "type": "SELF_SOURCED",
+     "date": "2026-10-09",
+     "card_text": "Was sourced by the team via Lemlist.",
+     "score": 7.1,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Senior",
+     "ai_reason": "The candidate's extensive experience as a founder in fintech aligns well with January Capital's focus sectors, supported by a strong investment signal.",
+     "ai_pros": [
+      "Serial founder with fintech focus",
+      "High investment signal in focus sectors"
+     ],
+     "ai_cons": [
+      "Education at a lower-tier university",
+      "Limited formal recognition in recent roles"
+     ]
+    },
+    {
+     "type": "STRATEGIC_INTELLIGENCE_TALENT",
+     "date": "2026-10-03",
+     "card_text": "Square Peg Ventures is interested.",
+     "score": 7.1,
+     "theme": null,
+     "data_source": "SPECTER",
+     "data_origin": null,
+     "ai_bucket": "Senior",
+     "ai_reason": "The candidate's extensive experience as a founder in fintech aligns well with January Capital's focus sectors, supported by a strong investment signal.",
+     "ai_pros": [
+      "Serial founder with fintech focus",
+      "High investment signal in focus sectors"
+     ],
+     "ai_cons": [
+      "Education at a lower-tier university",
+      "Limited formal recognition in recent roles"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Aditya Sonkar",
+   "linkedin_url": "https://www.linkedin.com/in/aditya-sonkar",
+   "headline": "Founder | Solving Monetization & Cost Tracking for AI Agents | Helping Agentic Companies adopt new age Pricing Models",
+   "current_title": "Co-Founder",
+   "location": "San Francisco Bay Area",
+   "about": "Aditya holds 10+ years of experience working in a wide range of roles such as Co-Founder of a Tech startup, Product Management Consulting and Business Development, he exhibits the entrepreneurial spirit of building scalable products and solutions. He loves building products driven by customer empathy which helps him discover problems to help teams design and build cutting edge solutions that materially improve customer experience.",
+   "credentials": {
+    "career_summary": "Says 10+ years of experience, per profile: consulting, then founder, then product management, and a founder again since Dec 2025.",
+    "pedigree": [
+     {
+      "title": "IIT Bombay, B.Tech and M.Tech in Chemical Engineering",
+      "detail": "Dual degree 2011 to 2016. IITs take about 1 in 100 of the people who sit India's engineering entrance exam (JEE Main), per school list.",
+      "year": 2016,
+      "tag": "School",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[0].school",
+       "quote": "Indian Institute of Technology, Bombay",
+       "url": null
+      }
+     }
+    ],
+    "career_signals": [
+     {
+      "title": "Left Guidepoint Jul 2025, joined Antler Sep 2025",
+      "detail": "Guidepoint ended Jul 2025, Antler began Sep 2025. Paygent began Jan 2026.",
+      "year": 2025,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[4].end",
+       "quote": "2025-07",
+       "url": null
+      }
+     },
+     {
+      "title": "Moved from consulting to founder to product management",
+      "detail": "Zinnov consultant Jul 2016 to Jul 2019, Revmeup founder Jul 2019 to Sep 2022, Product Manager roles from Oct 2021, Senior Product Manager at Guidepoint from Jun 2024.",
+      "year": 2024,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[4].title",
+       "quote": "Senior Product Manager",
+       "url": null
+      }
+     }
+    ],
+    "affiliations": [
+     {
+      "title": "Antler, SG19 batch, Entrepreneur in Residence, and backer of Paygent",
+      "detail": "Sep 2025 to Dec 2025. Paygent and Stealth Startup both say Backed by Antler, a VC and company builder, per profile.",
+      "year": 2025,
+      "tag": "Accelerator",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[0].description",
+       "quote": "Backed by Antler",
+       "url": null
+      }
+     }
+    ],
+    "recognition_media": [],
+    "track_record": [
+     {
+      "title": "Revmeup: 120K+ users, 30K monthly active",
+      "detail": "Founder and CEO, Jul 2019 to Sep 2022. Also 10K daily active users, per profile.",
+      "year": 2022,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[7].description",
+       "quote": "Achieved Total user base of 120K+ with 30K MAU and 10K DAU",
+       "url": null
+      }
+     },
+     {
+      "title": "Monster India: app store rating from 3.8 to 4.5",
+      "detail": "Product Manager, Oct 2022 to Oct 2023, per profile.",
+      "year": 2023,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[5].description",
+       "quote": "Increased Android Play store Rating from 3.8 to 4.5",
+       "url": null
+      }
+     },
+     {
+      "title": "Guidepoint: project manager efficiency up 45%",
+      "detail": "Senior Product Manager, Jun 2024 to Jul 2025. Result came from API integrations with BCG and McKinsey, per profile.",
+      "year": 2025,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[4].description",
+       "quote": "boosting project manager efficiency by 45%",
+       "url": null
+      }
+     },
+     {
+      "title": "Zinnov: consulting projects generated over USD 1.5 million",
+      "detail": "Consultant, Jul 2016 to Jul 2019, per profile.",
+      "year": 2019,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[8].description",
+       "quote": "generated >USD 1.5 Million for Zinnov",
+       "url": null
+      }
+     }
+    ]
+   },
+   "founder_dna": {
+    "label": "Repeat founder",
+    "subtitle": "2 startups, first one 3yr into their career (1 more entry unclear, not counted)",
+    "ventures_counted": 2,
+    "ventures": [
+     "paygent",
+     "revmeup"
+    ]
+   },
+   "experience": [
+    {
+     "company": "Paygent",
+     "title": "Co-Founder",
+     "start": "2026-01",
+     "end": null,
+     "location": null,
+     "description": "Solving Monetization and Cost Tracking purpose built for AI Agents - Backed by Antler.\n\nStart Monetizing your AI Agents withpaygent.com"
+    },
+    {
+     "company": "Stealth Startup",
+     "title": "Co-Founder",
+     "start": "2025-12",
+     "end": null,
+     "location": null,
+     "description": "Solving Monetization and Cost Tracking for AI Agents - Backed by Antler."
+    },
+    {
+     "company": "Antler",
+     "title": "Entrepreneur in Residence",
+     "start": "2025-09",
+     "end": "2025-12",
+     "location": null,
+     "description": "Was part of SG19 batch at Antler, focused on helping AI agent companies monetize their AI agents. Secured funding for the vision and now dedicating my life to help companies monetize their AI agents profitably!\nMade a lot of new friends, Danced, Sang and Enjoyed with the Cohort member, probably the best experience I have had after a long time! Energy of the Cohort was 🔥"
+    },
+    {
+     "company": "ByteMe",
+     "title": "What's in a Title?",
+     "start": "2025-07",
+     "end": "2025-10",
+     "location": null,
+     "description": "Experimenting with AI! \n\nI was feeling FOMO of AI. Being a founder and Product guy, AI has given a tool to all of us to visualise your ideas to life within seconds. Hence, I was experimenting building different startup ideas until something valuable comes out. ByteMe is one such idea among many others. \n\nOverwhelmed by endless AI news, I built ByteMe—with just AI tools—to cut the noise and turn updates into actionable, bite-sized insights.\n\nNow, I help others stay productive and smart, not just busy.\nA byte a day keeps the AI FOMO away\n\nGo to byteme.website and be productive."
+    },
+    {
+     "company": "Guidepoint",
+     "title": "Senior Product Manager",
+     "start": "2024-06",
+     "end": "2025-07",
+     "location": null,
+     "description": "• Launched AskAI, a GenAI tool answering user queries using domain-specific transcripts, optimizing accuracy & retrieval.\n• Spearheaded the development of GP360, a unified platform consolidating research tools to enhance user experience, aligning with the goal of simplifying complex workflows.\n• Collaborated with BCG and McKinsey to integrate Guidepoint API into their expert network platforms, automating project requests and boosting project manager efficiency by 45%."
+    },
+    {
+     "company": "Monster India",
+     "title": "Product Manager",
+     "start": "2022-10",
+     "end": "2023-10",
+     "location": null,
+     "description": "•\tIncreased Android Play store Rating from 3.8 to 4.5 by improving app experience and feedback prompts \n•\tAchieved 5%+ increase in seeker retention and Apply% via app-first features and upgrades while leading the Mobile App team\n•\tAchieved 96% reduction in launch time & highest ever registrations (0.3 Mn+) by prioritising productization of Virtual Career Fairs\n•\tFacilitated data led decision making across organisation by integrating product analytics tools like Mixpanel, Clevertap & GA4\n•\tImproved core web vitals score by 30% & organic traffic by 4% by improving page loading time by 200% & technical SEO initiatives"
+    },
+    {
+     "company": "toothsialigners",
+     "title": "Product Manager",
+     "start": "2021-10",
+     "end": "2022-10",
+     "location": null,
+     "description": "•\tLead the planning, development, design, testing and release of E-commerce Module to sell Toothsi & Skinnsi products\n•\tEnhanced and simplified the pre-scan journey by reducing number of steps and highlighting key CTAs\n•\tIntegrated E-commerce orders with Ware IQ for fulfilment which improved our Avg. delivery TAT from 5 days to 2 days.\n•\tCreated an organisation wide plug ’n’ play platform to enable users to book paid Audio & Video Consultation"
+    },
+    {
+     "company": "Revmeup",
+     "title": "Founder & CEO",
+     "start": "2019-07",
+     "end": "2022-09",
+     "location": null,
+     "description": "Built a Social Review Platform to help consumers choose best gadgets by developing user-product relationship.\n\n•\tAchieved Total user base of 120K+ with 30K MAU and 10K DAU reviewing 50000+ products with 1000+ reviews per day\n•\tConceptualized the idea; Formulated Company’s vision, Brand identity, Goals and Objectives\n•\tSetup Product Roadmap, Features, Design Guidelines based on user research and feedback\n•\tBuilt top-class Android App and Web from scratch (MVP –> Beta –> Final launch) by actively implementing the full PDLC\n•\tBuild the team from scratch of 50+ Employees & Interns and lead them to build the platform and carry out day-to-day tasks\n•\tOn boarded Inﬂuencers and brands on the platform to publish content advertisement to 35000+ tech enthusiasts\n\nREVMEUP SERVICES (Services wing helping clients build Digital Products)\n•\tConsulted and deployed multiple web and application projects such as E-commerce, Store front, Services Website, etc. for clients\n•\tBuilt 5+ Android Apps and 10+ Websites; Conceptualized and suggested feature customization while maintaining industry standards"
+    },
+    {
+     "company": "Zinnov",
+     "title": "Consultant",
+     "start": "2016-07",
+     "end": "2019-07",
+     "location": null,
+     "description": "•\tDelivery Management: Delivered consulting projects that generated >USD 1.5 Million for Zinnov. Catered to product engineering service majors (Sasken, HCl, Wipro) based in India, USA and Europe.\n•\tStakeholder Management: Engaged with CXOs and VPs of client organizations based across the globe to understand their requirements and deliver accordingly. Chaired conference calls attended by CXOs of firms with revenues >USD 500 Million."
+    }
+   ],
+   "education": [
+    {
+     "school": "Indian Institute of Technology, Bombay",
+     "qualification": "Bachelor of Technology (BTech) + Masters of Technology (MTech) - Chemical Engineering",
+     "start": "2011-01",
+     "end": "2016-01"
+    },
+    {
+     "school": "Methodist High School",
+     "qualification": null,
+     "start": null,
+     "end": null
+    }
+   ],
+   "skills": [
+    "Agile Methodologies",
+    "Agile Project Management",
+    "Business Analytics",
+    "C",
+    "C++",
+    "Data Analysis",
+    "Data Structures",
+    "HTML",
+    "JavaScript",
+    "Matlab",
+    "Microsoft Excel",
+    "Microsoft Office",
+    "Microsoft Word",
+    "Oral Communication",
+    "Photoshop",
+    "PowerPoint",
+    "Product Lifecycle Management",
+    "Product Management",
+    "Product Planning",
+    "Product Road Mapping",
+    "Programming",
+    "Research",
+    "SQL",
+    "Scrum",
+    "Statistics",
+    "Teamwork",
+    "User Experience (UX)",
+    "Wireframing"
+   ],
+   "signals": [
+    {
+     "type": "SELF_SOURCED",
+     "date": "2026-10-14",
+     "card_text": "Started a new company in Payments, AI / GenAI / ML, with a focus on AI / GenAI / ML.",
+     "score": 7.8,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Mid",
+     "ai_reason": "Strong AI startup founding experience combined with top-tier education and alignment with our focus sectors.",
+     "ai_pros": [
+      "Co-founder of AI monetization startups",
+      "Master's degree from a top global institute"
+     ],
+     "ai_cons": [
+      "Limited experience in our specific geographic region",
+      "No standout Tier A company experience"
+     ]
+    },
+    {
+     "type": "INVESTOR_INTEREST",
+     "date": "2026-04-23",
+     "card_text": "Just connected with Saksham Pant from BEENEXT",
+     "score": 7.5,
+     "theme": "Software",
+     "data_source": "WORKFLOW",
+     "data_origin": "Crosshair",
+     "ai_bucket": "Mid",
+     "ai_reason": "Mid-career applicant with strong work experience in product management and AI sector. Education is solid, and very high sector relevance boosts signal score.",
+     "ai_pros": [
+      "Extensive experience in product management and AI",
+      "Co-founded startup supported by Antler"
+     ],
+     "ai_cons": [
+      "No major global company experience",
+      "Education from a Tier 1 institution but not in a high-profile field"
+     ]
+    },
+    {
+     "type": "STRATEGIC_INTELLIGENCE_TALENT",
+     "date": "2026-01-26",
+     "card_text": "General Catalyst is interested.",
+     "score": 8.2,
+     "theme": "Software",
+     "data_source": "SPECTER",
+     "data_origin": null,
+     "ai_bucket": null,
+     "ai_reason": "Strong entrepreneurial background with AI focus, good educational grounding from IIT Bombay, and relevant startup initiatives in AI monetization align with investment goals.",
+     "ai_pros": [
+      "Founded multiple startups with AI and product management expertise.",
+      "Backed by Antler, prominent VC, shows validation of potential."
+     ],
+     "ai_cons": [
+      "Lacks direct experience in core focus sectors like financial and supply chain tech.",
+      "Limited exposure beyond AI initiatives might constrain versatility."
+     ]
+    },
+    {
+     "type": "NEW_COMPANY",
+     "date": "2026-01-14",
+     "card_text": "Starting as Co-Founder at Stealth Startup",
+     "score": 8.6,
+     "theme": "Software",
+     "data_source": "WORKFLOW",
+     "data_origin": "Phantombuster",
+     "ai_bucket": null,
+     "ai_reason": "Strong work experience as a founder in AI-related startups and product management positions, complemented by top-tier education at IIT Bombay, aligns well with focus areas on AI/SaaS and tech innovation.",
+     "ai_pros": [
+      "Proven entrepreneur with successful product management experience.",
+      "Strong educational background at a prestigious institution (IIT Bombay)."
+     ],
+     "ai_cons": [
+      "Lacks experience in a Fortune 500 company or high-prestige AI labs.",
+      "Short tenure in most roles might indicate instability."
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Alfan Hendro",
+   "linkedin_url": "https://www.linkedin.com/in/alfanhendro",
+   "headline": "Revenue Scaler | ex-COO Traveloka",
+   "current_title": "Co-Founder",
+   "location": "Singapore",
+   "about": "We are looking for high value-added professionals, who want to grow their careers in Leadership roles. If you are interested in starting a new career at Traveloka or have the passion, drive, energy and skills to join our amazing team, please get in touch with us. We'd be happy to find you the next chapter",
+   "credentials": {
+    "career_summary": "Operator at Traveloka for almost 9 years, from head of hotel business development to COO, and a founder since 2023.",
+    "pedigree": [
+     {
+      "title": "Traveloka, Chief Operating Officer",
+      "detail": "Oversaw all business units and key functions, per profile.",
+      "year": null,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[2].description",
+       "quote": "overseeing all business units",
+       "url": null
+      }
+     },
+     {
+      "title": "Kellogg and Peking University Guanghua, Executive MBAs",
+      "detail": "Two executive MBA programs, Kellogg at Northwestern and Guanghua at Peking University. Peking is among the most selective universities in Asia, per school list.",
+      "year": null,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[0].school",
+       "quote": "Northwestern University - Kellogg School of Management",
+       "url": null
+      }
+     }
+    ],
+    "career_signals": [
+     {
+      "title": "Left Traveloka Dec 2022, started Revenue Scaler Jan 2023",
+      "detail": "Traveloka role ended Dec 2022. Revenue Scaler Co-Founder & CEO began Jan 2023, one month later.",
+      "year": 2023,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[2].end",
+       "quote": "2022-12",
+       "url": null
+      }
+     },
+     {
+      "title": "New stealth Co-Founder role began Oct 2026",
+      "detail": "Agentic Commerce, in stealth. Started this month.",
+      "year": 2026,
+      "tag": "Stealth",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[0].start",
+       "quote": "2026-10",
+       "url": null
+      }
+     },
+     {
+      "title": "Four leadership roles at Traveloka, ending as COO",
+      "detail": "Feb 2014 to Dec 2022. Head of Business Development - Hotel, Head of Hotel Business, CEO of the Accommodation Business Unit, then COO, per profile.",
+      "year": 2022,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[2].description",
+       "quote": "Head of Business Development - Hotel",
+       "url": null
+      }
+     }
+    ],
+    "affiliations": [],
+    "recognition_media": [],
+    "track_record": []
+   },
+   "founder_dna": {
+    "label": "Serial founder",
+    "subtitle": "4 startups, first one 3yr into their career",
+    "ventures_counted": 4,
+    "ventures": [
+     "stealth:2026",
+     "revenue scaler",
+     "voucherhotel",
+     "sg house"
+    ]
+   },
+   "experience": [
+    {
+     "company": "Agentic Commerce - Stealth",
+     "title": "Co-Founder",
+     "start": "2026-10",
+     "end": null,
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Revenue Scaler",
+     "title": "Co-Founder & CEO",
+     "start": "2023-01",
+     "end": null,
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Traveloka",
+     "title": "Chief Operating Officer",
+     "start": "2014-02",
+     "end": "2022-12",
+     "location": null,
+     "description": "My role as Chief Operating Officer (COO) saw me overseeing all business units (Transport, Accommodation, Local Services, Financial Services) and key functions (Technology, Data, Design, Marketing, Communications, Platform & Loyalty, Customer Care, People Operations) at Traveloka. I worked closely with the CEO for devising and executing a strategy to bring the business back to growth following the impact of the pandemic.\n\nPrior to my role as COO, I held several other leadership positions through various stages of Traveloka's development, including:\n\nHead of Business Development - Hotel: In this role, I led a small team in starting and launching the Hotel business at Traveloka. I developed business strategy, go to market strategy, product requirements, business development, finance operations, and customer service for the business.\n\nHead of Hotel Business: In this role, I led a cross-functional team to make Traveloka the market leader for hotels in Indonesia. I also worked with the International launch team to expand the Hotel business into Thailand, Vietnam, Malaysia, Singapore, and the Philippines.\n\nCEO of Traveloka Accommodation Business Unit: In this role, I strengthened our market position in Indonesia and international markets, and launched the large-scale sales event EPIC-Sale, which helped drive volume growth."
+    },
+    {
+     "company": "VoucherHotel",
+     "title": "Founder",
+     "start": "2012-02",
+     "end": "2014-02",
+     "location": null,
+     "description": "VoucherHotel was the leading local online travel agent for hotel booking in Indonesia."
+    },
+    {
+     "company": "SG House",
+     "title": "Founder",
+     "start": "2009-04",
+     "end": "2010-06",
+     "location": null,
+     "description": "SG-House was acquired by iProperty (now part of News Corp) in 2010. It was 3rd largest property site in Singapore at the time of acquisition."
+    },
+    {
+     "company": "Standard Chartered",
+     "title": "Risk Analyst",
+     "start": "2006-08",
+     "end": "2009-03",
+     "location": null,
+     "description": ""
+    }
+   ],
+   "education": [
+    {
+     "school": "Northwestern University - Kellogg School of Management",
+     "qualification": "Executive Master of Business Administration",
+     "start": null,
+     "end": null
+    },
+    {
+     "school": "University of Wollongong",
+     "qualification": "Bachelor of Computer Science",
+     "start": null,
+     "end": null
+    },
+    {
+     "school": "Guanghua School of Management, Peking University",
+     "qualification": "Executive Master of Business Administration",
+     "start": null,
+     "end": null
+    }
+   ],
+   "skills": [
+    "Business Development",
+    "Business Strategy",
+    "Data Analysis",
+    "Digital Marketing",
+    "Digital Media",
+    "E-commerce",
+    "Entrepreneurship",
+    "Google Adwords",
+    "Google Analytics",
+    "Leadership",
+    "Management",
+    "Marketing",
+    "Marketing Strategy",
+    "Mergers & Acquisitions",
+    "Mobile Applications",
+    "Online Travel",
+    "SEO",
+    "Sales",
+    "Search Engine Optimization (SEO)",
+    "Start-ups",
+    "Strategy",
+    "User Experience",
+    "Web Development"
+   ],
+   "signals": [
+    {
+     "type": "SELF_SOURCED",
+     "date": "2026-10-14",
+     "card_text": "Was sourced by the team via Lemlist.",
+     "score": 8,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Veteran",
+     "ai_reason": "The candidate has extensive leadership experience in tech startups, strong education, and operates in a focus sector.",
+     "ai_pros": [
+      "Extensive leadership experience in tech start-ups",
+      "Focus sector alignment with January Capital"
+     ],
+     "ai_cons": [
+      "Lack of specific global elite company experience",
+      "Limited information on company operations in current role"
+     ]
+    },
+    {
+     "type": "INVESTOR_INTEREST",
+     "date": "2026-07-05",
+     "card_text": "Just connected with Dat Han from Lightspeed",
+     "score": 8.4,
+     "theme": "Essentials",
+     "data_source": "WORKFLOW",
+     "data_origin": "Crosshair",
+     "ai_bucket": "Senior",
+     "ai_reason": "Experienced leader with over a decade in leadership roles, strong educational background from top institutions, and relevant founder experience in focus sectors.",
+     "ai_pros": [
+      "Over a decade of experience in a senior leadership role at Traveloka",
+      "Founder of startups in relevant sectors"
+     ],
+     "ai_cons": [
+      "Limited direct fintech experience",
+      "Recent founder role with less than a year of track record"
+     ]
+    },
+    {
+     "type": "NEW_COMPANY",
+     "date": "2025-08-01",
+     "card_text": "Previously Chief Operating Officer of Traveloka, starting as Co-Founder & CEO at Revenue Scaler",
+     "score": 9,
+     "theme": null,
+     "data_source": "SPECTER",
+     "data_origin": null,
+     "ai_bucket": null,
+     "ai_reason": null,
+     "ai_pros": null,
+     "ai_cons": null
+    },
+    {
+     "type": "NEW_COMPANY",
+     "date": "2023-05-12",
+     "card_text": "Previously Chief Operating Officer of Traveloka, starting as Co-Founder at Stealth Startup",
+     "score": 9,
+     "theme": null,
+     "data_source": "SPECTER",
+     "data_origin": null,
+     "ai_bucket": null,
+     "ai_reason": null,
+     "ai_pros": null,
+     "ai_cons": null
+    }
+   ]
+  },
+  {
+   "name": "Janvijay Singh",
+   "linkedin_url": "https://www.linkedin.com/in/iamjanvijay",
+   "headline": null,
+   "current_title": "Research Intern",
+   "location": "Champaign, Illinois, United States",
+   "about": null,
+   "credentials": {
+    "career_summary": "Applied scientist at Flipkart for 3 years, then ML and research roles alongside a Master's and PhD.",
+    "pedigree": [
+     {
+      "title": "University of Illinois Urbana-Champaign, PhD in Computer Science, in progress",
+      "detail": "Started Jan 2024 and still in progress.",
+      "year": 2024,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[0].qualification",
+       "quote": "Doctor of Philosophy - PhD - Computer Science",
+       "url": null
+      }
+     },
+     {
+      "title": "IIT (BHU) Varanasi, B.Tech in Computer Science",
+      "detail": "2014 to 2018. IITs take about 1 in 100 of the people who sit India's engineering entrance exam (JEE Main), per school list.",
+      "year": 2018,
+      "tag": "School",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[2].school",
+       "quote": "Indian Institute of Technology (Banaras Hindu University), Varanasi",
+       "url": null
+      }
+     },
+     {
+      "title": "Georgia Institute of Technology, MS in Computer Science",
+      "detail": "Education entry runs 2021 to 2023.",
+      "year": 2023,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[1].qualification",
+       "quote": "Master of Science - MS - Computer Science",
+       "url": null
+      }
+     }
+    ],
+    "career_signals": [
+     {
+      "title": "Three years at Flipkart, then research internships during the PhD",
+      "detail": "Flipkart Data and Applied Scientist 2 ran Sep 2018 to Jul 2021. Salesforce AI Research Intern May to Aug 2025, Microsoft Research Intern from May 2026.",
+      "year": 2021,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[5].start",
+       "quote": "2018-09",
+       "url": null
+      }
+     },
+     {
+      "title": "Alternated industry roles and research since 2022",
+      "detail": "ETH Zurich fellowship Jun 2022, Verneek Jul 2023 to Jan 2024, TikTok ML Engineer 2 Jan to Jul 2024. PhD started Jan 2024.",
+      "year": 2024,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[2].title",
+       "quote": "Machine Learning Engineer 2",
+       "url": null
+      }
+     }
+    ],
+    "affiliations": [
+     {
+      "title": "ETH Zurich, Summer Research Fellow",
+      "detail": "Jun 2022 to Jul 2022. Among the world's most selective universities, per school list.",
+      "year": 2022,
+      "tag": "Fellowship",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[4].title",
+       "quote": "Summer Research Fellow",
+       "url": null
+      }
+     }
+    ],
+    "recognition_media": [],
+    "track_record": []
+   },
+   "founder_dna": {
+    "label": "Not a founder",
+    "subtitle": "no founded startups in the experience list",
+    "ventures_counted": 0,
+    "ventures": []
+   },
+   "experience": [
+    {
+     "company": "Microsoft",
+     "title": "Research Intern",
+     "start": "2026-05",
+     "end": null,
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Salesforce",
+     "title": "AI Research Intern",
+     "start": "2025-05",
+     "end": "2025-08",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "TikTok",
+     "title": "Machine Learning Engineer 2",
+     "start": "2024-01",
+     "end": "2024-07",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Verneek",
+     "title": "Machine Learning Researcher/Engineer",
+     "start": "2023-07",
+     "end": "2024-01",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "ETH Zürich",
+     "title": "Summer Research Fellow",
+     "start": "2022-06",
+     "end": "2022-07",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Flipkart",
+     "title": "Data and Applied Scientist 2",
+     "start": "2018-09",
+     "end": "2021-07",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Liv.ai",
+     "title": "Research Software Engineer",
+     "start": "2018-08",
+     "end": "2018-09",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "CentraleSupélec",
+     "title": "Research Intern",
+     "start": "2018-05",
+     "end": "2018-08",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Indian Institute of Technology (Banaras Hindu University), Varanasi",
+     "title": "Teaching Assistant",
+     "start": "2017-01",
+     "end": "2018-05",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Microsoft",
+     "title": "Software Engineer Intern",
+     "start": "2017-05",
+     "end": "2017-07",
+     "location": null,
+     "description": ""
+    }
+   ],
+   "education": [
+    {
+     "school": "University of Illinois Urbana-Champaign",
+     "qualification": "Doctor of Philosophy - PhD - Computer Science",
+     "start": "2024-01",
+     "end": null
+    },
+    {
+     "school": "Georgia Institute of Technology",
+     "qualification": "Master of Science - MS - Computer Science",
+     "start": "2021-01",
+     "end": "2023-01"
+    },
+    {
+     "school": "Indian Institute of Technology (Banaras Hindu University), Varanasi",
+     "qualification": "Bachelor of Technology - BTech - Computer Science",
+     "start": "2014-01",
+     "end": "2018-01"
+    }
+   ],
+   "skills": [],
+   "signals": [
+    {
+     "type": "EVERTRACE",
+     "date": "2026-10-14",
+     "card_text": "Potentially building in AI, likely B2B data/analytics platforms or ML model infra for enterprise application software.",
+     "score": 8.1,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Junior",
+     "ai_reason": "Strong education and relevant tech experience with impressive internships at leading tech firms.",
+     "ai_pros": [
+      "Strong tech intern experience",
+      "PhD candidate in Computer Science"
+     ],
+     "ai_cons": [
+      "Limited full-time leadership experience",
+      "Prior roles mostly IC positions"
+     ],
+     "tags": [
+      "PhD or Above",
+      "Technical",
+      "Big Tech experience",
+      "Data and Analytics",
+      "Application Software",
+      "Artificial Intelligence",
+      "B2B",
+      "5 to 9",
+      "Left Position"
+     ]
+    }
+   ]
+  },
+  {
+   "name": "Parikshit Sondhi",
+   "linkedin_url": "https://www.linkedin.com/in/parikshit-sondhi",
+   "headline": null,
+   "current_title": "Founder",
+   "location": "Los Altos, California, United States",
+   "about": "Experienced researcher with 20 years of experience working on machine learning problems and 40+ patents/publications. Seasoned leader with experience leading, managing and building high performance teams. Experienced at founding/advising startups.Technical Skills: LLMs, Machine Learning, ML Infrastructure, Deep Learning, Information Retrieval, Search Ranking and Recommendation,  Learning to Rank, Natural Language Processing, Data Mining, Multi-armed bandits, Crowdsourcing, Graphical Models, eCommercehttps://scholar.google.com/citations?user=vGRmz-QAAAAJ&amp;hl=en",
+   "credentials": {
+    "career_summary": "Says 20 years in machine learning, per profile: search ranking at Walmart, AI platform at Snap, AI advisor, and a founder since Apr 2026.",
+    "pedigree": [
+     {
+      "title": "University of Illinois Urbana-Champaign, PhD in AI/ML",
+      "detail": "Education entry runs 2008 to 2013. Thesis: Autonomous Agents for Serving Complex Information Needs.",
+      "year": 2013,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[0].qualification",
+       "quote": "Thesis Title: Autonomous Agents for Serving Complex Information Needs",
+       "url": null
+      }
+     },
+     {
+      "title": "Snap, founding engineer then Head of AI Training Platform",
+      "detail": "Started the AI training platform effort, per profile.",
+      "year": 2019,
+      "tag": null,
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[4].description",
+       "quote": "initiated Snap’s AI training platform effort initially as its founding engineer",
+       "url": null
+      }
+     },
+     {
+      "title": "40+ patents and publications",
+      "detail": "Per profile. Research area is machine learning and search ranking.",
+      "year": null,
+      "tag": "Patents",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "about",
+       "quote": "40+ patents/publications",
+       "url": null
+      }
+     },
+     {
+      "title": "IIT Roorkee, BS and MS in Computer Science",
+      "detail": "2003 to 2008. IITs take about 1 in 100 of the people who sit India's engineering entrance exam (JEE Main), per school list.",
+      "year": 2008,
+      "tag": "School",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "education[1].school",
+       "quote": "Indian Institute of Technology, Roorkee",
+       "url": null
+      }
+     }
+    ],
+    "career_signals": [
+     {
+      "title": "Founder of a stealth AI startup, since Apr 2026",
+      "detail": "Founder role began Apr 2026 with no product description.",
+      "year": 2026,
+      "tag": "Stealth",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[0].start",
+       "quote": "2026-04",
+       "url": null
+      }
+     },
+     {
+      "title": "Tech Lead to Head of AI Training Platform at Snap",
+      "detail": "Tech Lead, Dynamic Product Ads from Nov 2018 to May 2019. Head of AI Training Platform May 2019 to Feb 2023.",
+      "year": 2019,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[6].title",
+       "quote": "Tech Lead Dynamic Product Ads",
+       "url": null
+      }
+     },
+     {
+      "title": "Staff Engineer to Principal Engineer and Engineering Manager at Walmart",
+      "detail": "@WalmartLabs Staff Engineer Oct 2013 to May 2016, then Walmart Global Tech Principal Engineer, Sr. Engineering Manager to Oct 2017.",
+      "year": 2016,
+      "tag": null,
+      "claim_type": "derived",
+      "confidence": "high",
+      "evidence": {
+       "field": "experience[9].title",
+       "quote": "Staff Engineer (Search Relevance and Ranking)",
+       "url": null
+      }
+     }
+    ],
+    "affiliations": [
+     {
+      "title": "AI Advisor to Bloomberg Regology, JazzX AI and The Home Depot",
+      "detail": "Bloomberg Regology Feb 2016 to Feb 2026, The Home Depot Nov 2018 to Apr 2022, JazzX AI Mar 2024 to Mar 2026. Titles per profile.",
+      "year": 2024,
+      "tag": "Advisor",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[3].description",
+       "quote": "Executive level AI strategy advisory from inception to exit.",
+       "url": null
+      }
+     },
+     {
+      "title": "Neulogic, Alchemist 2017",
+      "detail": "Co-Founder and CTO from Nov 2017 to Nov 2018. Part of the Alchemist 2017 cohort.",
+      "year": 2017,
+      "tag": "Accelerator",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[7].company",
+       "quote": "Neulogic Inc. (Alchemist 2017)",
+       "url": null
+      }
+     }
+    ],
+    "recognition_media": [],
+    "track_record": [
+     {
+      "title": "Snap: AI training platform served 200+ ML engineers across 15 teams",
+      "detail": "Head of AI Training Platform, May 2019 to Feb 2023. Also 1-2K training jobs a day and a team of about 20, per profile.",
+      "year": 2023,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[4].description",
+       "quote": "supporting 200+ ML engineers across 15 teams",
+       "url": null
+      }
+     },
+     {
+      "title": "Neulogic: 83% of generated outfits rated good by stylists",
+      "detail": "Co-Founder and CTO, Nov 2017 to Nov 2018. Expert evaluation by human stylists, per profile.",
+      "year": 2018,
+      "tag": "Result",
+      "claim_type": "self_reported",
+      "confidence": "medium",
+      "evidence": {
+       "field": "experience[7].description",
+       "quote": "Expert evaluation by human stylists found 83% of generated outfits were good quality",
+       "url": null
+      }
+     }
+    ]
+   },
+   "founder_dna": {
+    "label": "Repeat founder",
+    "subtitle": "2 startups, first one 9yr into their career",
+    "ventures_counted": 2,
+    "ventures": [
+     "stealth:2026",
+     "neulogic"
+    ]
+   },
+   "experience": [
+    {
+     "company": "Stealth AI Startup",
+     "title": "Founder",
+     "start": "2026-04",
+     "end": null,
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "AI Advisor",
+     "title": "Advisor",
+     "start": "2016-02",
+     "end": null,
+     "location": null,
+     "description": "I do limited consulting to help both startups and large companies develop their AI initiatives."
+    },
+    {
+     "company": "JazzX AI",
+     "title": "AI Advisor",
+     "start": "2024-03",
+     "end": "2026-03",
+     "location": null,
+     "description": "Helped C-suite hire the founding team of AI and Infra engineers."
+    },
+    {
+     "company": "Bloomberg Regology",
+     "title": "AI Advisor",
+     "start": "2016-02",
+     "end": "2026-02",
+     "location": null,
+     "description": "Executive level AI strategy advisory from inception to exit. \nAcquired by Bloomberg."
+    },
+    {
+     "company": "Snap Inc.",
+     "title": "Head AI Training Platform",
+     "start": "2019-05",
+     "end": "2023-02",
+     "location": null,
+     "description": "I initiated Snap’s AI training platform effort initially as its founding engineer,  and ultimately growing a cross functional team of ~20 Engineers (ML, Data, UX), UX Designers, and Project Managers. \n\nDuring my tenure the platform grew to support:\n- Nearly all ML use-cases in the company, supporting 200+ ML engineers across 15 teams, and powering 30+ distinct ML modeling use-cases (including critical applications like Ads recommendation, organic content recommendation, search etc.).\n- Between 1-2K training jobs per day on top of Petabyte level training datasets, including time-sensitive production model update pipelines responsible for $XB in revenue, and $XXXM in incremental revenue resulting from algorithmic improvements.\n- Multiple interfaces including UX, Notebooks and python API/Command-line.\n\nApart from managing the platform team, my responsibilities also included: \n- Working with Snap’s finance team to establish and manage quarterly AI budgets (order of $XXM). And with customer teams to allocate it based on project priorities & set up enforcement mechanisms.  \n- Serving as the primary AI Training Platform POC for cloud providers like GCP and AWS.\n- Formulating and communicating the platform strategy with the executive team.\n- Evaluation of external AI/MLOps software providers, including running short term pilots. \n- Interviewed ~250 prospective candidates to help grow AI Platform and other ML teams."
+    },
+    {
+     "company": "The Home Depot",
+     "title": "AI Advisor",
+     "start": "2018-11",
+     "end": "2022-04",
+     "location": null,
+     "description": "Helped build the search, browse, recommendation infra."
+    },
+    {
+     "company": "Snap Inc.",
+     "title": "Tech Lead Dynamic Product Ads",
+     "start": "2018-11",
+     "end": "2019-05",
+     "location": null,
+     "description": "I was one of the founding Tech Leads (~4) tasked with designing the Dynamic Product Ads recommendation system for Snap. I worked with 30+ engineers and PMs across the company to successfully design, implement and roll out the first version of the system. \n\nCore technology was developed using product image embeddings, nearest neighbor vector databases, and recommendation ML models. \n\nOver the next 2 years the platform grew to deliver $XXXM in yearly revenues."
+    },
+    {
+     "company": "Neulogic Inc. (Alchemist 2017)",
+     "title": "Co-Founder, CTO",
+     "start": "2017-11",
+     "end": "2018-11",
+     "location": null,
+     "description": "Co-founded a startup at the intersection of AI and Fashion e-commerce. \n\n- We developed AI (language model and vision) based 'complete the look' technology to automatically curate an outfit by grouping aesthetically compatible fashion products from a retailer's website. \n- Expert evaluation by human stylists found 83% of generated outfits were good quality. \n- Built a small team of UX engineers and fashion stylists.     \n- Initiated pilot trials at a mid sized fashion retailer.\n\nAcqui-hired by SNAP Inc. to help power their product Ads recommendations."
+    },
+    {
+     "company": "Walmart Global Tech India",
+     "title": "Principal Engineer, Sr. Engineering Manager (Search Relevance and Ranking)",
+     "start": "2016-05",
+     "end": "2017-10",
+     "location": null,
+     "description": "Lead and managed the machine learning based search relevance and ranking efforts at WalmartLabs  impacting $XX billion in revenue. \n- Directly contributed revenue lifts of over $XXX million.   \n- Typical projects areas were: Learning to rank, Text retrieval models, Multi-stage ranking, Search result Personalization, Machine learning experimentation framework design, Multi-armed bandits (explore-exploit), Large scale mining of query-product user engagement graphs, Statistical query interpretation, Crowdsourcing, Designing online and offline evaluation metrics for search"
+    },
+    {
+     "company": "@WalmartLabs",
+     "title": "Staff Engineer (Search Relevance and Ranking)",
+     "start": "2013-10",
+     "end": "2016-05",
+     "location": null,
+     "description": "Lead multiple ranking projects related to learning to rank, top-k retrieval, offline & crowd-sourced search evaluation, statistical query interpretation, incorporating user engagement signals etc.. Responsibilities included leading teams of 1 − 2 engineers, and owning projects end to end; from conception, to deployment, to production."
+    },
+    {
+     "company": "University of Illinois Urbana-Champaign",
+     "title": "Research Assistant",
+     "start": "2008-01",
+     "end": "2013-01",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "IBM",
+     "title": "Research Intern",
+     "start": "2011-05",
+     "end": "2011-08",
+     "location": null,
+     "description": ""
+    },
+    {
+     "company": "Microsoft",
+     "title": "Research Intern",
+     "start": "2009-05",
+     "end": "2009-08",
+     "location": null,
+     "description": ""
+    }
+   ],
+   "education": [
+    {
+     "school": "University of Illinois at Urbana-Champaign",
+     "qualification": "PhD (AI/ML) - Thesis Title: Autonomous Agents for Serving Complex Information Needs",
+     "start": "2008-01",
+     "end": "2013-01"
+    },
+    {
+     "school": "Indian Institute of Technology, Roorkee",
+     "qualification": "BS+MS - Computer Science",
+     "start": "2003-01",
+     "end": "2008-01"
+    }
+   ],
+   "skills": [],
+   "signals": [
+    {
+     "type": "EVERTRACE",
+     "date": "2026-10-14",
+     "card_text": "Parikshit Sondhi entered Stealth and is working on something new",
+     "score": 8.4,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": "Senior",
+     "ai_reason": "The candidate is an experienced AI expert and founder with a strong educational background and focus sector alignment.",
+     "ai_pros": [
+      "Extensive AI experience in top-tier firms",
+      "Strong alignment with focus sectors and founder experience"
+     ],
+     "ai_cons": [
+      "Majority of career outside APAC/SEA region",
+      "Limited data on current stealth startup's impact"
+     ],
+     "ai_summary": "Building in stealth, likely B2B AI infra for LLM-based search, ranking, and recommendation across data and analytics workloads.",
+     "tags": [
+      "PhD or Above",
+      "Technical",
+      "Big Tech experience",
+      "VC Backed Operator",
+      "Serial Founder",
+      "Data and Analytics",
+      "Application Software",
+      "Artificial Intelligence",
+      "B2B",
+      "15 to 19",
+      "Stealth Position"
+     ]
+    },
+    {
+     "type": "INVESTOR_INTEREST",
+     "date": "2025-03-10",
+     "card_text": "Just connected with Olivia, Bryan, Justine, Troy, Jesse, Joe from a16z",
+     "score": 6,
+     "theme": "Software",
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": null,
+     "ai_reason": null,
+     "ai_pros": null,
+     "ai_cons": null
+    },
+    {
+     "type": "INVESTOR_INTEREST",
+     "date": "2025-02-05",
+     "card_text": "Just connected with Siddhant, Johnny from GC",
+     "score": 6,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": null,
+     "ai_reason": null,
+     "ai_pros": null,
+     "ai_cons": null
+    },
+    {
+     "type": "INVESTOR_INTEREST",
+     "date": "2025-01-21",
+     "card_text": "Just connected with AU Stealth SEA in SF, AU in SF, IN in SF",
+     "score": 6,
+     "theme": null,
+     "data_source": "WORKFLOW",
+     "data_origin": null,
+     "ai_bucket": null,
+     "ai_reason": null,
+     "ai_pros": null,
+     "ai_cons": null
+    }
+   ]
+  }
+ ]
+}
