@@ -38,7 +38,8 @@ export interface ProfilePosition {
   title: string;
   period: string;
   months: number;
-  category: PositionCategory;
+  /** Omit when the source has no such classification. */
+  category?: PositionCategory;
   tag?: string;
   description?: string;
   companyMeta?: string[];
@@ -275,9 +276,21 @@ export interface LinkedInActivityItem {
   reaction?: string;
 }
 
+/**
+ * Provenance carried by credentials items that come from the structured people file: a short tag
+ * (School, Papers, Award...), how the claim was made, how sure we are, and the evidence behind it.
+ */
+export interface CredentialMeta {
+  tag?: string;
+  claimType?: "self_reported" | "derived";
+  confidence?: "high" | "medium";
+  evidence?: { field: string; quote: string; url: string | null };
+}
+
 /** Academic/competitive credentials that signal raw talent caliber (olympiads, scholarships, honours, etc.). */
-export interface PedigreeItem {
-  category:
+export interface PedigreeItem extends CredentialMeta {
+  /** Omit when the source has no such classification: the card then falls back to a generic icon. */
+  category?:
     | "school"
     | "honours"
     | "scholarship"
@@ -293,10 +306,12 @@ export interface PedigreeItem {
 }
 
 /** Derived signals about career trajectory — employer quality, promotion pace, stealth/departure events. */
-export interface CareerSignalItem {
-  kind: "employer-tier" | "early-employee" | "promotion-velocity" | "departure-event";
+export interface CareerSignalItem extends CredentialMeta {
+  /** Omit when the source has no such classification: the card then falls back to a generic icon. */
+  kind?: "employer-tier" | "early-employee" | "promotion-velocity" | "departure-event";
   label: string;
   detail: string;
+  year?: string;
 }
 
 /** Early, pre-public "intent" signals — stealth-mode flags, new domains, follow bursts — the raw material
@@ -309,15 +324,18 @@ export interface BehavioralSignalItem {
 }
 
 /** Founder/professional network affiliations — co-founders, accelerators, notable colleague overlap. */
-export interface NetworkItem {
-  kind: "co-founder" | "accelerator" | "colleague-overlap";
+export interface NetworkItem extends CredentialMeta {
+  /** Omit when the source has no such classification: the card then falls back to a generic icon. */
+  kind?: "co-founder" | "accelerator" | "colleague-overlap";
   label: string;
   detail?: string;
+  year?: string;
 }
 
 /** External validation — press coverage, young-leader lists, conference speaking. */
-export interface RecognitionItem {
-  kind: "press" | "list" | "speaking";
+export interface RecognitionItem extends CredentialMeta {
+  /** Omit when the source has no such classification: the card then falls back to a generic icon. */
+  kind?: "press" | "list" | "speaking";
   label: string;
   detail?: string;
   date?: string;
@@ -326,16 +344,35 @@ export interface RecognitionItem {
   mock?: boolean;
 }
 
+/** Concrete results the person has delivered (shipped, grown, raised, sold). */
+export interface TrackRecordItem extends CredentialMeta {
+  label: string;
+  detail?: string;
+  year?: string;
+}
+
+/** Founder DNA exactly as supplied by the source, for profiles where it is not derived from positions. */
+export interface FounderDnaSummary {
+  label: string;
+  subtitle: string;
+  venturesCounted: number;
+  ventures: string[];
+}
+
 export interface TalentProfile {
   titleLine: string;
-  connections: number;
+  /** Omit when the source profile has no connection count. */
+  connections?: number;
   /** Omit when the source profile has no follower count. */
   followers?: number;
   rolesHeld: number;
   avgTenureMonths: number;
-  location: string;
-  overview: string;
-  aiSummaryGenerated: string;
+  /** Omit when the source profile has no location. */
+  location?: string;
+  /** Omit when the source profile has no About text: the Overview block is then hidden. */
+  overview?: string;
+  /** Omit when the AI summary is placeholder text rather than a generated one. */
+  aiSummaryGenerated?: string;
   positions: ProfilePosition[];
   education: ProfileEducationEntry[];
   /** Omit when there's no recent LinkedIn activity to show. */
@@ -348,6 +385,14 @@ export interface TalentProfile {
   network?: NetworkItem[];
   /** Omit when there's no notable press/recognition to show. */
   recognition?: RecognitionItem[];
+  /** Omit when there are no concrete results to show. */
+  trackRecord?: TrackRecordItem[];
+  /** One-line career trajectory, shown at the top of Career Signals. */
+  careerSummary?: string;
+  /** When set, shown as-is in the Insights tab instead of the tile derived from positions. */
+  founderDna?: FounderDnaSummary;
+  /** Skills as listed on the source profile. Stored, not yet shown anywhere in the design. */
+  skills?: string[];
   /** Omit when this person has no public GitHub activity to show. */
   github?: GithubStats;
   /** Omit when there are no early/pre-public intent signals worth flagging for this profile. */
@@ -377,7 +422,8 @@ export interface Signal {
   /** Temporarily exclude from the list (e.g. mid-edit signals ahead of a demo) without deleting the data. */
   hidden?: boolean;
   tags: SignalTag[];
-  score: number;
+  /** Omit when the signal has no score yet: score UI is then hidden. */
+  score?: number;
   avatarInitials: string;
   /** Real photo path/URL (e.g. "/avatars/darshan.jpg"). Falls back to a placeholder when omitted. */
   photoUrl?: string;
@@ -400,6 +446,8 @@ export interface Signal {
   assignedStage?: string;
   linkedinUrl?: string;
   githubUrl?: string;
+  /** Skip the "sourced via" pill, for people with no known discovery source. */
+  noSourceInfo?: boolean;
   /** Show a generic silhouette instead of a photo, e.g. for anonymized stealth signals. */
   useGenericAvatar?: boolean;
   /** Name of the external investor/fund shown to be interested in this person. */

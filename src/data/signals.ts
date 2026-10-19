@@ -2,6 +2,7 @@ import type { Signal } from "../types";
 import { achintyaProfile } from "./achintyaProfile";
 import { anshuProfile } from "./anshuProfile";
 import { darshanProfile } from "./darshanProfile";
+import { fsPeopleSignals } from "./fsPeople";
 import { loongProfile } from "./loongProfile";
 import { paulynProfile } from "./paulynProfile";
 import { skyProfile } from "./skyProfile";
@@ -390,4 +391,5 @@ export const signals: Signal[] = [
       negatives: ["Stage/fundraise status unclear"],
     },
   },
+  ...fsPeopleSignals,
 ];

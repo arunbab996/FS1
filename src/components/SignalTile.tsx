@@ -77,6 +77,7 @@ export function SignalTile({ signal }: { signal: Signal }) {
             </span>
           )}
           {!signal.sourcedBy &&
+            !signal.noSourceInfo &&
             (() => {
               const source = discoverySourceFor(signal.id);
               return (
@@ -94,7 +95,9 @@ export function SignalTile({ signal }: { signal: Signal }) {
             />
           </Tooltip>
           <SignalScreenStatus signal={signal} />
-          <ScoreReasoningBubble score={signal.score} reasoning={signal.reasoning} />
+          {signal.score !== undefined && (
+            <ScoreReasoningBubble score={signal.score} reasoning={signal.reasoning} />
+          )}
         </div>
       </div>
 
@@ -120,16 +123,18 @@ export function SignalTile({ signal }: { signal: Signal }) {
           </p>
           <p className="mt-0.5 flex items-center gap-1 text-xs text-gray-500 dark:text-neutral-400">
             <Calendar className="h-3 w-3 shrink-0 text-gray-400 dark:text-neutral-500" />
-            {shortDate} · {signal.contextLine}
+            {[shortDate, ...signal.contextLine.split(" · ")].filter(Boolean).join(" · ")}
           </p>
         </div>
       </div>
 
       {/* Row 3 — Current / Past / Education (+ Investor interest / Featured, if present) */}
       <div className="mt-2 flex gap-1.5">
-        <ExperienceColumn label="Current" entries={signal.current} />
-        <ExperienceColumn label="Past" entries={signal.past} />
-        <ExperienceColumn label="Education" entries={signal.education} />
+        {signal.current.length > 0 && <ExperienceColumn label="Current" entries={signal.current} />}
+        {signal.past.length > 0 && <ExperienceColumn label="Past" entries={signal.past} />}
+        {signal.education.length > 0 && (
+          <ExperienceColumn label="Education" entries={signal.education} />
+        )}
         {signal.investorInterest && (
           <InvestorInterestBox investor={signal.investorInterest} />
         )}

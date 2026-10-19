@@ -40,7 +40,7 @@ const discoverySourceMap: Record<string, string> = (() => {
   const map: Record<string, string> = {};
   let i = 0;
   for (const signal of signals) {
-    if (signal.sourcedBy) continue;
+    if (signal.sourcedBy || signal.noSourceInfo) continue;
     map[signal.id] = discoverySources[i % discoverySources.length];
     i += 1;
   }

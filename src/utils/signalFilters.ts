@@ -482,10 +482,11 @@ function matchesAny(selected: string[], values: string[]): boolean {
   return selected.length === 0 || values.some((v) => selected.includes(v));
 }
 
-function matchesScore(score: number, filter: ScoreFilter): boolean {
+function matchesScore(score: number | undefined, filter: ScoreFilter): boolean {
+  if (filter.operator === null) return true;
+  // A signal with no score can't satisfy a score condition.
+  if (score === undefined) return false;
   switch (filter.operator) {
-    case null:
-      return true;
     case "gte":
       return filter.value === null || score >= filter.value;
     case "lte":

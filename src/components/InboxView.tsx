@@ -8,6 +8,7 @@ import {
   Sparkles,
   Star,
   Undo2,
+  User,
   X,
 } from "lucide-react";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
@@ -275,13 +276,23 @@ function InboxRow({
     >
       {/* Photo, which turns into the select checkbox on hover */}
       <div className="relative h-11 w-11 shrink-0">
-        <img
-          src={signal.photoUrl ?? personPhotoUrl(signal.id)}
-          alt={signal.avatarInitials}
-          className={`h-11 w-11 rounded-full object-cover ring-1 ring-gray-100 transition-opacity dark:ring-neutral-800 ${
-            checked ? "opacity-0" : "group-hover:opacity-0"
-          }`}
-        />
+        {signal.useGenericAvatar ? (
+          <div
+            className={`flex h-11 w-11 items-center justify-center rounded-full bg-gray-200 transition-opacity dark:bg-neutral-700 ${
+              checked ? "opacity-0" : "group-hover:opacity-0"
+            }`}
+          >
+            <User className="h-5 w-5 text-gray-400 dark:text-neutral-400" />
+          </div>
+        ) : (
+          <img
+            src={signal.photoUrl ?? personPhotoUrl(signal.id)}
+            alt={signal.avatarInitials}
+            className={`h-11 w-11 rounded-full object-cover ring-1 ring-gray-100 transition-opacity dark:ring-neutral-800 ${
+              checked ? "opacity-0" : "group-hover:opacity-0"
+            }`}
+          />
+        )}
         <div
           className={`absolute inset-0 flex items-center justify-center rounded-full bg-gray-50 transition-opacity dark:bg-neutral-800 ${
             checked ? "opacity-100" : "opacity-0 group-hover:opacity-100"
@@ -350,12 +361,14 @@ function InboxRow({
           >
             {signal.status}
           </span>
-          <span
-            title="Signal score"
-            className={`rounded-md border border-gray-200 px-1.5 py-0.5 text-xs font-bold dark:border-neutral-700 ${scoreTextClasses(signal.score)}`}
-          >
-            {signal.score.toFixed(1)}
-          </span>
+          {signal.score !== undefined && (
+            <span
+              title="Signal score"
+              className={`rounded-md border border-gray-200 px-1.5 py-0.5 text-xs font-bold dark:border-neutral-700 ${scoreTextClasses(signal.score)}`}
+            >
+              {signal.score.toFixed(1)}
+            </span>
+          )}
         </div>
         <div className="flex h-8 items-center gap-2">
           {decision ? (
@@ -510,7 +523,7 @@ export function InboxView({
   const sorted = useMemo(() => {
     const copy = [...listForTab];
     copy.sort((a, b) =>
-      sortBy === "fit" ? b.score - a.score : signalDate(b).getTime() - signalDate(a).getTime(),
+      sortBy === "fit" ? (b.score ?? 0) - (a.score ?? 0) : signalDate(b).getTime() - signalDate(a).getTime(),
     );
     return copy;
   }, [listForTab, sortBy]);

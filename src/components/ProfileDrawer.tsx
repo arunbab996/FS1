@@ -6,6 +6,7 @@ import {
   Code2,
   ExternalLink,
   Eye,
+  EyeOff,
   FileText,
   GraduationCap,
   Handshake,
@@ -20,6 +21,7 @@ import {
   Send,
   Sparkles,
   Star,
+  Target,
   ThumbsUp,
   TrendingUp,
   Trophy,
@@ -31,6 +33,8 @@ import {
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import type {
   CareerSignalItem,
+  CredentialMeta,
+  FounderDnaSummary,
   LinkedInActivityItem,
   NetworkItem,
   PedigreeItem,
@@ -38,6 +42,7 @@ import type {
   ProfilePosition,
   RecognitionItem,
   Signal,
+  TrackRecordItem,
 } from "../types";
 import { companyLogoUrl, personPhotoUrl } from "../utils/avatars";
 import {
@@ -351,8 +356,35 @@ const linkedinActivityBadgeClasses: Record<LinkedInActivityItem["kind"], string>
   reaction: "bg-pink-50 text-pink-600 dark:bg-pink-500/15 dark:text-pink-400",
 };
 
-function pedigreeIcon(category: PedigreeItem["category"]) {
-  switch (category) {
+/** Icon for items that arrive with a short tag instead of a classified kind. */
+function credentialTagIcon(tag: string | undefined) {
+  switch (tag) {
+    case "School":
+      return School;
+    case "Papers":
+    case "Patents":
+      return FileText;
+    case "Award":
+      return Award;
+    case "Fellowship":
+      return Landmark;
+    case "Accelerator":
+      return Rocket;
+    case "Advisor":
+      return Handshake;
+    case "Mentor":
+      return Users;
+    case "Stealth":
+      return EyeOff;
+    case "Result":
+      return Target;
+    default:
+      return undefined;
+  }
+}
+
+function pedigreeIcon(item: PedigreeItem) {
+  switch (item.category) {
     case "school":
       return School;
     case "honours":
@@ -367,11 +399,13 @@ function pedigreeIcon(category: PedigreeItem["category"]) {
       return Rocket;
     case "publication":
       return FileText;
+    default:
+      return credentialTagIcon(item.tag) ?? Award;
   }
 }
 
-function careerSignalIcon(kind: CareerSignalItem["kind"]) {
-  switch (kind) {
+function careerSignalIcon(item: CareerSignalItem) {
+  switch (item.kind) {
     case "employer-tier":
       return Star;
     case "early-employee":
@@ -380,29 +414,161 @@ function careerSignalIcon(kind: CareerSignalItem["kind"]) {
       return TrendingUp;
     case "departure-event":
       return LogOut;
+    default:
+      return credentialTagIcon(item.tag) ?? TrendingUp;
   }
 }
 
-function networkIcon(kind: NetworkItem["kind"]) {
-  switch (kind) {
+function networkIcon(item: NetworkItem) {
+  switch (item.kind) {
     case "co-founder":
       return Handshake;
     case "accelerator":
       return Rocket;
     case "colleague-overlap":
       return Users;
+    default:
+      return credentialTagIcon(item.tag) ?? Users;
   }
 }
 
-function recognitionIcon(kind: RecognitionItem["kind"]) {
-  switch (kind) {
+function recognitionIcon(item: RecognitionItem) {
+  switch (item.kind) {
     case "press":
       return Newspaper;
     case "list":
       return Trophy;
     case "speaking":
       return Mic;
+    default:
+      return credentialTagIcon(item.tag) ?? Trophy;
   }
+}
+
+const claimTypeLabel = { self_reported: "Self-reported", derived: "Derived" } as const;
+const confidenceLabel = { high: "High confidence", medium: "Medium confidence" } as const;
+
+/** Small gray pill for a credentials item's tag (School, Papers, Award...). */
+function CredentialTag({ tag }: { tag: string | undefined }) {
+  if (!tag) return null;
+  return (
+    <span className="rounded-full border border-gray-200 px-1.5 py-0.5 text-[10px] font-medium text-gray-500 dark:border-neutral-700 dark:text-neutral-400">
+      {tag}
+    </span>
+  );
+}
+
+/** Quiet provenance line: how the claim was made, how sure we are, and a toggle for the evidence behind it. */
+function CredentialProvenance({ item }: { item: CredentialMeta }) {
+  const [open, setOpen] = useState(false);
+  const label = [
+    item.claimType && claimTypeLabel[item.claimType],
+    item.confidence && confidenceLabel[item.confidence],
+  ]
+    .filter(Boolean)
+    .join(" · ");
+  if (!label && !item.evidence) return null;
+
+  return (
+    <div className="mt-1.5">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[11px] text-gray-400 dark:text-neutral-500">
+        {label && <span>{label}</span>}
+        {item.evidence && (
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            className="flex cursor-pointer items-center gap-0.5 font-medium hover:text-gray-600 dark:hover:text-neutral-300"
+          >
+            Evidence
+            <ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
+          </button>
+        )}
+      </div>
+      {open && item.evidence && (
+        <div className="mt-1.5 rounded-lg bg-gray-50 px-2.5 py-2 dark:bg-neutral-800">
+          <p className="font-mono text-[11px] break-all text-gray-400 dark:text-neutral-500">
+            {item.evidence.field}
+          </p>
+          <p className="mt-0.5 text-xs text-gray-600 dark:text-neutral-300">
+            &ldquo;{item.evidence.quote}&rdquo;
+          </p>
+          {item.evidence.url && (
+            <a
+              href={item.evidence.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-1 inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:underline dark:text-blue-400"
+            >
+              View source
+              <ExternalLink className="h-3 w-3" />
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** Founder DNA as supplied by the source: neutral when the person isn't a founder, amber otherwise. */
+function FounderDnaTile({ dna }: { dna: FounderDnaSummary }) {
+  const [showVentures, setShowVentures] = useState(false);
+  const isFounder = dna.label !== "Not a founder";
+  return (
+    <div>
+      <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">Founder DNA</h3>
+      <div
+        className={`mt-3 flex gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700 ${
+          isFounder ? "bg-amber-50/60 dark:bg-amber-500/5" : "bg-gray-50 dark:bg-neutral-800/60"
+        }`}
+      >
+        <div
+          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+            isFounder ? "bg-amber-100 dark:bg-amber-500/15" : "bg-gray-100 dark:bg-neutral-700"
+          }`}
+        >
+          <Rocket
+            className={`h-4 w-4 ${
+              isFounder
+                ? "text-amber-600 dark:text-amber-400"
+                : "text-gray-400 dark:text-neutral-400"
+            }`}
+          />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">{dna.label}</p>
+          <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">{dna.subtitle}</p>
+          {dna.ventures.length > 0 && (
+            <>
+              <button
+                type="button"
+                onClick={() => setShowVentures((v) => !v)}
+                aria-expanded={showVentures}
+                className="mt-1.5 flex cursor-pointer items-center gap-0.5 text-xs font-medium text-gray-400 hover:text-gray-600 dark:text-neutral-500 dark:hover:text-neutral-300"
+              >
+                Ventures ({dna.ventures.length})
+                <ChevronDown
+                  className={`h-3 w-3 transition-transform ${showVentures ? "rotate-180" : ""}`}
+                />
+              </button>
+              {showVentures && (
+                <div className="mt-1.5 flex flex-wrap gap-1.5">
+                  {dna.ventures.map((venture) => (
+                    <span
+                      key={venture}
+                      className="rounded-full border border-gray-200 bg-white px-2 py-0.5 text-[11px] text-gray-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300"
+                    >
+                      {venture}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function ProfileDrawer({
@@ -463,7 +629,8 @@ export function ProfileDrawer({
     ...(profile?.pedigree?.length ||
     profile?.careerSignals?.length ||
     profile?.network?.length ||
-    profile?.recognition?.length
+    profile?.recognition?.length ||
+    profile?.trackRecord?.length
       ? ([{ id: "credentials", label: "Credentials" }] as const)
       : []),
     ...(profile?.linkedinActivity?.length
@@ -562,11 +729,15 @@ export function ProfileDrawer({
 
             <div className="mt-4 flex flex-wrap gap-2">
               <StatChip icon={Briefcase} label={yearsText ?? "Experience"} />
-              {profile && <StatChip icon={Users} label={`${profile.connections} Connections`} />}
+              {profile?.connections !== undefined && (
+                <StatChip icon={Users} label={`${profile.connections} Connections`} />
+              )}
               {profile?.followers !== undefined && (
                 <StatChip icon={Eye} label={`${profile.followers} Followers`} />
               )}
-              <StatChip icon={MapPin} label={profile?.location ?? location} />
+              {(profile?.location ?? location) && (
+                <StatChip icon={MapPin} label={profile?.location ?? location} />
+              )}
               {nexusTag && (
                 <TagInfoCard tag={nexusTag}>
                   <span
@@ -613,7 +784,7 @@ export function ProfileDrawer({
                   <p className="mt-2 text-sm leading-relaxed text-gray-800 dark:text-neutral-200">
                     {signal.aiSummary}
                   </p>
-                  {profile && (
+                  {profile?.aiSummaryGenerated && (
                     <p className="mt-2 text-xs text-gray-400 dark:text-neutral-500">
                       Generated {profile.aiSummaryGenerated}
                     </p>
@@ -634,7 +805,7 @@ export function ProfileDrawer({
                         <HighlightCard
                           kind="pedigree"
                           categoryLabel="Pedigree"
-                          icon={pedigreeIcon(profile.pedigree[0].category)}
+                          icon={pedigreeIcon(profile.pedigree[0])}
                           label={profile.pedigree[0].label}
                           onClick={() => setTab("credentials")}
                         />
@@ -643,7 +814,7 @@ export function ProfileDrawer({
                         <HighlightCard
                           kind="career"
                           categoryLabel="Career Signal"
-                          icon={careerSignalIcon(profile.careerSignals[0].kind)}
+                          icon={careerSignalIcon(profile.careerSignals[0])}
                           label={profile.careerSignals[0].label}
                           onClick={() => setTab("credentials")}
                         />
@@ -652,7 +823,7 @@ export function ProfileDrawer({
                         <HighlightCard
                           kind="network"
                           categoryLabel="Network"
-                          icon={networkIcon(profile.network[0].kind)}
+                          icon={networkIcon(profile.network[0])}
                           label={profile.network[0].label}
                           onClick={() => setTab("credentials")}
                         />
@@ -661,7 +832,7 @@ export function ProfileDrawer({
                         <HighlightCard
                           kind="recognition"
                           categoryLabel="Recognition"
-                          icon={recognitionIcon(profile.recognition[0].kind)}
+                          icon={recognitionIcon(profile.recognition[0])}
                           label={profile.recognition[0].label}
                           onClick={() => setTab("credentials")}
                         />
@@ -670,12 +841,12 @@ export function ProfileDrawer({
                   </div>
                 ) : null}
 
-                {profile && (
+                {profile?.overview && (
                   <div>
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
                       Overview
                     </h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-gray-700 dark:text-neutral-300">
+                    <p className="mt-1.5 text-sm leading-relaxed whitespace-pre-line text-gray-700 dark:text-neutral-300">
                       {profile.overview}
                     </p>
                   </div>
@@ -686,7 +857,9 @@ export function ProfileDrawer({
                     <StatTile label="Years experience" value={yearsText?.replace(" yrs experience", "") ?? "—"} />
                     <StatTile label="Roles held" value={profile.rolesHeld} />
                     <StatTile label="Avg tenure" value={formatTenureLabel(profile.avgTenureMonths)} />
-                    <StatTile label="Followers" value={profile.followers ?? "—"} />
+                    {profile.followers !== undefined && (
+                      <StatTile label="Followers" value={profile.followers} />
+                    )}
                   </div>
                 )}
               </div>
@@ -850,7 +1023,9 @@ export function ProfileDrawer({
                   <StatTile label="Companies" value={profile.insights.companies} />
                 </div>
 
-                {(() => {
+                {profile.founderDna && <FounderDnaTile dna={profile.founderDna} />}
+
+                {!profile.founderDna && (() => {
                   const dna = computeFounderDna(profile.positions);
                   if (!dna) return null;
                   const { title, detail } = founderDnaCopy(dna);
@@ -945,9 +1120,11 @@ export function ProfileDrawer({
                               </span>
                             )}
                           </div>
-                          <p className="text-sm text-gray-600 dark:text-neutral-300">
-                            {edu.degree}
-                          </p>
+                          {edu.degree && (
+                            <p className="text-sm text-gray-600 dark:text-neutral-300">
+                              {edu.degree}
+                            </p>
+                          )}
                           {edu.period && (
                             <p className="mt-0.5 text-xs text-gray-400 dark:text-neutral-500">
                               {edu.period}
@@ -997,7 +1174,7 @@ export function ProfileDrawer({
                     </h3>
                     <div className="mt-2 flex flex-col gap-3">
                       {profile.pedigree.map((item, i) => {
-                        const Icon = pedigreeIcon(item.category);
+                        const Icon = pedigreeIcon(item);
                         return (
                           <div
                             key={i}
@@ -1017,6 +1194,7 @@ export function ProfileDrawer({
                                 </p>
                                 <div className="flex shrink-0 items-center gap-1.5">
                                   {item.mock && <MockBadge />}
+                                  <CredentialTag tag={item.tag} />
                                   {item.year && (
                                     <span className="text-xs text-gray-400 dark:text-neutral-500">
                                       {item.year}
@@ -1029,6 +1207,7 @@ export function ProfileDrawer({
                                   {item.detail}
                                 </p>
                               )}
+                              <CredentialProvenance item={item} />
                             </div>
                           </div>
                         );
@@ -1042,9 +1221,14 @@ export function ProfileDrawer({
                     <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
                       Career Signals
                     </h3>
+                    {profile.careerSummary && (
+                      <p className="mt-1 text-sm text-gray-500 dark:text-neutral-400">
+                        {profile.careerSummary}
+                      </p>
+                    )}
                     <div className="mt-2 flex flex-col gap-3">
                       {profile.careerSignals.map((item, i) => {
-                        const Icon = careerSignalIcon(item.kind);
+                        const Icon = careerSignalIcon(item);
                         return (
                           <div
                             key={i}
@@ -1054,12 +1238,23 @@ export function ProfileDrawer({
                               <Icon className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                                {item.label}
-                              </p>
+                              <div className="flex items-start justify-between gap-2">
+                                <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                                  {item.label}
+                                </p>
+                                <div className="flex shrink-0 items-center gap-1.5">
+                                  <CredentialTag tag={item.tag} />
+                                  {item.year && (
+                                    <span className="text-xs text-gray-400 dark:text-neutral-500">
+                                      {item.year}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
                               <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">
                                 {item.detail}
                               </p>
+                              <CredentialProvenance item={item} />
                             </div>
                           </div>
                         );
@@ -1075,7 +1270,7 @@ export function ProfileDrawer({
                     </h3>
                     <div className="mt-2 flex flex-col gap-3">
                       {profile.network.map((item, i) => {
-                        const Icon = networkIcon(item.kind);
+                        const Icon = networkIcon(item);
                         return (
                           <div
                             key={i}
@@ -1085,14 +1280,25 @@ export function ProfileDrawer({
                               <Icon className="h-4 w-4 text-teal-600 dark:text-teal-400" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
-                                {item.label}
-                              </p>
+                              <div className="flex items-start justify-between gap-2">
+                                <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                                  {item.label}
+                                </p>
+                                <div className="flex shrink-0 items-center gap-1.5">
+                                  <CredentialTag tag={item.tag} />
+                                  {item.year && (
+                                    <span className="text-xs text-gray-400 dark:text-neutral-500">
+                                      {item.year}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
                               {item.detail && (
                                 <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">
                                   {item.detail}
                                 </p>
                               )}
+                              <CredentialProvenance item={item} />
                             </div>
                           </div>
                         );
@@ -1108,7 +1314,7 @@ export function ProfileDrawer({
                     </h3>
                     <div className="mt-2 flex flex-col gap-3">
                       {profile.recognition.map((item, i) => {
-                        const Icon = recognitionIcon(item.kind);
+                        const Icon = recognitionIcon(item);
                         return (
                           <div
                             key={i}
@@ -1128,6 +1334,7 @@ export function ProfileDrawer({
                                 </p>
                                 <div className="flex shrink-0 items-center gap-1.5">
                                   {item.mock && <MockBadge />}
+                                  <CredentialTag tag={item.tag} />
                                   {item.date && (
                                     <span className="text-xs text-gray-400 dark:text-neutral-500">
                                       {item.date}
@@ -1140,6 +1347,7 @@ export function ProfileDrawer({
                                   {item.detail}
                                 </p>
                               )}
+                              <CredentialProvenance item={item} />
                               {item.url && (
                                 <a
                                   href={item.url}
@@ -1151,6 +1359,50 @@ export function ProfileDrawer({
                                   <ExternalLink className="h-3 w-3" />
                                 </a>
                               )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : null}
+
+                {profile.trackRecord?.length ? (
+                  <div>
+                    <h3 className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      Track Record
+                    </h3>
+                    <div className="mt-2 flex flex-col gap-3">
+                      {profile.trackRecord.map((item: TrackRecordItem, i) => {
+                        const Icon = credentialTagIcon(item.tag) ?? Target;
+                        return (
+                          <div
+                            key={i}
+                            className="flex gap-3 rounded-xl border border-gray-200 p-3 dark:border-neutral-700"
+                          >
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-50 dark:bg-emerald-500/10">
+                              <Icon className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                            </div>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-start justify-between gap-2">
+                                <p className="text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                                  {item.label}
+                                </p>
+                                <div className="flex shrink-0 items-center gap-1.5">
+                                  <CredentialTag tag={item.tag} />
+                                  {item.year && (
+                                    <span className="text-xs text-gray-400 dark:text-neutral-500">
+                                      {item.year}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              {item.detail && (
+                                <p className="mt-0.5 text-sm text-gray-600 dark:text-neutral-300">
+                                  {item.detail}
+                                </p>
+                              )}
+                              <CredentialProvenance item={item} />
                             </div>
                           </div>
                         );

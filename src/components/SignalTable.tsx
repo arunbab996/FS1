@@ -158,7 +158,7 @@ function SignalTableRow({
       </td>
 
       <td className="w-16 px-4 py-2.5">
-        <ScoreBadge score={signal.score} />
+        {signal.score !== undefined && <ScoreBadge score={signal.score} />}
       </td>
 
       <td className="w-40 overflow-hidden px-4 py-2.5">
