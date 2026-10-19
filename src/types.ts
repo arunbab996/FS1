@@ -396,6 +396,8 @@ export interface TalentProfile {
   skills?: string[];
   /** Omit when this person has no public GitHub activity to show. */
   github?: GithubStats;
+  /** Show a green "GitHub activity" placeholder in Insights while there's no `github` data yet. */
+  showGithubPlaceholder?: boolean;
   /** Omit when there are no early/pre-public intent signals worth flagging for this profile. */
   behavioralSignals?: BehavioralSignalItem[];
   insights: {

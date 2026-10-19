@@ -517,6 +517,18 @@ function CredentialProvenance({ item }: { item: CredentialMeta }) {
   );
 }
 
+/** Stand-in for the GitHub activity card, for people we have no GitHub data for yet. */
+function GithubPlaceholder() {
+  return (
+    <div className="flex items-center gap-3 rounded-xl border border-dashed border-green-300 bg-green-50 p-4 dark:border-green-500/30 dark:bg-green-500/10">
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-500/20">
+        <GithubIcon className="h-4 w-4 text-green-700 dark:text-green-400" />
+      </div>
+      <p className="text-sm text-green-800 dark:text-green-300">GitHub activity will show here</p>
+    </div>
+  );
+}
+
 /** Founder DNA as supplied by the source: neutral when the person isn't a founder, amber otherwise. */
 function FounderDnaTile({ dna }: { dna: FounderDnaSummary }) {
   const [showVentures, setShowVentures] = useState(false);
@@ -1050,6 +1062,15 @@ export function ProfileDrawer({
                     </div>
                   );
                 })()}
+
+                {!profile.github && profile.showGithubPlaceholder && (
+                  <div>
+                    <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-neutral-50">
+                      GitHub activity
+                    </h3>
+                    <GithubPlaceholder />
+                  </div>
+                )}
 
                 {profile.github && (
                   <div>

@@ -83,9 +83,8 @@ interface RawSignal {
   card_text: string;
 }
 
-/** Equity cards per person, from data/signals.json. Only the people listed below show them for now. */
+/** Equity cards per person, from data/signals.json, newest first. */
 const signalsByName = signalsRaw as unknown as Record<string, { signals: RawSignal[] }>;
-const SHOW_SIGNALS_FOR = new Set(["Avi Singh", "Don Liu"]);
 
 /** Which icon each Equity card type gets: news items, sourcing items or investor interest. */
 function activityKind(type: string): ProfileActivityItem["kind"] {
@@ -262,15 +261,14 @@ function buildSignal(person: RawPerson): Signal {
     // Empty on purpose: the Social Activity and Interactions tabs show, with nothing in them yet.
     linkedinActivity: [],
     interactions: [],
-    activity: SHOW_SIGNALS_FOR.has(person.name)
-      ? (signalsByName[person.name]?.signals ?? []).map(
-          (sig): ProfileActivityItem => ({
-            kind: activityKind(sig.type),
-            text: sig.card_text,
-            date: dateLabel(sig.date),
-          }),
-        )
-      : [],
+    activity: (signalsByName[person.name]?.signals ?? []).map(
+      (sig): ProfileActivityItem => ({
+        kind: activityKind(sig.type),
+        text: sig.card_text,
+        date: dateLabel(sig.date),
+      }),
+    ),
+    showGithubPlaceholder: true,
   };
 
   return {
