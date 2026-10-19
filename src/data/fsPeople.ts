@@ -4,6 +4,7 @@ import type {
   ExperienceEntry,
   NetworkItem,
   PedigreeItem,
+  ProfileActivityItem,
   ProfileEducationEntry,
   ProfilePosition,
   RecognitionItem,
@@ -12,6 +13,7 @@ import type {
   TrackRecordItem,
 } from "../types";
 import raw from "./fs_people.json";
+import signalsRaw from "../../data/signals.json";
 
 /**
  * Builds Signals from fs_people.json (placeholder data drafted by Claude, standing in for what the
@@ -75,6 +77,29 @@ interface RawPerson {
 
 const people = (raw as unknown as { people: RawPerson[] }).people;
 
+interface RawSignal {
+  type: string;
+  date: string;
+  card_text: string;
+}
+
+/** Equity cards per person, from data/signals.json. Only the people listed below show them for now. */
+const signalsByName = signalsRaw as unknown as Record<string, { signals: RawSignal[] }>;
+const SHOW_SIGNALS_FOR = new Set(["Avi Singh", "Don Liu"]);
+
+/** Which icon each Equity card type gets: news items, sourcing items or investor interest. */
+function activityKind(type: string): ProfileActivityItem["kind"] {
+  switch (type) {
+    case "SELF_SOURCED":
+    case "STRATEGIC_INTELLIGENCE_TALENT":
+      return "sourced";
+    case "INVESTOR_INTEREST":
+      return "connected";
+    default:
+      return "news";
+  }
+}
+
 /** "Now" for the dates in this file: the day it was generated. Used for open-ended ("present") roles. */
 const REFERENCE_MONTH = "2026-10";
 
@@ -114,6 +139,11 @@ function credentialMeta(item: RawCredential): CredentialMeta {
 
 function year(item: RawCredential): { year?: string } {
   return item.year !== null ? { year: String(item.year) } : {};
+}
+
+function dateLabel(iso: string): string {
+  const [year, month, day] = iso.split("-").map(Number);
+  return `${MONTH_NAMES[month - 1]} ${day}, ${year}`;
 }
 
 function initialsOf(name: string): string {
@@ -232,7 +262,15 @@ function buildSignal(person: RawPerson): Signal {
     // Empty on purpose: the Social Activity and Interactions tabs show, with nothing in them yet.
     linkedinActivity: [],
     interactions: [],
-    activity: [],
+    activity: SHOW_SIGNALS_FOR.has(person.name)
+      ? (signalsByName[person.name]?.signals ?? []).map(
+          (sig): ProfileActivityItem => ({
+            kind: activityKind(sig.type),
+            text: sig.card_text,
+            date: dateLabel(sig.date),
+          }),
+        )
+      : [],
   };
 
   return {

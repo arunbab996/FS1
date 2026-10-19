@@ -274,9 +274,15 @@ function InteractionsPanel({ items }: { items: ProfileActivityItem[] }) {
         return (
           <div key={i} className="flex items-center gap-3 px-3 py-2.5">
             <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-gray-50 text-sm dark:bg-neutral-800">
-              {item.kind === "sourced" ? "🔍" : item.kind === "connected" ? "🤝" : "📌"}
+              {item.kind === "sourced"
+                ? "🔍"
+                : item.kind === "connected"
+                  ? "🤝"
+                  : item.kind === "news"
+                    ? "📡"
+                    : "📌"}
             </div>
-            <p className="min-w-0 flex-1 truncate text-sm text-gray-700 dark:text-neutral-300">
+            <p className="line-clamp-2 min-w-0 flex-1 text-sm text-gray-700 dark:text-neutral-300">
               {item.text}
               <span className="text-gray-300 dark:text-neutral-600"> · </span>
               <span className="text-xs text-gray-400 dark:text-neutral-500">{item.date}</span>
@@ -1018,7 +1024,7 @@ export function ProfileDrawer({
               <div className="flex flex-col gap-5">
                 {(() => {
                   const sourcingActivity = profile.activity.filter(
-                    (a) => a.kind === "sourced" || a.kind === "connected",
+                    (a) => a.kind === "sourced" || a.kind === "connected" || a.kind === "news",
                   );
                   const displayActivity = sourcingActivity.length
                     ? sourcingActivity

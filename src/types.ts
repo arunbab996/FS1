@@ -185,6 +185,7 @@ export interface GithubStats {
 export interface ProfileActivityItem {
   kind:
     | "sourced"
+    | "news"
     | "connected"
     | "linkedin-sent"
     | "linkedin-replied"
