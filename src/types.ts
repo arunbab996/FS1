@@ -375,7 +375,7 @@ export interface TalentProfile {
   aiSummaryGenerated?: string;
   positions: ProfilePosition[];
   education: ProfileEducationEntry[];
-  /** Omit when there's no recent LinkedIn activity to show. */
+  /** Omit to hide the Social Activity tab. An empty array shows the tab with nothing in it yet. */
   linkedinActivity?: LinkedInActivityItem[];
   /** Omit when there are no notable pedigree/credential signals for this profile. */
   pedigree?: PedigreeItem[];
@@ -411,7 +411,7 @@ export interface TalentProfile {
   lastConnectedDate?: string;
   lastStatus?: string;
   activity: ProfileActivityItem[];
-  /** Rich touchpoint timeline (LinkedIn, email, meetings, meeting notes) shown in the Interactions tab. Omit when there's none to show. */
+  /** Rich touchpoint timeline (LinkedIn, email, meetings, meeting notes) shown in the Interactions tab. Omit to hide the tab. An empty array shows the tab with nothing in it yet. */
   interactions?: InteractionItem[];
 }
 

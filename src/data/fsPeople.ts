@@ -229,6 +229,9 @@ function buildSignal(person: RawPerson): Signal {
       companies: new Set(positions.map((p) => p.company)).size,
       earlierRolesCount: 0,
     },
+    // Empty on purpose: the Social Activity and Interactions tabs show, with nothing in them yet.
+    linkedinActivity: [],
+    interactions: [],
     activity: [],
   };
 

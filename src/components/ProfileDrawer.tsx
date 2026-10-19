@@ -633,13 +633,16 @@ export function ProfileDrawer({
     profile?.trackRecord?.length
       ? ([{ id: "credentials", label: "Credentials" }] as const)
       : []),
-    ...(profile?.linkedinActivity?.length
+    ...(profile?.linkedinActivity
       ? ([{ id: "social", label: "Social Activity" }] as const)
       : []),
-    ...(profile?.interactions?.length
+    ...(profile?.interactions
       ? ([{ id: "interactions", label: "Interactions" }] as const)
       : []),
   ];
+
+  // The golden highlight only means something when there is history to look at.
+  const hasInteractionHighlight = (id: Tab) => id === "interactions" && Boolean(profile?.interactions?.length);
 
   const groupedPositions = profile ? groupPositions(profile.positions) : [];
   const VISIBLE_ROLE_GROUPS = 5;
@@ -759,9 +762,9 @@ export function ProfileDrawer({
             {tabs.map((t) => (
               <TabButton key={t.id} active={tab === t.id} onClick={() => setTab(t.id)}>
                 <span
-                  aria-label={t.id === "interactions" ? "Has past interactions" : undefined}
+                  aria-label={hasInteractionHighlight(t.id) ? "Has past interactions" : undefined}
                   className={
-                    t.id === "interactions"
+                    hasInteractionHighlight(t.id)
                       ? "animate-interaction-border rounded-md px-1.5 py-0.5"
                       : undefined
                   }
@@ -1476,9 +1479,9 @@ export function ProfileDrawer({
               </div>
             )}
 
-            {tab === "interactions" && profile?.interactions && (
+            {tab === "interactions" && profile?.interactions?.length ? (
               <InteractionsTimeline items={profile.interactions} />
-            )}
+            ) : null}
           </div>
 
           {footer && (
