@@ -2,6 +2,7 @@ import {
   Award,
   Briefcase,
   ChevronDown,
+  ChevronRight,
   CircleUser,
   Code2,
   ExternalLink,
@@ -587,6 +588,9 @@ export function ProfileDrawer({
   const [showAllRoles, setShowAllRoles] = useState(true);
   const profile = signal.profile;
   const contentRef = useRef<HTMLDivElement>(null);
+  const tabStripRef = useRef<HTMLDivElement>(null);
+  // The strip scrolls with its scrollbar hidden, so say so when tabs are cut off on the right.
+  const [moreTabsRight, setMoreTabsRight] = useState(false);
 
   useEffect(() => {
     if (contentRef.current) contentRef.current.scrollTop = 0;
@@ -643,6 +647,24 @@ export function ProfileDrawer({
 
   // The golden highlight only means something when there is history to look at.
   const hasInteractionHighlight = (id: Tab) => id === "interactions" && Boolean(profile?.interactions?.length);
+
+  const tabCount = tabs.length;
+  useEffect(() => {
+    const strip = tabStripRef.current;
+    if (!strip) return;
+    function update() {
+      if (!strip) return;
+      setMoreTabsRight(strip.scrollLeft + strip.clientWidth < strip.scrollWidth - 1);
+    }
+    update();
+    strip.addEventListener("scroll", update, { passive: true });
+    const observer = new ResizeObserver(update);
+    observer.observe(strip);
+    return () => {
+      strip.removeEventListener("scroll", update);
+      observer.disconnect();
+    };
+  }, [open, tabCount]);
 
   const groupedPositions = profile ? groupPositions(profile.positions) : [];
   const VISIBLE_ROLE_GROUPS = 5;
@@ -758,7 +780,11 @@ export function ProfileDrawer({
           </div>
 
           {/* Tabs */}
-          <div className="flex shrink-0 gap-4 overflow-x-auto border-b border-gray-200 px-5 [scrollbar-width:none] dark:border-neutral-700 [&::-webkit-scrollbar]:hidden">
+          <div className="relative shrink-0">
+          <div
+            ref={tabStripRef}
+            className="flex gap-4 overflow-x-auto border-b border-gray-200 px-5 [scrollbar-width:none]! dark:border-neutral-700 [&::-webkit-scrollbar]:hidden"
+          >
             {tabs.map((t) => (
               <TabButton key={t.id} active={tab === t.id} onClick={() => setTab(t.id)}>
                 <span
@@ -773,6 +799,17 @@ export function ProfileDrawer({
                 </span>
               </TabButton>
             ))}
+          </div>
+          {moreTabsRight && (
+            <button
+              type="button"
+              aria-label="Show more tabs"
+              onClick={() => tabStripRef.current?.scrollBy({ left: 200, behavior: "smooth" })}
+              className="absolute top-0 right-0 bottom-px flex cursor-pointer items-center bg-gradient-to-l from-white from-60% to-transparent pr-2 pl-8 text-gray-400 hover:text-gray-700 dark:from-neutral-900 dark:text-neutral-500 dark:hover:text-neutral-200"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          )}
           </div>
 
           {/* Content */}
