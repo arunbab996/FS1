@@ -1,11 +1,11 @@
-import { CircleUser, Sparkles, User, UserPlus, X } from "lucide-react";
+import { CircleUser, User, UserPlus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { fakeInvestors } from "../data/investors";
 import { investorStages, type InvestorStage } from "../data/investorStages";
 import type { Signal } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
+import { AutoAssignBubble } from "./AutoAssignBubble";
 import { Highlight } from "./Highlight";
-import { HoverPopup } from "./HoverPopup";
 import { InlineSelect } from "./InlineSelect";
 
 export function AssignInvestorButton({ signal }: { signal: Signal }) {
@@ -45,23 +45,7 @@ export function AssignInvestorButton({ signal }: { signal: Signal }) {
     <>
       {assignedInvestor ? (
         <div className="flex items-center gap-1.5">
-          {signal.autoAssignReason && (
-            <HoverPopup
-              variant="card"
-              width={288}
-              trigger={
-                <Sparkles
-                  className="h-3.5 w-3.5 cursor-pointer text-amber-400 transition-colors hover:text-amber-500 dark:text-amber-400 dark:hover:text-amber-300"
-                  aria-label="Auto assigned"
-                />
-              }
-              content={
-                <p className="text-xs leading-relaxed text-gray-600 italic dark:text-neutral-300">
-                  {signal.autoAssignReason}
-                </p>
-              }
-            />
-          )}
+          {signal.autoAssignReason && <AutoAssignBubble reason={signal.autoAssignReason} />}
           <button
             type="button"
             onClick={openModal}

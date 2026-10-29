@@ -123,7 +123,7 @@ export const signals: Signal[] = [
     assignedInvestor: "Alex Rankin",
     assignedStage: "Prospecting",
     autoAssignReason:
-      "Auto assigned: Signal from India (SEA/APAC), score of 8 or above, repeat founder with BFSI/fintech go-to-market experience, building developer-focused software for the enterprise, investor interest already from 3one4 Capital.",
+      "Signal from India (SEA/APAC), score of 8 or above, repeat founder with BFSI/fintech go-to-market experience, building developer-focused software for the enterprise, investor interest already from 3one4 Capital.",
     linkedinUrl: "https://www.linkedin.com/in/achintyagupta",
     investorInterest: "3one4",
     profile: achintyaProfile,
