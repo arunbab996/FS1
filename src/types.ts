@@ -447,6 +447,8 @@ export interface Signal {
   /** Pre-filled investor assignment, if this signal already has one. */
   assignedInvestor?: string;
   assignedStage?: string;
+  /** Set when the assignment came from an investor's auto-assign preference; shown on hover of the sparkle. */
+  autoAssignReason?: string;
   linkedinUrl?: string;
   githubUrl?: string;
   /** Skip the "sourced via" pill, for people with no known discovery source. */

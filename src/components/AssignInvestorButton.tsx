@@ -1,10 +1,11 @@
-import { CircleUser, User, UserPlus, X } from "lucide-react";
+import { CircleUser, Sparkles, User, UserPlus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { fakeInvestors } from "../data/investors";
 import { investorStages, type InvestorStage } from "../data/investorStages";
 import type { Signal } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
 import { Highlight } from "./Highlight";
+import { HoverPopup } from "./HoverPopup";
 import { InlineSelect } from "./InlineSelect";
 
 export function AssignInvestorButton({ signal }: { signal: Signal }) {
@@ -43,19 +44,38 @@ export function AssignInvestorButton({ signal }: { signal: Signal }) {
   return (
     <>
       {assignedInvestor ? (
-        <button
-          type="button"
-          onClick={openModal}
-          className="flex items-center gap-1.5 whitespace-nowrap"
-        >
-          <span className="flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-blue-700 hover:bg-blue-100 dark:bg-blue-500/15 dark:text-blue-400 dark:hover:bg-blue-500/25">
-            <CircleUser className="h-3.5 w-3.5 shrink-0" />
-            {assignedInvestor}
-          </span>
-          <span className="rounded-full border border-gray-200 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-gray-600 dark:border-neutral-600 dark:text-neutral-300">
-            {assignedStage}
-          </span>
-        </button>
+        <div className="flex items-center gap-1.5">
+          {signal.autoAssignReason && (
+            <HoverPopup
+              variant="card"
+              width={288}
+              trigger={
+                <Sparkles
+                  className="h-3.5 w-3.5 cursor-pointer text-amber-400 transition-colors hover:text-amber-500 dark:text-amber-400 dark:hover:text-amber-300"
+                  aria-label="Auto assigned"
+                />
+              }
+              content={
+                <p className="text-xs leading-relaxed text-gray-600 italic dark:text-neutral-300">
+                  {signal.autoAssignReason}
+                </p>
+              }
+            />
+          )}
+          <button
+            type="button"
+            onClick={openModal}
+            className="flex items-center gap-1.5 whitespace-nowrap"
+          >
+            <span className="flex items-center gap-1 rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-blue-700 hover:bg-blue-100 dark:bg-blue-500/15 dark:text-blue-400 dark:hover:bg-blue-500/25">
+              <CircleUser className="h-3.5 w-3.5 shrink-0" />
+              {assignedInvestor}
+            </span>
+            <span className="rounded-full border border-gray-200 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-gray-600 dark:border-neutral-600 dark:text-neutral-300">
+              {assignedStage}
+            </span>
+          </button>
+        </div>
       ) : (
         <button
           type="button"
