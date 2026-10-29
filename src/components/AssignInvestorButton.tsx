@@ -1,4 +1,4 @@
-import { CircleUser, User, UserPlus, X } from "lucide-react";
+import { CircleUser, CircleX, User, UserPlus, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { fakeInvestors } from "../data/investors";
 import { investorStages, type InvestorStage } from "../data/investorStages";
@@ -18,6 +18,17 @@ export function AssignInvestorButton({ signal }: { signal: Signal }) {
   );
   const [draftInvestor, setDraftInvestor] = useState<string | null>(null);
   const [draftStage, setDraftStage] = useState<string>("Prospecting");
+  // An auto assignment is only a suggestion until someone approves it; rejecting hands the signal back.
+  const [matchStatus, setMatchStatus] = useState<"pending" | "approved">("pending");
+
+  // Who turned down the suggested match, so the tile can say so instead of silently going blank.
+  const [rejectedBy, setRejectedBy] = useState<string | null>(null);
+
+  function rejectMatch() {
+    setRejectedBy(assignedInvestor);
+    setAssignedInvestor(null);
+    setAssignedStage(null);
+  }
 
   useEffect(() => {
     if (!modalOpen) return;
@@ -38,6 +49,7 @@ export function AssignInvestorButton({ signal }: { signal: Signal }) {
     if (!draftInvestor) return;
     setAssignedInvestor(draftInvestor);
     setAssignedStage(draftStage as InvestorStage);
+    setRejectedBy(null);
     setModalOpen(false);
   }
 
@@ -45,7 +57,14 @@ export function AssignInvestorButton({ signal }: { signal: Signal }) {
     <>
       {assignedInvestor ? (
         <div className="flex items-center gap-1.5">
-          {signal.autoAssignReason && <AutoAssignBubble reason={signal.autoAssignReason} />}
+          {signal.autoAssignReason && (
+            <AutoAssignBubble
+              reason={signal.autoAssignReason}
+              approved={matchStatus === "approved"}
+              onApprove={() => setMatchStatus("approved")}
+              onReject={rejectMatch}
+            />
+          )}
           <button
             type="button"
             onClick={openModal}
@@ -61,14 +80,22 @@ export function AssignInvestorButton({ signal }: { signal: Signal }) {
           </button>
         </div>
       ) : (
-        <button
-          type="button"
-          onClick={openModal}
-          className="flex items-center gap-1.5 rounded-lg bg-gray-900 px-2.5 py-1 text-xs font-medium text-white hover:bg-gray-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-white"
-        >
-          <UserPlus className="h-3.5 w-3.5" />
-          Assign investor
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={openModal}
+            className="flex items-center gap-1.5 rounded-lg bg-gray-900 px-2.5 py-1 text-xs font-medium text-white hover:bg-gray-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-white"
+          >
+            <UserPlus className="h-3.5 w-3.5" />
+            Assign investor
+          </button>
+          {rejectedBy && (
+            <span className="flex items-center gap-1 rounded-full bg-rose-50 px-2.5 py-1 text-xs font-medium whitespace-nowrap text-rose-600 dark:bg-rose-500/15 dark:text-rose-400">
+              <CircleX className="h-3.5 w-3.5 shrink-0" />
+              Rejected by {rejectedBy}
+            </span>
+          )}
+        </div>
       )}
 
       {modalOpen && (
