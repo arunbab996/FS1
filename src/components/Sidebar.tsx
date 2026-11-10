@@ -30,6 +30,8 @@ export function Sidebar({
   onSelectView,
   showInboxSection,
   onToggleShowInboxSection,
+  showInboxV2,
+  onToggleShowInboxV2,
 }: {
   isDark: boolean;
   onToggleDark: () => void;
@@ -37,6 +39,8 @@ export function Sidebar({
   onSelectView: (view: NavView) => void;
   showInboxSection: boolean;
   onToggleShowInboxSection: () => void;
+  showInboxV2: boolean;
+  onToggleShowInboxV2: () => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -101,6 +105,7 @@ export function Sidebar({
         <ul className="flex flex-col gap-0.5">
           {navItems
             .filter((item) => item.view !== "inbox" || showInboxSection)
+            .filter((item) => item.view !== "inbox-v2" || showInboxV2)
             .map((item) => {
               const Icon = item.icon;
               const isActive = item.view !== undefined && item.view === activeView;
@@ -162,6 +167,12 @@ export function Sidebar({
                 Show Inbox (preview)
               </span>
               <MiniToggle checked={showInboxSection} onChange={onToggleShowInboxSection} />
+            </label>
+            <label className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-1 py-1.5">
+              <span className="text-sm text-gray-700 dark:text-neutral-200">
+                Show Inbox v2 (preview)
+              </span>
+              <MiniToggle checked={showInboxV2} onChange={onToggleShowInboxV2} />
             </label>
           </div>
         )}
