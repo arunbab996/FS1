@@ -165,7 +165,7 @@ function Initials({ initials, tone, size = "sm" }: { initials: string; tone: Ton
   return (
     <span
       className={`inline-flex shrink-0 items-center justify-center rounded-full font-semibold ${avatarTone[tone]} ${
-        size === "lg" ? "h-11 w-11 text-sm" : "h-7 w-7 align-[-0.4em] text-[11px]"
+        size === "lg" ? "h-10 w-10 text-xs" : "h-6 w-6 align-[-0.35em] text-[10px]"
       }`}
     >
       {initials}
@@ -187,7 +187,7 @@ function TagPill({ tag }: { tag: string }) {
 function SectionTitle({ children, aside }: { children: ReactNode; aside?: ReactNode }) {
   return (
     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-      <h2 className="font-serif text-[40px] leading-tight font-bold tracking-tight text-gray-950 dark:text-neutral-50">
+      <h2 className="font-serif text-[32px] leading-tight font-bold tracking-tight text-gray-950 dark:text-neutral-50">
         {children}
       </h2>
       {aside}
@@ -206,7 +206,7 @@ function DecisionButtons({
     return (
       <div className="flex shrink-0 items-center gap-2">
         <span
-          className={`flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium ${
+          className={`flex items-center gap-1 rounded-lg px-3 py-1.5 text-sm font-medium ${
             decision === "pursue"
               ? "bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300"
               : "bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-neutral-300"
@@ -218,7 +218,7 @@ function DecisionButtons({
         <button
           type="button"
           onClick={() => onDecide(null)}
-          className="flex cursor-pointer items-center gap-1 rounded-lg px-2 py-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
+          className="flex cursor-pointer items-center gap-1 rounded-lg px-2 py-1.5 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-800 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
         >
           <Undo2 className="h-3.5 w-3.5" />
           Undo
@@ -231,14 +231,14 @@ function DecisionButtons({
       <button
         type="button"
         onClick={() => onDecide("pass")}
-        className="cursor-pointer rounded-lg border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-gray-800 hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800"
+        className="cursor-pointer rounded-lg border border-gray-200 bg-white px-3.5 py-1.5 text-sm font-medium text-gray-800 hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800"
       >
         Pass
       </button>
       <button
         type="button"
         onClick={() => onDecide("pursue")}
-        className="cursor-pointer rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+        className="cursor-pointer rounded-lg bg-blue-600 px-3.5 py-1.5 text-sm font-semibold text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
       >
         Pursue
       </button>
@@ -321,7 +321,7 @@ export function InboxV2View({
 
   return (
     <main id="main-scroll" className="flex-1 overflow-y-auto bg-[#faf9f7] dark:bg-neutral-950">
-      <div className="mx-auto max-w-[1000px] px-6 pt-12 pb-20">
+      <div className="mx-auto max-w-[920px] px-6 pt-10 pb-16">
         {/* Header */}
         <div className="flex items-center justify-between gap-4">
           <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-neutral-400">
@@ -337,12 +337,12 @@ export function InboxV2View({
           </button>
         </div>
 
-        <h1 className="mt-5 font-serif text-5xl leading-tight font-semibold tracking-tight text-gray-950 sm:text-[56px] dark:text-neutral-50">
+        <h1 className="mt-5 font-serif text-4xl leading-tight font-semibold tracking-tight text-gray-950 sm:text-[44px] dark:text-neutral-50">
           {greeting(now)}, {firstName}.
         </h1>
 
         {/* Written brief */}
-        <div className="mt-6 space-y-5 text-lg leading-[1.9] text-gray-800 dark:text-neutral-200">
+        <div className="mt-5 space-y-4 text-base leading-[1.85] text-gray-800 dark:text-neutral-200">
           <p>
             <Initials initials="AG" tone="rose" /> {personName("Achintya Gupta")} is your strongest
             match today. 3one4 Capital started following him yesterday and he&rsquo;s a repeat founder in
@@ -363,7 +363,7 @@ export function InboxV2View({
             e.preventDefault();
             ask(question);
           }}
-          className="mt-10 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm focus-within:border-gray-300 dark:border-neutral-700 dark:bg-neutral-900 dark:focus-within:border-neutral-600"
+          className="mt-8 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm focus-within:border-gray-300 dark:border-neutral-700 dark:bg-neutral-900 dark:focus-within:border-neutral-600"
         >
           <label htmlFor="ask-firstsignal" className="text-xs font-medium text-gray-500 dark:text-neutral-400">
             Ask FirstSignal
@@ -381,7 +381,7 @@ export function InboxV2View({
               }
             }}
             placeholder="Ask about a founder, your thesis, or tell me what to do..."
-            className="mt-1 w-full resize-none bg-transparent text-[15px] text-gray-900 outline-none placeholder:text-gray-400 dark:text-neutral-100 dark:placeholder:text-neutral-500"
+            className="mt-1 w-full resize-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-neutral-100 dark:placeholder:text-neutral-500"
           />
           <div className="mt-2 flex items-center justify-between gap-3">
             <div className="relative" ref={scopeRef}>
@@ -420,7 +420,7 @@ export function InboxV2View({
               type="submit"
               disabled={!question.trim()}
               aria-label="Send"
-              className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl bg-gray-950 text-white transition-opacity hover:bg-gray-800 disabled:cursor-default disabled:opacity-40 dark:bg-neutral-100 dark:text-neutral-950 dark:hover:bg-white"
+              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl bg-gray-950 text-white transition-opacity hover:bg-gray-800 disabled:cursor-default disabled:opacity-40 dark:bg-neutral-100 dark:text-neutral-950 dark:hover:bg-white"
             >
               <ArrowUp className="h-4 w-4" />
             </button>
@@ -455,7 +455,7 @@ export function InboxV2View({
                 setQuestion(text);
                 inputRef.current?.focus();
               }}
-              className="flex cursor-pointer items-center gap-2 rounded-full border border-gray-200 bg-white px-3.5 py-2 text-sm text-gray-800 hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
+              className="flex cursor-pointer items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
             >
               <Icon className="h-4 w-4 text-gray-500 dark:text-neutral-400" />
               {text}
@@ -464,7 +464,7 @@ export function InboxV2View({
         </div>
 
         {/* Inbox */}
-        <section className="mt-16">
+        <section className="mt-12">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <SectionTitle
               aside={
@@ -520,7 +520,7 @@ export function InboxV2View({
               {matches.map((m) => (
                 <li
                   key={m.id}
-                  className={`flex items-center gap-4 py-5 transition-opacity ${decisions[m.id] ? "opacity-60" : ""}`}
+                  className={`flex items-center gap-4 py-4 transition-opacity ${decisions[m.id] ? "opacity-60" : ""}`}
                 >
                   <Initials initials={m.initials} tone={m.tone} size="lg" />
                   <div className="min-w-0 flex-1">
@@ -528,7 +528,7 @@ export function InboxV2View({
                       {personName(m.name)}
                       <TagPill tag={m.tag} />
                     </div>
-                    <p className="mt-1 text-[15px] text-gray-600 dark:text-neutral-400">{m.summary}</p>
+                    <p className="mt-1 text-sm text-gray-600 dark:text-neutral-400">{m.summary}</p>
                   </div>
                   <DecisionButtons decision={decisions[m.id]} onDecide={(d) => decide(m.id, d)} />
                 </li>
@@ -552,7 +552,7 @@ export function InboxV2View({
                       </div>
                     </div>
                   </div>
-                  <p className="mt-3 flex-1 text-[15px] text-gray-600 dark:text-neutral-400">{m.summary}</p>
+                  <p className="mt-3 flex-1 text-sm text-gray-600 dark:text-neutral-400">{m.summary}</p>
                   <div className="mt-4 flex justify-end">
                     <DecisionButtons decision={decisions[m.id]} onDecide={(d) => decide(m.id, d)} />
                   </div>
@@ -576,19 +576,19 @@ export function InboxV2View({
         </section>
 
         {/* Things to know */}
-        <section className="mt-16">
+        <section className="mt-12">
           <SectionTitle aside={<span className="text-sm text-gray-500 dark:text-neutral-400">No action needed</span>}>
             Things to know
           </SectionTitle>
           <ul className="mt-5 divide-y divide-gray-100 rounded-2xl border border-gray-200 bg-white px-5 dark:divide-neutral-800 dark:border-neutral-700 dark:bg-neutral-900">
             {thingsToKnow.map(({ icon: Icon, title, detail, label, highlight }) => (
               <li key={title} className="flex items-center gap-4 py-4">
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-neutral-300">
+                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-neutral-300">
                   <Icon className="h-4 w-4" />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="font-semibold text-gray-950 dark:text-neutral-50">{title}</p>
-                  <p className="mt-0.5 truncate text-sm text-gray-500 dark:text-neutral-400">{detail}</p>
+                  <p className="text-sm font-semibold text-gray-950 dark:text-neutral-50">{title}</p>
+                  <p className="mt-0.5 truncate text-xs text-gray-500 dark:text-neutral-400">{detail}</p>
                 </div>
                 <span
                   className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium whitespace-nowrap ${
