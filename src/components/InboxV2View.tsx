@@ -187,7 +187,7 @@ function TagPill({ tag }: { tag: string }) {
 function SectionTitle({ children, aside }: { children: ReactNode; aside?: ReactNode }) {
   return (
     <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-      <h2 className="font-serif text-[32px] leading-tight font-semibold tracking-tight text-gray-950 dark:text-neutral-50">
+      <h2 className="font-serif text-[40px] leading-tight font-bold tracking-tight text-gray-950 dark:text-neutral-50">
         {children}
       </h2>
       {aside}
