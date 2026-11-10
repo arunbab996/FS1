@@ -16,7 +16,7 @@ import {
   FileText,
   HelpCircle,
   Crosshair,
-  Sun,
+  CircleUserRound,
 } from "lucide-react";
 
 export type NavView = "equity-signals" | "inbox" | "inbox-v2" | "reports" | "profile";
@@ -31,7 +31,7 @@ export interface NavItem {
 }
 
 export const navItems: NavItem[] = [
-  { label: "Today", icon: Sun, badge: "5", view: "inbox-v2" },
+  { label: "My View", icon: CircleUserRound, badge: "5", view: "inbox-v2" },
   { label: "Inbox", icon: Inbox, view: "inbox" },
   { label: "Dashboard", icon: LayoutDashboard },
   { label: "Equity Signals", icon: Radar, view: "equity-signals" },
