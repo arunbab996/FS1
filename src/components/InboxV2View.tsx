@@ -31,16 +31,6 @@ import { ProfileDrawer } from "./ProfileDrawer";
  * All content here is static demo copy; names that have a real signal open its profile drawer.
  */
 
-type Tone = "rose" | "violet" | "emerald" | "amber" | "sky";
-
-const avatarTone: Record<Tone, string> = {
-  rose: "bg-indigo-50 text-indigo-700 dark:bg-indigo-500/15 dark:text-indigo-300",
-  violet: "bg-violet-50 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300",
-  emerald: "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300",
-  amber: "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300",
-  sky: "bg-sky-50 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300",
-};
-
 // The same tag styling (colour + icon) as the signal cards elsewhere in the app.
 const tagByLabel = {
   "Investor Interest": { label: "Investor Interest", category: "investor-interest" },
@@ -151,16 +141,6 @@ function greeting(date: Date): string {
   return "Good evening";
 }
 
-function Initials({ initials, tone }: { initials: string; tone: Tone }) {
-  return (
-    <span
-      className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full align-[-0.35em] text-[10px] font-semibold ${avatarTone[tone]}`}
-    >
-      {initials}
-    </span>
-  );
-}
-
 function TagPill({ tag: label }: { tag: keyof typeof tagByLabel }) {
   const tag: SignalTag = tagByLabel[label];
   const Icon = tagIcon(tag);
@@ -174,8 +154,10 @@ function TagPill({ tag: label }: { tag: keyof typeof tagByLabel }) {
   );
 }
 
-function PersonPhoto({ name }: { name: string }) {
+function PersonPhoto({ name, inline = false }: { name: string; inline?: boolean }) {
   const [failed, setFailed] = useState(false);
+  // Inline photos sit in the brief's running text, so they're small and nudged onto the baseline.
+  const size = inline ? "inline-flex h-6 w-6 align-[-0.35em] text-[10px]" : "flex h-10 w-10 text-xs";
   if (failed) {
     const initials = name
       .split(" ")
@@ -183,7 +165,7 @@ function PersonPhoto({ name }: { name: string }) {
       .join("")
       .slice(0, 2);
     return (
-      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold text-gray-600 dark:bg-neutral-800 dark:text-neutral-300">
+      <span className={`${size} shrink-0 items-center justify-center rounded-full bg-gray-100 font-semibold text-gray-600 dark:bg-neutral-800 dark:text-neutral-300`}>
         {initials}
       </span>
     );
@@ -193,7 +175,7 @@ function PersonPhoto({ name }: { name: string }) {
       src={personPhotoUrl(name)}
       alt={name}
       onError={() => setFailed(true)}
-      className="h-10 w-10 shrink-0 rounded-full object-cover"
+      className={`${inline ? "inline-block h-6 w-6 align-[-0.35em]" : "h-10 w-10"} shrink-0 rounded-full object-cover`}
     />
   );
 }
@@ -359,15 +341,15 @@ export function InboxV2View({
         {/* Written brief */}
         <div className="mt-5 space-y-4 text-base leading-[1.85] text-gray-800 dark:text-neutral-200">
           <p>
-            <Initials initials="AG" tone="rose" /> {personName("Achintya Gupta")} is your strongest
+            <PersonPhoto name="Achintya Gupta" inline /> {personName("Achintya Gupta")} is your strongest
             match today. 3one4 Capital started following him yesterday and he&rsquo;s a repeat founder in
-            consumer essentials, so start there. <Initials initials="SW" tone="emerald" />{" "}
+            consumer essentials, so start there. <PersonPhoto name="Sky Wee" inline />{" "}
             {personName("Sky Wee")} is a close second. Accel is tracking him after he left his last
             company.
           </p>
           <p>
-            From your tracked list, <Initials initials="RM" tone="violet" /> {personName("Rohan Mehta")}{" "}
-            went stealth and <Initials initials="LH" tone="rose" /> {personName("Lena Ho")}, who you
+            From your tracked list, <PersonPhoto name="Rohan Mehta" inline /> {personName("Rohan Mehta")}{" "}
+            went stealth and <PersonPhoto name="Lena Ho" inline /> {personName("Lena Ho")}, who you
             passed on in September, picked up two investor follows.
           </p>
         </div>
