@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { FooterBar } from "./components/FooterBar";
 import { InboxView } from "./components/InboxView";
+import { InboxV2View } from "./components/InboxV2View";
 import { ProfileSettings } from "./components/ProfileSettings";
 import { ReportsView } from "./components/ReportsView";
 import { Sidebar } from "./components/Sidebar";
@@ -29,6 +30,7 @@ function App() {
   const [activeSavedSearchId, setActiveSavedSearchId] = useState<string | null>(null);
   const [activeView, setActiveView] = useState<NavView>("equity-signals");
   const [showInboxSection, setShowInboxSection] = useState(false);
+  const [showInboxV2, setShowInboxV2] = useState(false);
   const [inboxDecisions, setInboxDecisions] = useState<Record<string, InboxDecision>>({});
 
   const visibleSignals = useMemo(() => signals.filter((signal) => !signal.hidden), []);
@@ -72,6 +74,14 @@ function App() {
     });
   }
 
+  function handleToggleShowInboxV2() {
+    setShowInboxV2((prev) => {
+      const next = !prev;
+      setActiveView(next ? "inbox-v2" : "equity-signals");
+      return next;
+    });
+  }
+
   // A null decision clears it, returning the signal to the Inbox.
   function handleInboxDecide(ids: string[], decision: InboxDecision | null) {
     setInboxDecisions((prev) => {
@@ -99,10 +109,14 @@ function App() {
           onSelectView={setActiveView}
           showInboxSection={showInboxSection}
           onToggleShowInboxSection={handleToggleShowInboxSection}
+          showInboxV2={showInboxV2}
+          onToggleShowInboxV2={handleToggleShowInboxV2}
         />
 
         <div className="flex min-w-0 flex-1 flex-col">
-          {activeView === "inbox" ? (
+          {activeView === "inbox-v2" ? (
+            <InboxV2View signals={visibleSignals} onOpenFullInbox={() => setActiveView("inbox")} />
+          ) : activeView === "inbox" ? (
             <InboxView
               investor={demoInboxInvestor}
               signals={visibleSignals}
@@ -166,7 +180,9 @@ function App() {
             </>
           )}
 
-          {activeView !== "reports" && activeView !== "profile" && <FooterBar />}
+          {activeView !== "reports" && activeView !== "profile" && activeView !== "inbox-v2" && (
+            <FooterBar />
+          )}
         </div>
       </div>
     </div>
