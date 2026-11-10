@@ -272,8 +272,7 @@ export function InboxV2View({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const reviewedCount = matches.filter((m) => decisions[m.id]).length;
-  const remaining = matches.length - reviewedCount;
+  const remaining = matches.filter((m) => !decisions[m.id]).length;
 
   function signalFor(name: string): Signal | undefined {
     return signals.find((s) => s.personName === name);
@@ -465,28 +464,13 @@ export function InboxV2View({
           <div className="flex flex-wrap items-center justify-between gap-4">
             <SectionTitle
               aside={
-                <>
-                  <span className="rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white dark:bg-blue-500">
-                    {remaining}
-                  </span>
-                  <span className="text-sm text-gray-500 dark:text-neutral-400">Matched to your thesis today</span>
-                </>
+                <span className="rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white dark:bg-blue-500">
+                  {remaining}
+                </span>
               }
             >
               Your inbox
             </SectionTitle>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-3">
-                <span className="text-sm whitespace-nowrap text-gray-500 dark:text-neutral-400">
-                  {reviewedCount} of {matches.length} reviewed
-                </span>
-                <span className="h-1 w-20 overflow-hidden rounded-full bg-gray-200 dark:bg-neutral-800">
-                  <span
-                    className="block h-full rounded-full bg-blue-600 transition-[width] dark:bg-blue-500"
-                    style={{ width: `${(reviewedCount / matches.length) * 100}%` }}
-                  />
-                </span>
-              </div>
               <div className="flex rounded-xl bg-gray-100 p-1 dark:bg-neutral-800">
                 {(
                   [
@@ -509,7 +493,6 @@ export function InboxV2View({
                   </button>
                 ))}
               </div>
-            </div>
           </div>
 
           {layout === "list" ? (
