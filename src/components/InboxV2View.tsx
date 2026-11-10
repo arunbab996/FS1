@@ -7,6 +7,8 @@ import {
   CircleHelp,
   Eye,
   LayoutGrid,
+  Maximize2,
+  Minimize2,
   List,
   MessageSquare,
   SlidersHorizontal,
@@ -134,6 +136,17 @@ type Scope = (typeof scopes)[number];
 
 type Decision = "pursue" | "pass";
 
+/** Remembers whether the not-yet-built section is minimised, so it stays hidden across demo reloads. */
+const EXTRAS_MINIMISED_KEY = "fs_inbox_v2_extras_minimised";
+
+function readMinimised(): boolean {
+  try {
+    return localStorage.getItem(EXTRAS_MINIMISED_KEY) === "true";
+  } catch {
+    return false;
+  }
+}
+
 function greeting(date: Date): string {
   const hour = date.getHours();
   if (hour < 12) return "Good morning";
@@ -259,10 +272,19 @@ export function InboxV2View({
   const [askedQuestion, setAskedQuestion] = useState<string | null>(null);
   const [scope, setScope] = useState<Scope>("My thesis");
   const [scopeOpen, setScopeOpen] = useState(false);
+  const [extrasMinimised, setExtrasMinimised] = useState(() => readMinimised());
   const scopeRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [drawerSignal, setDrawerSignal] = useState<Signal | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(EXTRAS_MINIMISED_KEY, String(extrasMinimised));
+    } catch {
+      // Storage can be unavailable (private window); the toggle still works for this visit.
+    }
+  }, [extrasMinimised]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -346,117 +368,144 @@ export function InboxV2View({
             {personName("Sky Wee")} is a close second. Accel is tracking him after he left his last
             company.
           </p>
-          <p>
-            From your tracked list, <PersonPhoto name="Rohan Mehta" inline /> {personName("Rohan Mehta")}{" "}
-            went stealth and <PersonPhoto name="Lena Ho" inline /> {personName("Lena Ho")}, who you
-            passed on in September, picked up two investor follows.
-          </p>
         </div>
 
-        {/* Ask box */}
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            ask(question);
-          }}
-          className="mt-8 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm focus-within:border-gray-300 dark:border-neutral-700 dark:bg-neutral-900 dark:focus-within:border-neutral-600"
-        >
-          <label htmlFor="ask-firstsignal" className="text-xs font-medium text-gray-500 dark:text-neutral-400">
-            Ask FirstSignal
-          </label>
-          <textarea
-            id="ask-firstsignal"
-            ref={inputRef}
-            rows={2}
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
+        {/* Tracked-list update + Ask box. Not built yet, so it can be minimised during demos. */}
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setExtrasMinimised((v) => !v)}
+            aria-expanded={!extrasMinimised}
+            title={extrasMinimised ? "Show tracked list and Ask FirstSignal" : "Minimise tracked list and Ask FirstSignal"}
+            className={`flex cursor-pointer items-center gap-1 rounded-md px-1.5 py-1 text-xs text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-700 dark:text-neutral-500 dark:hover:bg-neutral-800 dark:hover:text-neutral-200 ${
+              extrasMinimised ? "mt-3 ml-auto w-fit" : "absolute top-3 -right-9"
+            }`}
+          >
+            {extrasMinimised ? (
+              <>
+                <Maximize2 className="h-3.5 w-3.5" />
+                Show more
+              </>
+            ) : (
+              <Minimize2 className="h-3.5 w-3.5" />
+            )}
+          </button>
+          {!extrasMinimised && (
+            <>
+              <p className="mt-4 text-base leading-[1.85] text-gray-800 dark:text-neutral-200">
+                From your tracked list, <PersonPhoto name="Rohan Mehta" inline /> {personName("Rohan Mehta")}{" "}
+                went stealth and <PersonPhoto name="Lena Ho" inline /> {personName("Lena Ho")}, who you
+                passed on in September, picked up two investor follows.
+              </p>
+
+            {/* Ask box */}
+            <form
+              onSubmit={(e) => {
                 e.preventDefault();
                 ask(question);
-              }
-            }}
-            placeholder="Ask about a founder, your thesis, or tell me what to do..."
-            className="mt-1 w-full resize-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-neutral-100 dark:placeholder:text-neutral-500"
-          />
-          <div className="mt-2 flex items-center justify-between gap-3">
-            <div className="relative" ref={scopeRef}>
-              <button
-                type="button"
-                onClick={() => setScopeOpen((v) => !v)}
-                className="flex cursor-pointer items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
-              >
-                Scope: {scope}
-                <ChevronDown className={`h-3.5 w-3.5 transition-transform ${scopeOpen ? "rotate-180" : ""}`} />
-              </button>
-              {scopeOpen && (
-                <div className="absolute top-full left-0 z-20 mt-1.5 w-44 rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-neutral-700 dark:bg-neutral-800">
-                  {scopes.map((option) => (
-                    <button
-                      key={option}
-                      type="button"
-                      onClick={() => {
-                        setScope(option);
-                        setScopeOpen(false);
-                      }}
-                      className={`flex w-full cursor-pointer items-center justify-between px-3 py-1.5 text-left text-sm ${
-                        option === scope
-                          ? "font-medium text-blue-700 dark:text-blue-400"
-                          : "text-gray-700 hover:bg-gray-50 dark:text-neutral-200 dark:hover:bg-neutral-700"
-                      }`}
-                    >
-                      {option}
-                      {option === scope && <Check className="h-3.5 w-3.5" />}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-            <button
-              type="submit"
-              disabled={!question.trim()}
-              aria-label="Send"
-              className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl bg-gray-950 text-white transition-opacity hover:bg-gray-800 disabled:cursor-default disabled:opacity-40 dark:bg-neutral-100 dark:text-neutral-950 dark:hover:bg-white"
-            >
-              <ArrowUp className="h-4 w-4" />
-            </button>
-          </div>
-        </form>
-
-        {askedQuestion && (
-          <div className="mt-3 rounded-2xl border border-gray-200 bg-white p-4 text-sm dark:border-neutral-700 dark:bg-neutral-900">
-            <div className="flex items-start justify-between gap-3">
-              <p className="font-medium text-gray-900 dark:text-neutral-100">{askedQuestion}</p>
-              <button
-                type="button"
-                onClick={() => setAskedQuestion(null)}
-                aria-label="Dismiss"
-                className="cursor-pointer text-gray-400 hover:text-gray-700 dark:text-neutral-500 dark:hover:text-neutral-200"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-            <p className="mt-2 text-gray-500 dark:text-neutral-400">
-              Searching {scope.toLowerCase()}… Answers aren&rsquo;t wired up in this prototype yet.
-            </p>
-          </div>
-        )}
-
-        <div className="mt-3 flex flex-wrap gap-2">
-          {suggestions.map(({ icon: Icon, text }) => (
-            <button
-              key={text}
-              type="button"
-              onClick={() => {
-                setQuestion(text);
-                inputRef.current?.focus();
               }}
-              className="flex cursor-pointer items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
+              className="mt-8 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm focus-within:border-gray-300 dark:border-neutral-700 dark:bg-neutral-900 dark:focus-within:border-neutral-600"
             >
-              <Icon className="h-4 w-4 text-gray-500 dark:text-neutral-400" />
-              {text}
-            </button>
-          ))}
+              <label htmlFor="ask-firstsignal" className="text-xs font-medium text-gray-500 dark:text-neutral-400">
+                Ask FirstSignal
+              </label>
+              <textarea
+                id="ask-firstsignal"
+                ref={inputRef}
+                rows={2}
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    ask(question);
+                  }
+                }}
+                placeholder="Ask about a founder, your thesis, or tell me what to do..."
+                className="mt-1 w-full resize-none bg-transparent text-sm text-gray-900 outline-none placeholder:text-gray-400 dark:text-neutral-100 dark:placeholder:text-neutral-500"
+              />
+              <div className="mt-2 flex items-center justify-between gap-3">
+                <div className="relative" ref={scopeRef}>
+                  <button
+                    type="button"
+                    onClick={() => setScopeOpen((v) => !v)}
+                    className="flex cursor-pointer items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 dark:border-neutral-700 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                  >
+                    Scope: {scope}
+                    <ChevronDown className={`h-3.5 w-3.5 transition-transform ${scopeOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  {scopeOpen && (
+                    <div className="absolute top-full left-0 z-20 mt-1.5 w-44 rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-neutral-700 dark:bg-neutral-800">
+                      {scopes.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          onClick={() => {
+                            setScope(option);
+                            setScopeOpen(false);
+                          }}
+                          className={`flex w-full cursor-pointer items-center justify-between px-3 py-1.5 text-left text-sm ${
+                            option === scope
+                              ? "font-medium text-blue-700 dark:text-blue-400"
+                              : "text-gray-700 hover:bg-gray-50 dark:text-neutral-200 dark:hover:bg-neutral-700"
+                          }`}
+                        >
+                          {option}
+                          {option === scope && <Check className="h-3.5 w-3.5" />}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <button
+                  type="submit"
+                  disabled={!question.trim()}
+                  aria-label="Send"
+                  className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl bg-gray-950 text-white transition-opacity hover:bg-gray-800 disabled:cursor-default disabled:opacity-40 dark:bg-neutral-100 dark:text-neutral-950 dark:hover:bg-white"
+                >
+                  <ArrowUp className="h-4 w-4" />
+                </button>
+              </div>
+            </form>
+
+            {askedQuestion && (
+              <div className="mt-3 rounded-2xl border border-gray-200 bg-white p-4 text-sm dark:border-neutral-700 dark:bg-neutral-900">
+                <div className="flex items-start justify-between gap-3">
+                  <p className="font-medium text-gray-900 dark:text-neutral-100">{askedQuestion}</p>
+                  <button
+                    type="button"
+                    onClick={() => setAskedQuestion(null)}
+                    aria-label="Dismiss"
+                    className="cursor-pointer text-gray-400 hover:text-gray-700 dark:text-neutral-500 dark:hover:text-neutral-200"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+                <p className="mt-2 text-gray-500 dark:text-neutral-400">
+                  Searching {scope.toLowerCase()}… Answers aren&rsquo;t wired up in this prototype yet.
+                </p>
+              </div>
+            )}
+
+            <div className="mt-3 flex flex-wrap gap-2">
+              {suggestions.map(({ icon: Icon, text }) => (
+                <button
+                  key={text}
+                  type="button"
+                  onClick={() => {
+                    setQuestion(text);
+                    inputRef.current?.focus();
+                  }}
+                  className="flex cursor-pointer items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1.5 text-sm text-gray-800 hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200 dark:hover:bg-neutral-800"
+                >
+                  <Icon className="h-4 w-4 text-gray-500 dark:text-neutral-400" />
+                  {text}
+                </button>
+              ))}
+            </div>
+
+            </>
+          )}
         </div>
 
         {/* Inbox */}
