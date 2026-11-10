@@ -1,22 +1,22 @@
 import {
   ArrowRight,
   ArrowUp,
-  Bookmark,
   Check,
   ChevronDown,
   CircleHelp,
-  Eye,
+  EyeOff,
   LayoutGrid,
   Maximize2,
   Minimize2,
   List,
-  MessageSquare,
+  Megaphone,
+  SearchCheck,
   SlidersHorizontal,
   Sun,
-  TrendingUp,
   Undo2,
   UserRound,
-  Users,
+  UserRoundPlus,
+  UsersRound,
   X,
   type LucideIcon,
 } from "lucide-react";
@@ -127,8 +127,18 @@ function matchSignal(m: Match): Signal {
   };
 }
 
+/** Tinted icon tiles, so each kind of update reads at a glance (colours follow the app's tag palette). */
+const fyiTone = {
+  pink: "bg-pink-50 text-pink-600 dark:bg-pink-500/15 dark:text-pink-400",
+  purple: "bg-purple-50 text-purple-600 dark:bg-purple-500/15 dark:text-purple-400",
+  blue: "bg-blue-50 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400",
+  amber: "bg-amber-50 text-amber-600 dark:bg-amber-500/15 dark:text-amber-400",
+  teal: "bg-teal-50 text-teal-600 dark:bg-teal-500/15 dark:text-teal-400",
+};
+
 interface Fyi {
   icon: LucideIcon;
+  tone: keyof typeof fyiTone;
   title: string;
   detail: string;
   label: string;
@@ -137,32 +147,37 @@ interface Fyi {
 
 const thingsToKnow: Fyi[] = [
   {
-    icon: TrendingUp,
+    icon: UserRoundPlus,
+    tone: "pink",
     title: "Lena Ho picked up two investor follows",
     detail: "You passed in September · Peak XV and Antler followed this week",
     label: "Revisit a pass",
     highlight: true,
   },
   {
-    icon: Eye,
+    icon: EyeOff,
+    tone: "purple",
     title: "Rohan Mehta went stealth",
     detail: "Left Cobalt Robotics as VP Engineering · 2h ago",
     label: "Tracker",
   },
   {
-    icon: Bookmark,
+    icon: SearchCheck,
+    tone: "blue",
     title: '3 new people match "Ex-unicorn PMs in Jakarta"',
     detail: "Saved search · since yesterday",
     label: "Saved search",
   },
   {
-    icon: MessageSquare,
+    icon: Megaphone,
+    tone: "amber",
     title: "Kai Wong posted about leaving Halcyon",
     detail: '"Last day today. Taking a few months to build something." · this morning',
     label: "Social activity",
   },
   {
-    icon: Users,
+    icon: UsersRound,
+    tone: "teal",
     title: "2 teammates are also looking at Sky Wee",
     detail: "Team activity · check in before you reach out",
     label: "Team",
@@ -678,10 +693,10 @@ export function InboxV2View({
             Things to know
           </SectionTitle>
           <ul className="mt-5 divide-y divide-gray-100 rounded-2xl border border-gray-200 bg-white px-5 dark:divide-neutral-800 dark:border-neutral-700 dark:bg-neutral-900">
-            {thingsToKnow.map(({ icon: Icon, title, detail, label, highlight }) => (
+            {thingsToKnow.map(({ icon: Icon, tone, title, detail, label, highlight }) => (
               <li key={title} className="flex items-center gap-4 py-4">
-                <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-neutral-300">
-                  <Icon className="h-4 w-4" />
+                <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${fyiTone[tone]}`}>
+                  <Icon className="h-[18px] w-[18px]" />
                 </span>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold text-gray-950 dark:text-neutral-50">{title}</p>
