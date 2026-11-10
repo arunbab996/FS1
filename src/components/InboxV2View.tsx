@@ -200,8 +200,8 @@ function PersonPhoto({ name }: { name: string }) {
 
 function SectionTitle({ children, aside }: { children: ReactNode; aside?: ReactNode }) {
   return (
-    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-      <h2 className="font-serif text-[32px] leading-tight font-bold tracking-tight text-gray-950 dark:text-neutral-50">
+    <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
+      <h2 className="text-xl font-semibold tracking-tight text-gray-950 dark:text-neutral-50">
         {children}
       </h2>
       {aside}
@@ -484,7 +484,7 @@ export function InboxV2View({
             <SectionTitle
               aside={
                 <>
-                  <span className="rounded-full bg-blue-600 px-2 py-0.5 text-sm font-semibold text-white dark:bg-blue-500">
+                  <span className="rounded-full bg-blue-600 px-2 py-0.5 text-xs font-semibold text-white dark:bg-blue-500">
                     {remaining}
                   </span>
                   <span className="text-sm text-gray-500 dark:text-neutral-400">Matched to your thesis today</span>
