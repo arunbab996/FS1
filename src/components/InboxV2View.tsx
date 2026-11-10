@@ -26,7 +26,7 @@ import { CURRENT_USER_NAME } from "../utils/currentUser";
 import { ProfileDrawer } from "./ProfileDrawer";
 
 /**
- * "Today" — a v2 take on the Inbox, laid out as a morning brief: a written summary, an ask box,
+ * "My View" — a v2 take on the Inbox, laid out as a morning brief: a written summary, an ask box,
  * the top five thesis matches to triage, and an FYI feed. Hidden behind a display-settings toggle.
  * All content here is static demo copy; names that have a real signal open its profile drawer.
  */
