@@ -20,8 +20,8 @@ import {
   X,
   type LucideIcon,
 } from "lucide-react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
-import type { Signal, SignalTag } from "../types";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import type { ExperienceEntry, Signal, SignalTag } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
 import { tagColorClasses, tagIcon } from "../utils/tags";
 import { CURRENT_USER_NAME } from "../utils/currentUser";
@@ -46,6 +46,11 @@ interface Match {
   name: string;
   tag: keyof typeof tagByLabel;
   summary: string;
+  /** For people without a full demo profile: enough to fill a lighter profile drawer. */
+  title?: string;
+  contextLine?: string;
+  current?: ExperienceEntry[];
+  past?: ExperienceEntry[];
 }
 
 const matches: Match[] = [
@@ -68,12 +73,20 @@ const matches: Match[] = [
     name: "Priya Nair",
     tag: "Stealth",
     summary: 'Left Kestrel Pay after five years. Her LinkedIn now just says "Stealth".',
+    title: "Founder, Stealth · ex-Head of Product at Kestrel Pay",
+    contextLine: "Singapore · 9 yrs experience",
+    current: [{ company: "Stealth", role: "Founder" }],
+    past: [{ company: "Kestrel Pay", role: "Head of Product" }],
   },
   {
     id: "daniel",
     name: "Daniel Tan",
     tag: "New Company",
     summary: "Incorporated Loomwork Labs last week with a former teammate from Northwind AI.",
+    title: "Co-founder, Loomwork Labs · ex-Northwind AI",
+    contextLine: "Singapore · 7 yrs experience",
+    current: [{ company: "Loomwork Labs", role: "Co-founder" }],
+    past: [{ company: "Northwind AI", role: "Senior ML engineer" }],
   },
   {
     id: "meera",
@@ -81,8 +94,38 @@ const matches: Match[] = [
     tag: "Exploring",
     summary:
       'Changed her headline to "Exploring what\'s next" after six years at a Series C logistics company.',
+    title: "Exploring what's next · ex-Director of Operations",
+    contextLine: "Bengaluru · 11 yrs experience",
+    current: [{ company: "Exploring", role: "What's next" }],
+    past: [{ company: "Series C logistics company", role: "Director of Operations" }],
   },
 ];
+
+/** A lighter profile for the drawer, built from the inbox row, for people with no full demo signal. */
+function matchSignal(m: Match): Signal {
+  return {
+    id: `sig-v2-${m.id}`,
+    dateGroup: "Today · Jul 27",
+    status: "New Signal",
+    tags: [tagByLabel[m.tag]],
+    avatarInitials: m.name
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2),
+    photoUrl: personPhotoUrl(m.name),
+    // The drawer shows the headline as the subtitle under the name.
+    headline: m.title ?? m.summary,
+    personName: m.name,
+    contextLine: m.contextLine ?? "",
+    aiSummary: m.summary,
+    noSourceInfo: true,
+    current: m.current ?? [],
+    past: m.past ?? [],
+    education: [],
+    reasoning: { positives: [], negatives: [] },
+  };
+}
 
 interface Fyi {
   icon: LucideIcon;
@@ -301,11 +344,30 @@ export function InboxV2View({
   }
 
   function openProfile(name: string) {
-    const signal = signalFor(name);
+    const match = matches.find((m) => m.name === name);
+    const signal = signalFor(name) ?? (match && matchSignal(match));
     if (!signal) return;
     setDrawerSignal(signal);
     setDrawerOpen(true);
   }
+
+  /** Whole inbox rows/cards open the profile drawer; Enter/Space do too, for keyboard users. */
+  function rowProps(m: Match) {
+    return {
+      role: "button" as const,
+      tabIndex: 0,
+      onClick: () => openProfile(m.name),
+      onKeyDown: (e: KeyboardEvent<HTMLElement>) => {
+        if (e.target !== e.currentTarget) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          openProfile(m.name);
+        }
+      },
+    };
+  }
+
+  const drawerMatch = drawerSignal ? matches.find((m) => m.name === drawerSignal.personName) : undefined;
 
   function decide(id: string, decision: Decision | null) {
     setDecisions((prev) => {
@@ -545,11 +607,14 @@ export function InboxV2View({
           </div>
 
           {layout === "list" ? (
-            <ul className="mt-5 divide-y divide-gray-100 rounded-2xl border border-gray-200 bg-white px-5 dark:divide-neutral-800 dark:border-neutral-700 dark:bg-neutral-900">
+            <ul className="mt-5 divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-200 bg-white dark:divide-neutral-800 dark:border-neutral-700 dark:bg-neutral-900">
               {matches.map((m) => (
                 <li
                   key={m.id}
-                  className={`flex items-center gap-4 py-4 transition-opacity ${decisions[m.id] ? "opacity-60" : ""}`}
+                  {...rowProps(m)}
+                  className={`flex cursor-pointer items-center gap-4 px-5 py-4 transition hover:bg-gray-50 focus-visible:bg-gray-50 focus-visible:outline-none dark:hover:bg-neutral-800/60 dark:focus-visible:bg-neutral-800/60 ${
+                    decisions[m.id] ? "opacity-60" : ""
+                  }`}
                 >
                   <PersonPhoto name={m.name} />
                   <div className="min-w-0 flex-1">
@@ -559,7 +624,9 @@ export function InboxV2View({
                     </div>
                     <p className="mt-1 text-sm text-gray-600 dark:text-neutral-400">{m.summary}</p>
                   </div>
-                  <DecisionButtons decision={decisions[m.id]} onDecide={(d) => decide(m.id, d)} />
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <DecisionButtons decision={decisions[m.id]} onDecide={(d) => decide(m.id, d)} />
+                  </div>
                 </li>
               ))}
             </ul>
@@ -568,7 +635,8 @@ export function InboxV2View({
               {matches.map((m) => (
                 <div
                   key={m.id}
-                  className={`flex flex-col rounded-2xl border border-gray-200 bg-white p-5 transition-opacity dark:border-neutral-700 dark:bg-neutral-900 ${
+                  {...rowProps(m)}
+                  className={`flex cursor-pointer flex-col rounded-2xl border border-gray-200 bg-white p-5 transition hover:border-gray-300 hover:shadow-sm focus-visible:border-gray-400 focus-visible:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:hover:border-neutral-600 ${
                     decisions[m.id] ? "opacity-60" : ""
                   }`}
                 >
@@ -582,7 +650,7 @@ export function InboxV2View({
                     </div>
                   </div>
                   <p className="mt-3 flex-1 text-sm text-gray-600 dark:text-neutral-400">{m.summary}</p>
-                  <div className="mt-4 flex justify-end">
+                  <div className="mt-4 flex justify-end" onClick={(e) => e.stopPropagation()}>
                     <DecisionButtons decision={decisions[m.id]} onDecide={(d) => decide(m.id, d)} />
                   </div>
                 </div>
@@ -635,7 +703,21 @@ export function InboxV2View({
       </div>
 
       {drawerSignal && (
-        <ProfileDrawer signal={drawerSignal} open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+        <ProfileDrawer
+          signal={drawerSignal}
+          open={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+          footer={
+            drawerMatch && (
+              <div className="flex justify-end">
+                <DecisionButtons
+                  decision={decisions[drawerMatch.id]}
+                  onDecide={(d) => decide(drawerMatch.id, d)}
+                />
+              </div>
+            )
+          }
+        />
       )}
     </main>
   );
