@@ -19,7 +19,9 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import type { Signal } from "../types";
+import type { Signal, SignalTag } from "../types";
+import { personPhotoUrl } from "../utils/avatars";
+import { tagColorClasses, tagIcon } from "../utils/tags";
 import { CURRENT_USER_NAME } from "../utils/currentUser";
 import { ProfileDrawer } from "./ProfileDrawer";
 
@@ -39,19 +41,18 @@ const avatarTone: Record<Tone, string> = {
   sky: "bg-sky-50 text-sky-700 dark:bg-sky-500/15 dark:text-sky-300",
 };
 
-const tagTone: Record<string, string> = {
-  "Investor Interest": "bg-rose-50 text-rose-700 dark:bg-rose-500/15 dark:text-rose-300",
-  Stealth: "bg-violet-50 text-violet-700 dark:bg-violet-500/15 dark:text-violet-300",
-  "New Company": "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300",
-  Exploring: "bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-300",
-};
+// The same tag styling (colour + icon) as the signal cards elsewhere in the app.
+const tagByLabel = {
+  "Investor Interest": { label: "Investor Interest", category: "investor-interest" },
+  Stealth: { label: "Stealth", category: "stealth" },
+  "New Company": { label: "New Company", category: "momentum" },
+  Exploring: { label: "Exploring", category: "background" },
+} satisfies Record<string, SignalTag>;
 
 interface Match {
   id: string;
   name: string;
-  initials: string;
-  tone: Tone;
-  tag: keyof typeof tagTone;
+  tag: keyof typeof tagByLabel;
   summary: string;
 }
 
@@ -59,8 +60,6 @@ const matches: Match[] = [
   {
     id: "achintya",
     name: "Achintya Gupta",
-    initials: "AG",
-    tone: "rose",
     tag: "Investor Interest",
     summary:
       "3one4 Capital started following him yesterday. This would be his second company in consumer essentials.",
@@ -68,8 +67,6 @@ const matches: Match[] = [
   {
     id: "sky",
     name: "Sky Wee",
-    initials: "SW",
-    tone: "emerald",
     tag: "Investor Interest",
     summary:
       "Accel is now tracking him. He left his last company two weeks ago and is building in software.",
@@ -77,24 +74,18 @@ const matches: Match[] = [
   {
     id: "priya",
     name: "Priya Nair",
-    initials: "PN",
-    tone: "violet",
     tag: "Stealth",
     summary: 'Left Kestrel Pay after five years. Her LinkedIn now just says "Stealth".',
   },
   {
     id: "daniel",
     name: "Daniel Tan",
-    initials: "DT",
-    tone: "sky",
     tag: "New Company",
     summary: "Incorporated Loomwork Labs last week with a former teammate from Northwind AI.",
   },
   {
     id: "meera",
     name: "Meera Iyer",
-    initials: "MI",
-    tone: "amber",
     tag: "Exploring",
     summary:
       'Changed her headline to "Exploring what\'s next" after six years at a Series C logistics company.',
@@ -161,26 +152,50 @@ function greeting(date: Date): string {
   return "Good evening";
 }
 
-function Initials({ initials, tone, size = "sm" }: { initials: string; tone: Tone; size?: "sm" | "lg" }) {
+function Initials({ initials, tone }: { initials: string; tone: Tone }) {
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center rounded-full font-semibold ${avatarTone[tone]} ${
-        size === "lg" ? "h-10 w-10 text-xs" : "h-6 w-6 align-[-0.35em] text-[10px]"
-      }`}
+      className={`inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full align-[-0.35em] text-[10px] font-semibold ${avatarTone[tone]}`}
     >
       {initials}
     </span>
   );
 }
 
-function TagPill({ tag }: { tag: string }) {
+function TagPill({ tag: label }: { tag: keyof typeof tagByLabel }) {
+  const tag: SignalTag = tagByLabel[label];
+  const Icon = tagIcon(tag);
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${tagTone[tag]}`}
+      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium whitespace-nowrap ${tagColorClasses(tag.category)}`}
     >
-      <span className="h-1.5 w-1.5 rounded-full bg-current" />
-      {tag}
+      {Icon && <Icon className="h-3 w-3" />}
+      {tag.label}
     </span>
+  );
+}
+
+function PersonPhoto({ name }: { name: string }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) {
+    const initials = name
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .slice(0, 2);
+    return (
+      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100 text-xs font-semibold text-gray-600 dark:bg-neutral-800 dark:text-neutral-300">
+        {initials}
+      </span>
+    );
+  }
+  return (
+    <img
+      src={personPhotoUrl(name)}
+      alt={name}
+      onError={() => setFailed(true)}
+      className="h-10 w-10 shrink-0 rounded-full object-cover"
+    />
   );
 }
 
@@ -326,7 +341,7 @@ export function InboxV2View({
         <div className="flex items-center justify-between gap-4">
           <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-neutral-400">
             <Sun className="h-4 w-4" />
-            {dateLabel} · Morning brief
+            {dateLabel}
           </p>
           <button
             type="button"
@@ -522,7 +537,7 @@ export function InboxV2View({
                   key={m.id}
                   className={`flex items-center gap-4 py-4 transition-opacity ${decisions[m.id] ? "opacity-60" : ""}`}
                 >
-                  <Initials initials={m.initials} tone={m.tone} size="lg" />
+                  <PersonPhoto name={m.name} />
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       {personName(m.name)}
@@ -544,7 +559,7 @@ export function InboxV2View({
                   }`}
                 >
                   <div className="flex items-center gap-3">
-                    <Initials initials={m.initials} tone={m.tone} size="lg" />
+                    <PersonPhoto name={m.name} />
                     <div className="min-w-0">
                       {personName(m.name)}
                       <div className="mt-1">
@@ -577,7 +592,7 @@ export function InboxV2View({
 
         {/* Things to know */}
         <section className="mt-12">
-          <SectionTitle aside={<span className="text-sm text-gray-500 dark:text-neutral-400">No action needed</span>}>
+          <SectionTitle>
             Things to know
           </SectionTitle>
           <ul className="mt-5 divide-y divide-gray-100 rounded-2xl border border-gray-200 bg-white px-5 dark:divide-neutral-800 dark:border-neutral-700 dark:bg-neutral-900">
