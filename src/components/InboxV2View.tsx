@@ -183,7 +183,7 @@ function PersonPhoto({ name, inline = false }: { name: string; inline?: boolean 
 function SectionTitle({ children, aside }: { children: ReactNode; aside?: ReactNode }) {
   return (
     <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
-      <h2 className="text-xl font-semibold tracking-tight text-gray-950 dark:text-neutral-50">
+      <h2 className="font-serif text-[28px] leading-tight font-semibold tracking-tight text-gray-950 dark:text-neutral-50">
         {children}
       </h2>
       {aside}
@@ -317,7 +317,7 @@ export function InboxV2View({
 
   return (
     <main id="main-scroll" className="relative flex-1 overflow-y-auto bg-[#faf9f7] dark:bg-neutral-950">
-      <div aria-hidden className="today-backdrop pointer-events-none absolute inset-x-0 top-0 h-[640px]" />
+      <div aria-hidden className="today-backdrop pointer-events-none absolute inset-x-0 top-0 h-[720px]" />
       <div className="relative mx-auto max-w-[920px] px-6 pt-10 pb-16">
         {/* Header */}
         <div className="flex items-center justify-between gap-4">
