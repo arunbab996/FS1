@@ -137,7 +137,6 @@ const thingsToKnow: Fyi[] = [
 const suggestions: { icon: LucideIcon; text: string }[] = [
   { icon: CircleHelp, text: "Why is Achintya in my inbox?" },
   { icon: UserRound, text: "Who left a top company this week?" },
-  { icon: MessageSquare, text: "Draft a note to Sky Wee" },
 ];
 
 const scopes = ["My thesis", "All signals", "Tracked list"] as const;
@@ -335,8 +334,9 @@ export function InboxV2View({
   }
 
   return (
-    <main id="main-scroll" className="flex-1 overflow-y-auto bg-[#faf9f7] dark:bg-neutral-950">
-      <div className="mx-auto max-w-[920px] px-6 pt-10 pb-16">
+    <main id="main-scroll" className="relative flex-1 overflow-y-auto bg-[#faf9f7] dark:bg-neutral-950">
+      <div aria-hidden className="today-backdrop pointer-events-none absolute inset-x-0 top-0 h-[640px]" />
+      <div className="relative mx-auto max-w-[920px] px-6 pt-10 pb-16">
         {/* Header */}
         <div className="flex items-center justify-between gap-4">
           <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-neutral-400">
