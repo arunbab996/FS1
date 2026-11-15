@@ -1,4 +1,5 @@
 import { CURRENT_USER_NAME } from "../../utils/currentUser";
+import { AGENT_NAME } from "../brand";
 import { INCOMING_BATCHES } from "../data/seed";
 import { getDb, getPeople, getPerson, updateDb } from "../db/store";
 import { nextRunAfter } from "../jobs/schedule";
@@ -118,7 +119,7 @@ export function send_to_inbox(args: { person_id: string; investor?: string; sour
   updateDb((db) => ({
     ...db,
     inbox: [
-      { personId: args.person_id, investor, sentAt: nowIso(), source: args.source ?? "AI Associate" },
+      { personId: args.person_id, investor, sentAt: nowIso(), source: args.source ?? AGENT_NAME },
       ...db.inbox.filter((i) => i.personId !== args.person_id),
     ],
   }));

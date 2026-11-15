@@ -25,9 +25,10 @@ export type PendingAction =
 
 export type Block =
   | { kind: "text"; text: string }
-  | { kind: "criteria"; chips: string[] }
+  /** The agent's working steps, shown as a checklist that ticks off while the reply streams. */
+  | { kind: "steps"; steps: string[]; seconds: number }
   | { kind: "tool"; name: string; summary: string }
-  | { kind: "results"; title: string; total: number; hits: SearchHit[] }
+  | { kind: "results"; title: string; total: number; hits: SearchHit[]; filters?: SearchFilters }
   | { kind: "profile"; personId: string }
   | { kind: "action"; actionId: string }
   | { kind: "searches"; ids: string[] }
@@ -151,9 +152,18 @@ function newSearch(input: string, ctx: AgentContext, refine?: SearchFilters): Ag
   }
 
   const blocks: Block[] = [];
-  if (chips.length) blocks.push({ kind: "criteria", chips });
   let result = tools.search_people({ query, filters, limit: 20 });
-  blocks.push({ kind: "tool", name: "search_people", summary: `Searched ${getPeople().length} profiles` });
+  const criteriaCount = Object.keys(filters).length;
+  blocks.push({
+    kind: "steps",
+    seconds: Math.round((0.8 + Math.min(query.length, 120) / 80) * 10) / 10,
+    steps: [
+      criteriaCount ? `Read your request · ${criteriaCount} ${criteriaCount === 1 ? "criterion" : "criteria"}` : "Read your request",
+      `Searched ${getPeople().length} FirstSignal profiles`,
+      "Ranked by fit and signal freshness",
+      "Checked why each person matches",
+    ],
+  });
 
   let usedFilters = filters;
   let usedChips = chips;
@@ -187,7 +197,7 @@ function newSearch(input: string, ctx: AgentContext, refine?: SearchFilters): Ag
     blocks.push({ kind: "text", text: resultsSummary(result.total, result.hits) });
   }
 
-  blocks.push({ kind: "results", title: usedChips.join(" · ") || query, total: result.total, hits: result.hits });
+  blocks.push({ kind: "results", title: usedChips.join(" · ") || query, total: result.total, hits: result.hits, filters: usedFilters });
   const context: AgentContext = {
     ...ctx,
     lastSearch: { query, filters: usedFilters, chips: usedChips, hits: result.hits },
@@ -197,7 +207,6 @@ function newSearch(input: string, ctx: AgentContext, refine?: SearchFilters): Ag
   const offer = proposeSchedule(context, DEFAULT_SCHEDULE);
   const actions: PendingAction[] = [];
   if (offer) {
-    blocks.push({ kind: "text", text: offer.text });
     blocks.push({ kind: "action", actionId: offer.action.id });
     actions.push(offer.action);
     context.pendingActionId = offer.action.id;
@@ -266,7 +275,7 @@ export function respond(input: string, ctx: AgentContext): AgentTurn {
           run.new_ids.length
             ? { kind: "text", text: `${run.new_ids.length} new since the last run. Everyone else you've already seen.` }
             : { kind: "text", text: "Nothing new since the last run — everyone matching has already been shown to you." },
-          ...(run.new_ids.length ? [{ kind: "results" as const, title: search.name, total: run.new_ids.length, hits }] : []),
+          ...(run.new_ids.length ? [{ kind: "results" as const, title: search.name, total: run.new_ids.length, hits, filters: search.filters }] : []),
         ],
         context: { ...ctx, lastSearch: { query: search.query, filters: search.filters, chips: understandChips(search.filters), hits }, focusPersonId: hits[0]?.personId },
         actions: [],

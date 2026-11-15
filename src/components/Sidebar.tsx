@@ -181,7 +181,7 @@ export function Sidebar({
             </label>
             <label className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-1 py-1.5">
               <span className="text-sm text-gray-700 dark:text-neutral-200">
-                Show AI Associate (preview)
+                Show Doriot, AI Associate (preview)
               </span>
               <MiniToggle checked={showAssociate} onChange={onToggleShowAssociate} />
             </label>

@@ -1,6 +1,7 @@
 import { Check, ChevronDown, Inbox, ListPlus, MessageSquare, Plus, Undo2, UsersRound, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CURRENT_USER_NAME } from "../../utils/currentUser";
+import { AGENT_NAME } from "../brand";
 import { getPerson, useAssociateDb } from "../db/store";
 import * as tools from "../tools";
 import { PersonAvatar, SignalPill } from "./common";
@@ -88,7 +89,7 @@ export function PersonCard({ personId, reasons, source }: { personId: string; re
               className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1.5 text-xs font-medium ${
                 triage.status === "dismissed"
                   ? "bg-gray-100 text-gray-600 dark:bg-neutral-800 dark:text-neutral-300"
-                  : "bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-300"
+                  : "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-300"
               }`}
             >
               {triage.status === "dismissed" ? <X className="h-3.5 w-3.5" /> : <Check className="h-3.5 w-3.5" />}
@@ -104,19 +105,19 @@ export function PersonCard({ personId, reasons, source }: { personId: string; re
             </button>
           </>
         ) : confirmingSend ? (
-          <span className="inline-flex flex-wrap items-center gap-1.5 rounded-lg bg-blue-50 px-2.5 py-1 text-xs text-blue-800 dark:bg-blue-500/15 dark:text-blue-200">
+          <span className="inline-flex flex-wrap items-center gap-1.5 rounded-lg bg-gray-50 px-2.5 py-1 text-xs text-gray-800 dark:bg-neutral-800 dark:text-neutral-200">
             Send {firstName} to {CURRENT_USER_NAME.split(" ")[0]}'s Inbox?
             <button
               type="button"
               onClick={() => {
-                tools.send_to_inbox({ person_id: personId, source: source ?? "AI Associate" });
+                tools.send_to_inbox({ person_id: personId, source: source ?? AGENT_NAME });
                 setConfirmingSend(false);
               }}
-              className="cursor-pointer rounded-md bg-blue-600 px-2 py-0.5 font-semibold text-white hover:bg-blue-700"
+              className="cursor-pointer rounded-md bg-gray-950 px-2 py-0.5 font-medium text-white hover:bg-gray-800 dark:bg-neutral-100 dark:text-neutral-900"
             >
               Send
             </button>
-            <button type="button" onClick={() => setConfirmingSend(false)} className="cursor-pointer rounded-md px-1.5 py-0.5 hover:bg-blue-100 dark:hover:bg-blue-500/20">
+            <button type="button" onClick={() => setConfirmingSend(false)} className="cursor-pointer rounded-md px-1.5 py-0.5 hover:bg-gray-100 dark:hover:bg-neutral-700">
               Cancel
             </button>
           </span>

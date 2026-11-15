@@ -12,6 +12,15 @@ export interface Understood {
   chips: string[];
   /** Words left after filters are pulled out, used for similarity ranking. */
   freeText: string;
+  /** The exact phrases of the request each filter came from, for highlighting the query. */
+  spans: QuerySpan[];
+}
+
+export type CriterionKind = "company" | "signal" | "sector" | "time" | "location" | "background" | "founder";
+
+export interface QuerySpan {
+  text: string;
+  kind: CriterionKind;
 }
 
 const COMPANIES: [string, RegExp][] = [
@@ -152,12 +161,15 @@ export function understandQuery(input: string): Understood {
   let rest = ` ${input} `;
   const filters: SearchFilters = {};
   const chips: string[] = [];
-  const take = (re: RegExp) => {
+  const spans: QuerySpan[] = [];
+  const take = (re: RegExp, kind: CriterionKind) => {
+    const global = new RegExp(re.source, re.flags.includes("g") ? re.flags : `${re.flags}g`);
+    for (const m of rest.matchAll(global)) spans.push({ text: m[0].trim(), kind });
     rest = rest.replace(new RegExp(re.source, re.flags.includes("g") ? re.flags : `${re.flags}g`), " ");
   };
 
   // Sectors and recency first, so their words ("data", "product") don't read as backgrounds.
-  const sectors = SECTORS.filter(([, re]) => re.test(rest)).map(([name, re]) => (take(re), name));
+  const sectors = SECTORS.filter(([, re]) => re.test(rest)).map(([name, re]) => (take(re, "sector"), name));
   if (sectors.length) {
     filters.sectors = sectors;
     chips.push(`Building in ${sectors.join(" or ")}`);
@@ -166,11 +178,12 @@ export function understandQuery(input: string): Understood {
   const within = parseWithin(rest);
   if (within) {
     filters.withinDays = within[0];
+    spans.push({ text: within[1].trim(), kind: "time" });
     rest = rest.replace(within[1], " ");
     chips.push(describeWithin(within[0]));
   }
 
-  const signals = SIGNALS.filter(([, re]) => re.test(rest)).map(([name, re]) => (take(re), name));
+  const signals = SIGNALS.filter(([, re]) => re.test(rest)).map(([name, re]) => (take(re, "signal"), name));
   if (signals.length) {
     filters.signalTypes = signals;
     chips.push(`Signal: ${signals.join(" or ")}`);
@@ -178,11 +191,11 @@ export function understandQuery(input: string): Understood {
 
   if (/\b(repeat|serial|second-time|2nd-time) founders?\b|\bpreviously founded\b|\bfounded (a company )?before\b/i.test(rest)) {
     filters.repeatFounder = true;
-    take(/\b(repeat|serial|second-time|2nd-time) founders?\b|\bpreviously founded\b|\bfounded (a company )?before\b/i);
+    take(/\b(repeat|serial|second-time|2nd-time) founders?\b|\bpreviously founded\b|\bfounded (a company )?before\b/i, "founder");
     chips.push("Repeat founder");
   }
 
-  const companies = COMPANIES.filter(([, re]) => re.test(rest)).map(([name, re]) => (take(re), name));
+  const companies = COMPANIES.filter(([, re]) => re.test(rest)).map(([name, re]) => (take(re, "company"), name));
   if (companies.length) {
     filters.pastCompanies = companies;
     chips.push(`Worked at ${companies.join(" or ")}`);
@@ -192,7 +205,7 @@ export function understandQuery(input: string): Understood {
   for (const [names, re] of COUNTRIES) {
     if (re.test(rest)) {
       names.forEach((c) => countrySet.add(c));
-      take(re);
+      take(re, "location");
     }
   }
   if (countrySet.size) {
@@ -204,7 +217,7 @@ export function understandQuery(input: string): Understood {
   for (const [names, re] of BACKGROUNDS) {
     if (re.test(rest)) {
       names.forEach((b) => backgroundSet.add(b));
-      take(re);
+      take(re, "background");
     }
   }
   if (backgroundSet.size) {
@@ -218,7 +231,7 @@ export function understandQuery(input: string): Understood {
     .replace(/\s+/g, " ")
     .trim();
 
-  return { filters, chips, freeText };
+  return { filters, chips, freeText, spans };
 }
 
 /** "every Monday", "daily", "every weekday at 9" → a schedule. Defaults to Mondays at 8:00. */

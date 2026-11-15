@@ -1,6 +1,8 @@
-import { ChevronRight, Copy, Pause, Pencil, Play, RefreshCw, Sparkles, Trash2, Zap } from "lucide-react";
+import { ChevronRight, Copy, Pause, Pencil, Play, RefreshCw, Trash2, Zap } from "lucide-react";
+import { DoriotMark } from "./DoriotMark";
 import { Fragment, useState, type ReactNode } from "react";
 import { understandQuery } from "../agent/understand";
+import { criteriaFromFilters } from "../criteria";
 import { SUGGESTED_PROMPTS } from "../agent/prompts";
 import { INCOMING_BATCHES } from "../data/seed";
 import { getPeople, resetDb, useAssociateDb } from "../db/store";
@@ -8,7 +10,7 @@ import { SCHEDULE_OPTIONS, describeSchedule, formatRunTime, scheduleKey } from "
 import { searchPeople } from "../search/search";
 import * as tools from "../tools";
 import type { SavedSearch, Schedule } from "../types";
-import { PersonCard } from "./PersonCard";
+import { ResultsTable } from "./ResultsTable";
 
 /**
  * Saved searches: each one is a scheduled job. One table with name, query, schedule, next and
@@ -48,7 +50,7 @@ export function SavedSearchesView({ onToast }: { onToast: (text: string) => void
       <div className="mx-auto max-w-[1100px] px-6 py-8">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <h1 className="font-serif text-[28px] leading-tight font-semibold tracking-tight text-gray-950 dark:text-neutral-50">Saved searches</h1>
+            <h1 className="text-[26px] font-medium tracking-tight text-gray-950 dark:text-neutral-50">Saved searches</h1>
             <p className="mt-1 text-sm text-gray-500 dark:text-neutral-400">
               Each search runs on its schedule and only brings people you haven't seen. Anyone you triage never comes back.
             </p>
@@ -84,23 +86,23 @@ export function SavedSearchesView({ onToast }: { onToast: (text: string) => void
 
         {db.savedSearches.length === 0 ? (
           <div className="mt-8 rounded-2xl border border-dashed border-gray-300 bg-white px-6 py-12 text-center dark:border-neutral-700 dark:bg-neutral-900">
-            <Sparkles className="mx-auto h-6 w-6 text-blue-500" />
+            <div className="flex justify-center"><DoriotMark size={32} /></div>
             <p className="mt-3 text-sm font-medium text-gray-900 dark:text-neutral-100">No saved searches yet</p>
             <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500 dark:text-neutral-400">
-              Run a search in the chat and say yes when the Associate offers to schedule it. Or load three examples to try the flow.
+              Run a search and say yes when Doriot offers to schedule it. Or load three examples to try the flow.
             </p>
-            <button type="button" onClick={loadDemo} className="mt-4 cursor-pointer rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+            <button type="button" onClick={loadDemo} className="mt-4 cursor-pointer rounded-lg bg-gray-950 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 dark:bg-neutral-100 dark:text-neutral-900">
               Load demo searches
             </button>
           </div>
         ) : (
-          <div className="mt-6 overflow-x-auto rounded-2xl border border-gray-200 bg-white dark:border-neutral-700 dark:bg-neutral-900">
+          <div className="mt-6 overflow-x-auto rounded-2xl border border-gray-200 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.03)] dark:border-neutral-800 dark:bg-neutral-900">
             <table className="w-full min-w-[960px] table-fixed text-left text-sm">
               <thead>
-                <tr className="border-b border-gray-200 text-xs font-medium text-gray-500 dark:border-neutral-700 dark:text-neutral-400">
+                <tr className="border-b border-gray-100 text-xs text-gray-400 dark:border-neutral-800 dark:text-neutral-500">
                   <th className="w-10 py-3 pl-4" />
                   <th className="w-[22%] py-3 pr-4">Name</th>
-                  <th className="py-3 pr-4">Query</th>
+                  <th className="py-3 pr-4">Criteria</th>
                   <th className="w-[170px] py-3 pr-4">Schedule</th>
                   <th className="w-[120px] py-3 pr-4">Next run</th>
                   <th className="w-[120px] py-3 pr-4">Last run</th>
@@ -127,13 +129,13 @@ export function SavedSearchesView({ onToast }: { onToast: (text: string) => void
                           {s.status === "paused" && <span className="rounded bg-gray-100 px-1.5 py-0.5 text-[11px] text-gray-500 dark:bg-neutral-800">Paused</span>}
                         </td>
                         <td className="truncate py-3 pr-4 text-gray-500 dark:text-neutral-400" title={s.query}>
-                          {s.query}
+                          {criteriaFromFilters(s.filters).flatMap((c) => c.values).join(" · ") || s.query}
                         </td>
                         <td className="truncate py-3 pr-4" title={describeSchedule(s.schedule)}>{describeSchedule(s.schedule)}</td>
                         <td className="py-3 pr-4 whitespace-nowrap">{s.status === "paused" ? "—" : formatRunTime(s.nextRunAt)}</td>
                         <td className="py-3 pr-4 whitespace-nowrap">{formatRunTime(s.lastRunAt)}</td>
                         <td className="py-3 pr-4 text-right">
-                          <span className={`inline-flex min-w-6 justify-center rounded-full px-2 py-0.5 text-xs font-semibold ${fresh.length ? "bg-blue-600 text-white" : "bg-gray-100 text-gray-500 dark:bg-neutral-800"}`}>
+                          <span className={`inline-flex min-w-6 justify-center rounded-full px-2 py-0.5 text-xs font-medium ${fresh.length ? "bg-gray-950 text-white dark:bg-neutral-100 dark:text-neutral-900" : "bg-gray-100 text-gray-400 dark:bg-neutral-800"}`}>
                             {fresh.length}
                           </span>
                         </td>
@@ -213,18 +215,14 @@ function NewMatches({ search, ids, onRun }: { search: SavedSearch; ids: string[]
     );
   }
   // Reasons come from re-running the search's own filters against each person.
-  const hits = searchPeople(getPeople(), search.query, search.filters, { limit: 200 }).hits;
-  const reasonsFor = (id: string) => hits.find((h) => h.personId === id)?.reasons ?? [];
+  const all = searchPeople(getPeople(), search.query, search.filters, { limit: 200 }).hits;
+  const hits = ids.map((id) => all.find((h) => h.personId === id) ?? { personId: id, score: 0, reasons: [] });
   return (
     <div>
       <p className="mb-2 text-xs text-gray-500 dark:text-neutral-400">
         {ids.length} new {ids.length === 1 ? "match" : "matches"} to review. Save, send or dismiss each one and it won't show again.
       </p>
-      <div className="grid gap-2 xl:grid-cols-2">
-        {ids.map((id) => (
-          <PersonCard key={id} personId={id} reasons={reasonsFor(id)} source={search.name} />
-        ))}
-      </div>
+      <ResultsTable title={search.name} hits={hits} source={search.name} showHeader={false} pageSize={6} />
     </div>
   );
 }
@@ -287,7 +285,7 @@ function EditDialog({ search, onClose, onSaved }: { search: SavedSearch; onClose
             onSaved(name.trim() || search.name);
             onClose();
           }}
-          className="cursor-pointer rounded-lg bg-blue-600 px-3.5 py-1.5 text-sm font-semibold text-white hover:bg-blue-700"
+          className="cursor-pointer rounded-lg bg-gray-950 px-3.5 py-1.5 text-sm font-medium text-white hover:bg-gray-800 dark:bg-neutral-100 dark:text-neutral-900"
         >
           Save changes
         </button>
