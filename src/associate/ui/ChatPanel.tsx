@@ -386,12 +386,7 @@ function BlockView({ block, running, onAsk }: { block: Block; running: boolean; 
       );
     case "results":
       return block.total > 0 ? (
-        <div className="space-y-3">
-          <span className="inline-flex rounded-xl bg-gray-100 px-3.5 py-2 text-sm text-gray-800 dark:bg-neutral-800 dark:text-neutral-100">
-            Found {block.total} {block.total === 1 ? "person" : "people"} matching your criteria
-          </span>
-          <ResultsTable title={block.title} hits={block.hits} total={block.total} filters={block.filters} />
-        </div>
+        <ResultsTable title={block.title} hits={block.hits} total={block.total} filters={block.filters} />
       ) : null;
     case "profile":
       return <PersonCard personId={block.personId} reasons={[]} />;

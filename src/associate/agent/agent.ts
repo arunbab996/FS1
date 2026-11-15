@@ -89,28 +89,122 @@ function searchName(filters: SearchFilters, fallback: string): string {
   return parts.length ? parts.join(" · ") : fallback.slice(0, 48);
 }
 
-function summariseProfile(p: Person): string {
-  const past = p.roles.filter((r) => r.endYear !== null && r.company !== "Stealth").map((r) => `${r.title} at ${r.company} (${r.startYear}–${r.endYear})`);
-  const parts = [
-    `${p.name} — ${p.headline}, based in ${p.city}, ${p.country}.`,
-    past.length ? `Before this: ${past.join("; ")}.` : "",
-    p.repeatFounder && p.previousStartup ? `Previously co-founded ${p.previousStartup}.` : "",
-    `Latest signal (${relativeDays(p.signal.date)}): ${p.signal.detail}`,
-    p.building ? `Building: “${p.building}”.` : "",
-    `${p.education}.`,
-  ];
-  return parts.filter(Boolean).join(" ");
+// ── Conversational replies ─────────────────────────────────────────────────
+// Every reply opens with a short, friendly answer in plain words before the data. All facts in
+// it come from the filters and from people a tool returned.
+
+const BACKGROUND_NOUNS: Record<string, string> = {
+  Engineering: "engineers",
+  Product: "product leaders",
+  "Data & ML": "data and ML people",
+  Design: "designers",
+  Operations: "operators",
+  Research: "researchers",
+};
+
+const SIGNAL_PHRASES: Record<string, string> = {
+  Stealth: "who've gone stealth",
+  "New Company": "who've started a new company",
+  Exploring: "who are exploring what's next",
+  "Investor Interest": "who've caught investor interest",
+};
+
+/** Sector names mid-sentence: "developer tools", but keep acronyms like "AI infra" and "B2B SaaS". */
+function sectorWords(name: string): string {
+  return name
+    .split(" ")
+    .map((w) => (/[A-Z].*[A-Z]|^[A-Z]{2,}$/.test(w) ? w : w.toLowerCase()))
+    .join(" ");
 }
 
-function resultsSummary(total: number, hits: SearchHit[]): string {
+function orList(items: string[]): string {
+  return items.length <= 1 ? (items[0] ?? "") : `${items.slice(0, -1).join(", ")} or ${items[items.length - 1]}`;
+}
+
+/** "repeat founders in Indonesia who've started a new company in the last 2 months" */
+function describeGroup(f: SearchFilters, count: number): string {
+  const technical = f.backgrounds && f.backgrounds.length >= 3;
+  const mlResearch = f.backgrounds?.length === 2 && f.backgrounds.includes("Data & ML") && f.backgrounds.includes("Research");
+  let noun = f.repeatFounder
+    ? "repeat founders"
+    : technical
+      ? "technical people"
+      : mlResearch
+        ? "ML researchers"
+        : f.backgrounds?.length
+          ? orList(f.backgrounds.map((b) => BACKGROUND_NOUNS[b] ?? b))
+          : "people";
+  if (count === 1) noun = noun.replace(/people$/, "person").replace(/s$/, "");
+  const parts = [noun];
+  if (f.pastCompanies?.length) parts.push(`from ${orList(f.pastCompanies)}`);
+  if (f.countries?.length) parts.push(f.countries.length > 4 ? "across the region" : `in ${orList(f.countries)}`);
+  if (f.signalTypes?.length) parts.push(orList(f.signalTypes.map((t) => SIGNAL_PHRASES[t] ?? t)).replace(/ or who/g, " or"));
+  if (f.withinDays) parts.push(describeWithin(f.withinDays).toLowerCase().replace(/^last/, "in the last"));
+  let text = parts.join(" ");
+  if (f.sectors?.length) {
+    const sectors = orList(f.sectors.map(sectorWords));
+    const phrase = f.signalTypes?.includes("Exploring") ? `with an eye on ${sectors}` : `building in ${sectors}`;
+    text += f.signalTypes?.length || f.withinDays ? `, ${phrase}` : ` ${phrase}`;
+  }
+  return text;
+}
+
+/** Lower-case the first letter, unless it starts an acronym like "GPU" or "LLM". */
+function lowerFirst(text: string): string {
+  return /^[A-Z]{2}/.test(text) ? text : text.charAt(0).toLowerCase() + text.slice(1);
+}
+
+/** Lower-case a leading "He"/"She" for use mid-sentence; names stay capitalised. */
+function midSentence(text: string): string {
+  return text.replace(/^(He|She) /, (m) => m.toLowerCase());
+}
+
+function currentPosition(p: Person): string {
+  const current = p.roles.find((r) => r.endYear === null);
+  if (!current) return "between roles";
+  if (current.company === "Stealth") return "building something new in stealth";
+  return `${/^[AEIOU]/.test(current.title) ? "an" : "a"} ${current.title} at ${current.company}`;
+}
+
+/** One sentence on why someone stands out, in plain words, from their profile. */
+function standoutSentence(p: Person): string {
+  const pronoun = p.pronoun === "he" ? "He" : "She";
+  const obj = p.pronoun === "he" ? "him" : "her";
+  const when = relativeDays(p.signal.date);
+  const lastJob = p.roles.find((r) => r.endYear !== null && r.company !== "Stealth" && r.company !== p.previousStartup);
+  const current = p.roles.find((r) => r.endYear === null && r.company !== "Stealth");
+  let what: string;
+  switch (p.signal.type) {
+    case "Stealth":
+      what = `${pronoun} left ${lastJob?.company ?? "a big-tech role"} ${when} and has gone stealth`;
+      break;
+    case "New Company":
+      what = `${pronoun} started ${current?.company ?? "a new company"} ${when}`;
+      break;
+    case "Exploring":
+      what = `${pronoun} started exploring what's next ${when}, after ${lastJob ? `${lastJob.endYear! - lastJob.startYear} years at ${lastJob.company}` : "a long run in industry"}`;
+      break;
+    default:
+      what = `${p.signal.investor ?? "An investor"} started following ${obj} ${when}`;
+  }
+  const building = p.building && p.signal.type !== "Exploring" ? `, working on ${lowerFirst(p.building)}` : "";
+  return `${what}${building}.`;
+}
+
+function profileIntro(p: Person): string {
+  return `Here's what I know about ${p.name}. ${p.pronoun === "he" ? "He's" : "She's"} ${currentPosition(p)}, based in ${p.city}. ${standoutSentence(p)}`;
+}
+
+function resultsSummary(total: number, hits: SearchHit[], filters: SearchFilters): string {
   if (total === 0) return "";
   const top = getPerson(hits[0].personId)!;
   const triage = getDb().triage;
   const already = hits.filter((h) => triage[h.personId]).length;
   const lines = [
-    `Found ${total} ${total === 1 ? "person" : "people"}. ${top.name} is the strongest match — ${hits[0].reasons[0]?.replace(/\.$/, "") ?? top.headline}.`,
+    `I found ${total} ${describeGroup(filters, total)}.`,
+    total === 1 ? standoutSentence(top).replace(/^(He|She)/, top.name) : `${top.name} looks like the strongest fit — ${midSentence(standoutSentence(top))}`,
   ];
-  if (already) lines.push(`${already} of them you've already triaged; they're marked on their cards.`);
+  if (already) lines.push(`You've already triaged ${already === 1 ? "one of them" : `${already} of them`}.`);
   return lines.join(" ");
 }
 
@@ -181,7 +275,11 @@ function newSearch(input: string, ctx: AgentContext, refine?: SearchFilters): Ag
       delete relaxed[key];
       const retry = tools.search_people({ query, filters: relaxed, limit: 20 });
       if (retry.total > 0) {
-        blocks.push({ kind: "text", text: `No exact matches. Without ${label}, there ${retry.total === 1 ? "is 1 person" : `are ${retry.total} people`}:` });
+        const top = getPerson(retry.hits[0].personId)!;
+        blocks.push({
+          kind: "text",
+          text: `I couldn't find an exact match, so I loosened ${label}. ${retry.total === 1 ? "One person comes" : `${retry.total} people come`} close — ${top.name} is the best of them: ${midSentence(standoutSentence(top))}`,
+        });
         result = retry;
         usedFilters = relaxed;
         usedChips = understandChips(relaxed);
@@ -194,7 +292,7 @@ function newSearch(input: string, ctx: AgentContext, refine?: SearchFilters): Ag
       return { blocks, context: ctx, actions: [] };
     }
   } else {
-    blocks.push({ kind: "text", text: resultsSummary(result.total, result.hits) });
+    blocks.push({ kind: "text", text: resultsSummary(result.total, result.hits, filters) });
   }
 
   blocks.push({ kind: "results", title: usedChips.join(" · ") || query, total: result.total, hits: result.hits, filters: usedFilters });
@@ -273,8 +371,8 @@ export function respond(input: string, ctx: AgentContext): AgentTurn {
         blocks: [
           { kind: "tool", name: "run_saved_search", summary: `${search.name} · ${run.matched} match in total` },
           run.new_ids.length
-            ? { kind: "text", text: `${run.new_ids.length} new since the last run. Everyone else you've already seen.` }
-            : { kind: "text", text: "Nothing new since the last run — everyone matching has already been shown to you." },
+            ? { kind: "text", text: `I re-ran “${search.name}”, and there ${run.new_ids.length === 1 ? "is 1 new person" : `are ${run.new_ids.length} new people`} since last time. Everyone else you've already seen.` }
+            : { kind: "text", text: `I re-ran “${search.name}” — nothing new since last time. I'll keep watching ${scheduleInSentence(search.schedule)}.` },
           ...(run.new_ids.length ? [{ kind: "results" as const, title: search.name, total: run.new_ids.length, hits, filters: search.filters }] : []),
         ],
         context: { ...ctx, lastSearch: { query: search.query, filters: search.filters, chips: understandChips(search.filters), hits }, focusPersonId: hits[0]?.personId },
@@ -307,7 +405,7 @@ export function respond(input: string, ctx: AgentContext): AgentTurn {
       return {
         blocks: [
           { kind: "tool", name: "find_similar", summary: `Compared against ${getPeople().length} profiles` },
-          { kind: "text", text: `${similar.length} people who look like ${person.name.split(" ")[0]} — similar background, focus and employers:` },
+          { kind: "text", text: `Here are ${similar.length} people who look a lot like ${person.name} — similar background, focus and past employers. ${similar[0] ? `${getPerson(similar[0].personId)?.name} is the closest.` : ""}`.trim() },
           { kind: "results", title: `Similar to ${person.name}`, total: similar.length, hits: similar },
         ],
         context: { ...focus, lastSearch: { query: `similar to ${person.name}`, filters: {}, chips: [], hits: similar } },
@@ -332,7 +430,7 @@ export function respond(input: string, ctx: AgentContext): AgentTurn {
     return {
       blocks: [
         { kind: "tool", name: "get_profile", summary: person.name },
-        { kind: "text", text: summariseProfile(person) },
+        { kind: "text", text: profileIntro(person) },
         { kind: "profile", personId: person.id },
       ],
       context: focus,
