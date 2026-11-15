@@ -19,9 +19,10 @@ import {
   Crosshair,
   CircleUserRound,
   Sparkles,
+  Binoculars,
 } from "lucide-react";
 
-export type NavView = "equity-signals" | "inbox" | "inbox-v2" | "associate" | "reports" | "profile";
+export type NavView = "equity-signals" | "inbox" | "inbox-v2" | "associate" | "investor-tracking" | "reports" | "profile";
 
 export interface NavItem {
   label: string;
@@ -35,6 +36,7 @@ export interface NavItem {
 export const navItems: NavItem[] = [
   { label: "My View", icon: CircleUserRound, badge: "5", view: "inbox-v2" },
   { label: AGENT_NAME, icon: Sparkles, view: "associate" },
+  { label: "Investor Tracking", icon: Binoculars, view: "investor-tracking" },
   { label: "Inbox", icon: Inbox, view: "inbox" },
   { label: "Dashboard", icon: LayoutDashboard },
   { label: "Equity Signals", icon: Radar, view: "equity-signals" },

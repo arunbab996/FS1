@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useScheduler } from "./associate/jobs/useScheduler";
 import { AssociateView } from "./associate/ui/AssociateView";
+import { InvestorTrackingView } from "./tracking/ui/InvestorTrackingView";
 import { FooterBar } from "./components/FooterBar";
 import { InboxView } from "./components/InboxView";
 import { InboxV2View } from "./components/InboxV2View";
@@ -36,6 +37,13 @@ function App() {
   const [showAssociate, setShowAssociate] = useState(() => {
     try {
       return localStorage.getItem("fs_show_associate") === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [showInvestorTracking, setShowInvestorTracking] = useState(() => {
+    try {
+      return localStorage.getItem("fs_show_investor_tracking") === "true";
     } catch {
       return false;
     }
@@ -120,6 +128,19 @@ function App() {
     });
   }
 
+  function handleToggleShowInvestorTracking() {
+    setShowInvestorTracking((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("fs_show_investor_tracking", String(next));
+      } catch {
+        // Storage unavailable: the toggle still works for this visit.
+      }
+      setActiveView(next ? "investor-tracking" : "equity-signals");
+      return next;
+    });
+  }
+
   // A null decision clears it, returning the signal to the Inbox.
   function handleInboxDecide(ids: string[], decision: InboxDecision | null) {
     setInboxDecisions((prev) => {
@@ -151,10 +172,14 @@ function App() {
           onToggleShowInboxV2={handleToggleShowInboxV2}
           showAssociate={showAssociate}
           onToggleShowAssociate={handleToggleShowAssociate}
+          showInvestorTracking={showInvestorTracking}
+          onToggleShowInvestorTracking={handleToggleShowInvestorTracking}
         />
 
         <div className="flex min-w-0 flex-1 flex-col">
-          {activeView === "associate" ? (
+          {activeView === "investor-tracking" ? (
+            <InvestorTrackingView />
+          ) : activeView === "associate" ? (
             <AssociateView toast={associateToast} onToast={setAssociateToast} />
           ) : activeView === "inbox-v2" ? (
             <InboxV2View signals={visibleSignals} onOpenFullInbox={() => setActiveView("inbox")} />
@@ -222,7 +247,7 @@ function App() {
             </>
           )}
 
-          {activeView !== "reports" && activeView !== "profile" && activeView !== "inbox-v2" && activeView !== "associate" && (
+          {activeView !== "reports" && activeView !== "profile" && activeView !== "inbox-v2" && activeView !== "associate" && activeView !== "investor-tracking" && (
             <FooterBar />
           )}
         </div>

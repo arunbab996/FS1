@@ -35,6 +35,8 @@ export function Sidebar({
   onToggleShowInboxV2,
   showAssociate,
   onToggleShowAssociate,
+  showInvestorTracking,
+  onToggleShowInvestorTracking,
 }: {
   isDark: boolean;
   onToggleDark: () => void;
@@ -46,6 +48,8 @@ export function Sidebar({
   onToggleShowInboxV2: () => void;
   showAssociate: boolean;
   onToggleShowAssociate: () => void;
+  showInvestorTracking: boolean;
+  onToggleShowInvestorTracking: () => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -112,6 +116,7 @@ export function Sidebar({
             .filter((item) => item.view !== "inbox" || showInboxSection)
             .filter((item) => item.view !== "inbox-v2" || showInboxV2)
             .filter((item) => item.view !== "associate" || showAssociate)
+            .filter((item) => item.view !== "investor-tracking" || showInvestorTracking)
             .map((item) => {
               const Icon = item.icon;
               const isActive = item.view !== undefined && item.view === activeView;
@@ -185,6 +190,12 @@ export function Sidebar({
                 Show {AGENT_NAME}, AI Associate (preview)
               </span>
               <MiniToggle checked={showAssociate} onChange={onToggleShowAssociate} />
+            </label>
+            <label className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-1 py-1.5">
+              <span className="text-sm text-gray-700 dark:text-neutral-200">
+                Show Investor Tracking (preview)
+              </span>
+              <MiniToggle checked={showInvestorTracking} onChange={onToggleShowInvestorTracking} />
             </label>
           </div>
         )}

@@ -256,7 +256,7 @@ function SourceChip({ source }: { source: string }) {
   return (
     <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-blue-50 to-violet-50 px-2 py-0.5 text-xs font-medium text-violet-700 dark:from-blue-500/15 dark:to-violet-500/15 dark:text-violet-300">
       <Sparkles className="h-3 w-3" />
-      {source === AGENT_NAME || PREVIOUS_AGENT_NAMES.includes(source) ? `From ${AGENT_NAME}` : `From ${AGENT_NAME} · “${source}”`}
+      {source === AGENT_NAME || PREVIOUS_AGENT_NAMES.includes(source) ? `From ${AGENT_NAME}` : source === "Investor Tracking" ? "From Investor Tracking" : `From ${AGENT_NAME} · “${source}”`}
     </span>
   );
 }
