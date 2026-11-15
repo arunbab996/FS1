@@ -1,7 +1,8 @@
 import { ChevronRight, Copy, Pause, Pencil, Play, RefreshCw, Trash2, Zap } from "lucide-react";
-import { DoriotMark } from "./DoriotMark";
+import { AgentMark } from "./AgentMark";
 import { Fragment, useState, type ReactNode } from "react";
 import { understandQuery } from "../agent/understand";
+import { AGENT_NAME } from "../brand";
 import { criteriaFromFilters } from "../criteria";
 import { SUGGESTED_PROMPTS } from "../agent/prompts";
 import { INCOMING_BATCHES } from "../data/seed";
@@ -86,10 +87,10 @@ export function SavedSearchesView({ onToast }: { onToast: (text: string) => void
 
         {db.savedSearches.length === 0 ? (
           <div className="mt-8 rounded-2xl border border-dashed border-gray-300 bg-white px-6 py-12 text-center dark:border-neutral-700 dark:bg-neutral-900">
-            <div className="flex justify-center"><DoriotMark size={32} /></div>
+            <div className="flex justify-center"><AgentMark size={32} /></div>
             <p className="mt-3 text-sm font-medium text-gray-900 dark:text-neutral-100">No saved searches yet</p>
             <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500 dark:text-neutral-400">
-              Run a search and say yes when Doriot offers to schedule it. Or load three examples to try the flow.
+              Run a search and say yes when {AGENT_NAME} offers to schedule it. Or load three examples to try the flow.
             </p>
             <button type="button" onClick={loadDemo} className="mt-4 cursor-pointer rounded-lg bg-gray-950 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 dark:bg-neutral-100 dark:text-neutral-900">
               Load demo searches

@@ -22,7 +22,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { AGENT_NAME } from "../associate/brand";
+import { AGENT_NAME, PREVIOUS_AGENT_NAMES } from "../associate/brand";
 import { getPerson as getAssociatePerson, useAssociateDb } from "../associate/db/store";
 import type { InboxItem } from "../associate/types";
 import type { ExperienceEntry, Signal, SignalTag } from "../types";
@@ -55,7 +55,7 @@ interface Match {
   contextLine?: string;
   current?: ExperienceEntry[];
   past?: ExperienceEntry[];
-  /** Set for people Doriot (the AI Associate) sent here, e.g. "AI Associate" or a saved search's name. */
+  /** Set for people the AI Associate sent here: its name, or the saved search that found them. */
   source?: string;
 }
 
@@ -256,7 +256,7 @@ function SourceChip({ source }: { source: string }) {
   return (
     <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-blue-50 to-violet-50 px-2 py-0.5 text-xs font-medium text-violet-700 dark:from-blue-500/15 dark:to-violet-500/15 dark:text-violet-300">
       <Sparkles className="h-3 w-3" />
-      {source === AGENT_NAME || source === "AI Associate" ? `From ${AGENT_NAME}` : `From ${AGENT_NAME} · “${source}”`}
+      {source === AGENT_NAME || PREVIOUS_AGENT_NAMES.includes(source) ? `From ${AGENT_NAME}` : `From ${AGENT_NAME} · “${source}”`}
     </span>
   );
 }

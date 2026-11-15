@@ -5,7 +5,7 @@ import { getPerson, useAssociateDb } from "../db/store";
 import { get_briefing } from "../tools";
 import { BriefingView } from "./BriefingView";
 import { ChatPanel } from "./ChatPanel";
-import { DoriotMark } from "./DoriotMark";
+import { AgentMark } from "./AgentMark";
 import { SavedSearchesView } from "./SavedSearchesView";
 import { personToSignal } from "./adapters";
 import { GoToTabContext, OpenProfileContext } from "./context";
@@ -13,7 +13,7 @@ import { GoToTabContext, OpenProfileContext } from "./context";
 export type AssociateTab = "chat" | "searches" | "briefing";
 
 /**
- * Doriot, the AI Associate: chat, saved searches and the morning briefing, as three tabs of one
+ * The AI Associate (named in brand.ts): chat, saved searches and the morning briefing, as three tabs of one
  * view. It hosts the profile panel once, so any row or card can open it.
  */
 export function AssociateView({ initialTab = "chat", toast, onToast }: { initialTab?: AssociateTab; toast: string | null; onToast: (text: string) => void }) {
@@ -47,7 +47,7 @@ export function AssociateView({ initialTab = "chat", toast, onToast }: { initial
           <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(60%_100%_at_20%_0%,rgba(147,197,253,0.22),transparent),radial-gradient(50%_100%_at_85%_0%,rgba(196,181,253,0.22),transparent)]" />
           <header className="relative flex shrink-0 items-end justify-between gap-6 border-b border-gray-100 px-6 dark:border-neutral-800">
             <div className="flex items-center gap-2.5 py-3.5">
-              <DoriotMark size={24} />
+              <AgentMark size={24} />
               <span className="text-[15px] font-semibold tracking-tight text-gray-950 dark:text-neutral-50">{AGENT_NAME}</span>
               <span className="text-xs text-gray-400 dark:text-neutral-500">{AGENT_TAGLINE} · demo data</span>
             </div>

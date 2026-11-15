@@ -3,6 +3,7 @@ import { Fragment, useState, type ReactNode } from "react";
 import { CURRENT_USER_NAME } from "../../utils/currentUser";
 import { AGENT_NAME } from "../brand";
 import { getPerson, useAssociateDb } from "../db/store";
+import { relativeDays } from "../search/search";
 import * as tools from "../tools";
 import type { SearchFilters, SearchHit } from "../types";
 import { CriteriaPills } from "./CriteriaPills";
@@ -132,7 +133,7 @@ export function ResultsTable({
           <tr className="border-b border-gray-100 text-xs text-gray-400 dark:border-neutral-800 dark:text-neutral-500">
             <th className="w-10 py-2 pl-4" />
             <th className="py-2 pr-3 font-medium">Person</th>
-            <th className="w-[180px] py-2 pr-3 font-medium">Signal</th>
+            <th className="w-[150px] py-2 pr-3 font-medium">Signal</th>
             <th className="hidden w-[34%] py-2 pr-3 font-medium lg:table-cell">Why they match</th>
             <th className="w-[96px] py-2 pr-4" />
           </tr>
@@ -150,14 +151,14 @@ export function ResultsTable({
                   onClick={() => setOpenId(open ? null : hit.personId)}
                   className={`group cursor-pointer border-b border-gray-100 last:border-0 hover:bg-gray-50/80 dark:border-neutral-800 dark:hover:bg-neutral-800/40 ${triage?.status === "dismissed" ? "opacity-50" : ""} ${open ? "bg-gray-50/80 dark:bg-neutral-800/40" : ""}`}
                 >
-                  <td className="py-3 pl-4 align-top" onClick={(e) => e.stopPropagation()}>
+                  <td className="py-3 pl-4" onClick={(e) => e.stopPropagation()}>
                     <input
                       type="checkbox"
                       checked={selected.has(hit.personId)}
                       disabled={Boolean(triage)}
                       onChange={() => toggle(hit.personId)}
                       aria-label={`Select ${person.name}`}
-                      className="mt-2 h-3.5 w-3.5 cursor-pointer rounded border-gray-300 accent-gray-900 disabled:cursor-default disabled:opacity-30"
+                      className="block h-3.5 w-3.5 cursor-pointer rounded border-gray-300 accent-gray-900 disabled:cursor-default disabled:opacity-30"
                     />
                   </td>
                   <td className="py-3 pr-3">
@@ -171,8 +172,9 @@ export function ResultsTable({
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 pr-3">
-                    <SignalPill type={person.signal.type} date={person.signal.date} />
+                  <td className="overflow-hidden py-3 pr-3">
+                    <SignalPill type={person.signal.type} />
+                    <p className="mt-1 pl-0.5 text-xs text-gray-400 dark:text-neutral-500">{relativeDays(person.signal.date)}</p>
                   </td>
                   <td className="hidden py-3 pr-3 lg:table-cell">
                     <p className="line-clamp-2 text-xs leading-relaxed text-gray-600 dark:text-neutral-300">{hit.reasons[0] ?? person.signal.detail}</p>

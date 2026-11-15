@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react";
+import { AGENT_NAME } from "../associate/brand";
 import {
   LayoutDashboard,
   Inbox,
@@ -33,7 +34,7 @@ export interface NavItem {
 
 export const navItems: NavItem[] = [
   { label: "My View", icon: CircleUserRound, badge: "5", view: "inbox-v2" },
-  { label: "Doriot", icon: Sparkles, view: "associate" },
+  { label: AGENT_NAME, icon: Sparkles, view: "associate" },
   { label: "Inbox", icon: Inbox, view: "inbox" },
   { label: "Dashboard", icon: LayoutDashboard },
   { label: "Equity Signals", icon: Radar, view: "equity-signals" },
