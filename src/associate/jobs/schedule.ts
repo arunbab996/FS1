@@ -14,6 +14,12 @@ export function describeSchedule(s: Schedule): string {
   return `Every ${DAY_NAMES[s.weekday]} at ${hourLabel(s.hour)}`;
 }
 
+/** For mid-sentence use: "every Monday at 8am" (day names keep their capital). */
+export function scheduleInSentence(s: Schedule): string {
+  const text = describeSchedule(s);
+  return text.charAt(0).toLowerCase() + text.slice(1);
+}
+
 /** Short form for chips and buttons, e.g. "every Monday". */
 export function shortSchedule(s: Schedule): string {
   if (s.kind === "daily") return "every day";

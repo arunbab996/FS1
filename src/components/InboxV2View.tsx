@@ -12,6 +12,7 @@ import {
   Megaphone,
   SearchCheck,
   SlidersHorizontal,
+  Sparkles,
   Sun,
   Undo2,
   UserRound,
@@ -21,6 +22,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { getPerson as getAssociatePerson, useAssociateDb } from "../associate/db/store";
+import type { InboxItem } from "../associate/types";
 import type { ExperienceEntry, Signal, SignalTag } from "../types";
 import { personPhotoUrl } from "../utils/avatars";
 import { tagColorClasses, tagIcon } from "../utils/tags";
@@ -51,9 +54,32 @@ interface Match {
   contextLine?: string;
   current?: ExperienceEntry[];
   past?: ExperienceEntry[];
+  /** Set for people the AI Associate sent here, e.g. "AI Associate" or a saved search's name. */
+  source?: string;
 }
 
-const matches: Match[] = [
+/** People the AI Associate sent to the Inbox, shaped like the rows below. */
+function associateMatches(inbox: InboxItem[]): Match[] {
+  return inbox.flatMap((item) => {
+    const p = getAssociatePerson(item.personId);
+    if (!p) return [];
+    return [
+      {
+        id: `assoc-${p.id}`,
+        name: p.name,
+        tag: p.signal.type,
+        summary: p.signal.detail,
+        title: p.headline,
+        contextLine: `${p.city}, ${p.country} · ${p.yearsExperience} yrs experience`,
+        current: p.roles.filter((r) => r.endYear === null).map((r) => ({ company: r.company, role: r.title })),
+        past: p.roles.filter((r) => r.endYear !== null).map((r) => ({ company: r.company, role: r.title })),
+        source: item.source,
+      },
+    ];
+  });
+}
+
+const thesisMatches: Match[] = [
   {
     id: "achintya",
     name: "Achintya Gupta",
@@ -225,6 +251,15 @@ function TagPill({ tag: label }: { tag: keyof typeof tagByLabel }) {
   );
 }
 
+function SourceChip({ source }: { source: string }) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-blue-50 to-violet-50 px-2 py-0.5 text-xs font-medium text-violet-700 dark:from-blue-500/15 dark:to-violet-500/15 dark:text-violet-300">
+      <Sparkles className="h-3 w-3" />
+      {source === "AI Associate" ? "From AI Associate" : `From “${source}”`}
+    </span>
+  );
+}
+
 function PersonPhoto({ name, inline = false }: { name: string; inline?: boolean }) {
   const [failed, setFailed] = useState(false);
   // Inline photos sit in the brief's running text, so they're small and nudged onto the baseline.
@@ -352,6 +387,8 @@ export function InboxV2View({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const associateDb = useAssociateDb();
+  const matches = [...associateMatches(associateDb.inbox), ...thesisMatches];
   const remaining = matches.filter((m) => !decisions[m.id]).length;
 
   function signalFor(name: string): Signal | undefined {
@@ -636,6 +673,7 @@ export function InboxV2View({
                     <div className="flex flex-wrap items-center gap-2">
                       {personName(m.name)}
                       <TagPill tag={m.tag} />
+                      {m.source && <SourceChip source={m.source} />}
                     </div>
                     <p className="mt-1 text-sm text-gray-600 dark:text-neutral-400">{m.summary}</p>
                   </div>
@@ -661,6 +699,7 @@ export function InboxV2View({
                       {personName(m.name)}
                       <div className="mt-1">
                         <TagPill tag={m.tag} />
+                        {m.source && <SourceChip source={m.source} />}
                       </div>
                     </div>
                   </div>

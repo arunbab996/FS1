@@ -1,4 +1,6 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useScheduler } from "./associate/jobs/useScheduler";
+import { AssociateView } from "./associate/ui/AssociateView";
 import { FooterBar } from "./components/FooterBar";
 import { InboxView } from "./components/InboxView";
 import { InboxV2View } from "./components/InboxV2View";
@@ -31,6 +33,29 @@ function App() {
   const [activeView, setActiveView] = useState<NavView>("equity-signals");
   const [showInboxSection, setShowInboxSection] = useState(false);
   const [showInboxV2, setShowInboxV2] = useState(false);
+  const [showAssociate, setShowAssociate] = useState(() => {
+    try {
+      return localStorage.getItem("fs_show_associate") === "true";
+    } catch {
+      return false;
+    }
+  });
+  const [associateToast, setAssociateToast] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!associateToast) return;
+    const t = setTimeout(() => setAssociateToast(null), 3200);
+    return () => clearTimeout(t);
+  }, [associateToast]);
+
+  // Saved searches run on their schedules while the prototype is open (and catch up on load).
+  const handleScheduledRuns = useCallback((results: { new_ids: string[] }[]) => {
+    const fresh = results.reduce((sum, r) => sum + r.new_ids.length, 0);
+    setAssociateToast(
+      `${results.length} scheduled ${results.length === 1 ? "search" : "searches"} ran · ${fresh} new ${fresh === 1 ? "match" : "matches"}`,
+    );
+  }, []);
+  useScheduler(showAssociate, handleScheduledRuns);
   const [inboxDecisions, setInboxDecisions] = useState<Record<string, InboxDecision>>({});
 
   const visibleSignals = useMemo(() => signals.filter((signal) => !signal.hidden), []);
@@ -82,6 +107,19 @@ function App() {
     });
   }
 
+  function handleToggleShowAssociate() {
+    setShowAssociate((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("fs_show_associate", String(next));
+      } catch {
+        // Storage unavailable: the toggle still works for this visit.
+      }
+      setActiveView(next ? "associate" : "equity-signals");
+      return next;
+    });
+  }
+
   // A null decision clears it, returning the signal to the Inbox.
   function handleInboxDecide(ids: string[], decision: InboxDecision | null) {
     setInboxDecisions((prev) => {
@@ -111,10 +149,14 @@ function App() {
           onToggleShowInboxSection={handleToggleShowInboxSection}
           showInboxV2={showInboxV2}
           onToggleShowInboxV2={handleToggleShowInboxV2}
+          showAssociate={showAssociate}
+          onToggleShowAssociate={handleToggleShowAssociate}
         />
 
         <div className="flex min-w-0 flex-1 flex-col">
-          {activeView === "inbox-v2" ? (
+          {activeView === "associate" ? (
+            <AssociateView toast={associateToast} onToast={setAssociateToast} />
+          ) : activeView === "inbox-v2" ? (
             <InboxV2View signals={visibleSignals} onOpenFullInbox={() => setActiveView("inbox")} />
           ) : activeView === "inbox" ? (
             <InboxView
@@ -180,7 +222,7 @@ function App() {
             </>
           )}
 
-          {activeView !== "reports" && activeView !== "profile" && activeView !== "inbox-v2" && (
+          {activeView !== "reports" && activeView !== "profile" && activeView !== "inbox-v2" && activeView !== "associate" && (
             <FooterBar />
           )}
         </div>
