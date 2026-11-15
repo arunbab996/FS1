@@ -134,8 +134,9 @@ export function ChatPanel() {
             </div>
           </div>
         </div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-[104px] h-10 bg-gradient-to-t from-white to-transparent dark:from-neutral-950" />
-        <div className="shrink-0 bg-white dark:bg-neutral-950">
+        <div className="relative shrink-0 bg-white dark:bg-neutral-950">
+          {/* Fade the conversation into the composer; sits above it, never over it. */}
+          <div className="pointer-events-none absolute inset-x-0 -top-10 h-10 bg-gradient-to-t from-white to-transparent dark:from-neutral-950" />
           <div className="mx-auto max-w-[900px] px-6 pt-1 pb-5">{composer}</div>
         </div>
       </div>
