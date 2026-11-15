@@ -32,6 +32,8 @@ export function Sidebar({
   onToggleShowInboxSection,
   showInboxV2,
   onToggleShowInboxV2,
+  showAssociate,
+  onToggleShowAssociate,
 }: {
   isDark: boolean;
   onToggleDark: () => void;
@@ -41,6 +43,8 @@ export function Sidebar({
   onToggleShowInboxSection: () => void;
   showInboxV2: boolean;
   onToggleShowInboxV2: () => void;
+  showAssociate: boolean;
+  onToggleShowAssociate: () => void;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -106,6 +110,7 @@ export function Sidebar({
           {navItems
             .filter((item) => item.view !== "inbox" || showInboxSection)
             .filter((item) => item.view !== "inbox-v2" || showInboxV2)
+            .filter((item) => item.view !== "associate" || showAssociate)
             .map((item) => {
               const Icon = item.icon;
               const isActive = item.view !== undefined && item.view === activeView;
@@ -173,6 +178,12 @@ export function Sidebar({
                 Show Inbox v2 (preview)
               </span>
               <MiniToggle checked={showInboxV2} onChange={onToggleShowInboxV2} />
+            </label>
+            <label className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-1 py-1.5">
+              <span className="text-sm text-gray-700 dark:text-neutral-200">
+                Show AI Associate (preview)
+              </span>
+              <MiniToggle checked={showAssociate} onChange={onToggleShowAssociate} />
             </label>
           </div>
         )}
