@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { CURRENT_USER_NAME } from "../../utils/currentUser";
+import { AGENT_NAME } from "../brand";
 import { getPerson } from "../db/store";
 import { scheduleInSentence } from "../jobs/schedule";
 import * as tools from "../tools";
@@ -56,7 +57,7 @@ export function sendMessage(text: string) {
   set({ messages: [...state.messages, userMessage], context: turn.context, actions });
 
   if (turn.resolve) {
-    resolveAction(turn.resolve.actionId, turn.resolve.confirm);
+    resolveAction(turn.resolve.actionId, turn.resolve.confirm, undefined, true);
     return;
   }
   const reply: ChatMessage = { id: uid(), role: "assistant", blocks: turn.blocks };
@@ -80,12 +81,13 @@ function say(text: string) {
  * Confirm or cancel an action the agent proposed. Confirming runs the write tool; the investor
  * can adjust a saved search's name and schedule on the card before confirming.
  */
-export function resolveAction(id: string, confirm: boolean, edits?: { name?: string; schedule?: Schedule }) {
+export function resolveAction(id: string, confirm: boolean, edits?: { name?: string; schedule?: Schedule }, announce = false) {
   const action = state.actions[id];
   if (!action || action.status !== "pending") return;
   if (!confirm) {
     set({ actions: { ...state.actions, [id]: { ...action, status: "cancelled" } }, context: { ...state.context, pendingActionId: undefined } });
-    say("No problem — nothing was saved.");
+    // A typed "no" gets a reply; a click on the card just updates the card.
+    if (announce) say("No problem — nothing was saved.");
     return;
   }
 
@@ -98,7 +100,7 @@ export function resolveAction(id: string, confirm: boolean, edits?: { name?: str
     updated = { ...action, name, schedule, status: "confirmed" };
     resultText = `Saved “${created.name}”. It runs ${scheduleInSentence(schedule)}, and each run only brings people you haven't seen or triaged. You'll find it on the Saved searches tab.`;
   } else if (action.type === "send_to_inbox") {
-    const sent = tools.send_to_inbox({ person_id: action.personId, source: "AI Associate" });
+    const sent = tools.send_to_inbox({ person_id: action.personId, source: AGENT_NAME });
     resultText = `Sent ${getPerson(action.personId)?.name} to ${sent.investor === CURRENT_USER_NAME ? "your" : `${sent.investor}'s`} Inbox. They'll show up in My View.`;
   } else if (action.type === "save_to_list") {
     const saved = tools.save_to_list({ person_id: action.personId, list: action.list });
@@ -108,5 +110,5 @@ export function resolveAction(id: string, confirm: boolean, edits?: { name?: str
     actions: { ...state.actions, [id]: { ...updated, resultText } },
     context: { ...state.context, pendingActionId: undefined },
   });
-  say(resultText);
+  if (announce) say(resultText);
 }

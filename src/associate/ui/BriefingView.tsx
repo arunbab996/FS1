@@ -1,16 +1,16 @@
-import { Coffee, Inbox, ListPlus, X } from "lucide-react";
-import { useState, type ReactNode } from "react";
 import { CURRENT_USER_NAME } from "../../utils/currentUser";
-import { getPeople, getPerson, useAssociateDb } from "../db/store";
+import { AGENT_NAME } from "../brand";
+import { getPeople, useAssociateDb } from "../db/store";
 import { describeSchedule, formatRunTime } from "../jobs/schedule";
 import { searchPeople } from "../search/search";
 import * as tools from "../tools";
-import { PersonAvatar, SignalPill } from "./common";
-import { useOpenProfile } from "./context";
+import { CriteriaPills } from "./CriteriaPills";
+import { DoriotMark } from "./DoriotMark";
+import { ResultsTable } from "./ResultsTable";
 
 /**
  * The morning briefing: every untriaged net-new match across all saved searches, grouped by
- * search. Short and scannable: one line per person, the strongest reason, and triage buttons.
+ * search, with the strongest reason inline. Triage a row and it drops off.
  */
 export function BriefingView({ onOpenSearches }: { onOpenSearches: () => void }) {
   useAssociateDb();
@@ -21,44 +21,48 @@ export function BriefingView({ onOpenSearches }: { onOpenSearches: () => void })
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
-      <div className="mx-auto max-w-[820px] px-6 py-8">
-        <p className="flex items-center gap-2 text-sm text-gray-500 dark:text-neutral-400">
-          <Coffee className="h-4 w-4" />
-          {today} · Morning briefing
-        </p>
-        <h1 className="mt-3 font-serif text-[34px] leading-tight font-semibold tracking-tight text-gray-950 dark:text-neutral-50">
-          {total ? `${total} new ${total === 1 ? "match" : "matches"}, ${firstName}.` : `You're all caught up, ${firstName}.`}
-        </h1>
-        <p className="mt-2 text-[15px] text-gray-600 dark:text-neutral-300">
-          {total
-            ? `Across ${groups.length} saved ${groups.length === 1 ? "search" : "searches"}. Only people you haven't seen; anyone you triage drops off.`
-            : "Nothing new from your saved searches. New matches land here after each scheduled run."}
-        </p>
+      <div className="mx-auto max-w-[960px] px-6 py-10">
+        <div className="flex items-start gap-4">
+          <DoriotMark size={36} />
+          <div>
+            <p className="text-sm text-gray-400 dark:text-neutral-500">{today} · Morning briefing</p>
+            <h1 className="mt-1 text-[26px] font-medium tracking-tight text-gray-950 dark:text-neutral-50">
+              {total ? `${total} new ${total === 1 ? "founder" : "founders"} to look at, ${firstName}.` : `You're all caught up, ${firstName}.`}
+            </h1>
+            <p className="mt-1.5 text-sm text-gray-500 dark:text-neutral-400">
+              {total
+                ? `${AGENT_NAME} ran your ${groups.length} saved ${groups.length === 1 ? "search" : "searches"}. These are only people you haven't seen; anyone you triage drops off.`
+                : "Nothing new from your saved searches. New matches land here after each scheduled run."}
+            </p>
+            {total === 0 && (
+              <button type="button" onClick={onOpenSearches} className="mt-4 cursor-pointer rounded-lg bg-gray-950 px-3.5 py-2 text-sm font-medium text-white hover:bg-gray-800 dark:bg-neutral-100 dark:text-neutral-900">
+                Go to Saved searches
+              </button>
+            )}
+          </div>
+        </div>
 
-        {total === 0 && (
-          <button type="button" onClick={onOpenSearches} className="mt-5 cursor-pointer rounded-lg border border-gray-200 bg-white px-3.5 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-200">
-            Go to Saved searches
-          </button>
-        )}
-
-        <div className="mt-8 space-y-8">
+        <div className="mt-10 space-y-10">
           {groups.map(({ search, personIds }) => {
             const hits = searchPeople(getPeople(), search.query, search.filters, { limit: 200 }).hits;
+            const groupHits = personIds.map((id) => hits.find((h) => h.personId === id) ?? { personId: id, score: 0, reasons: [] });
             return (
               <section key={search.id}>
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
-                  <h2 className="text-base font-semibold text-gray-950 dark:text-neutral-50">
-                    {search.name} <span className="ml-1 rounded-full bg-blue-600 px-2 py-0.5 align-[0.1em] text-xs font-semibold text-white">{personIds.length}</span>
-                  </h2>
-                  <p className="text-xs text-gray-500 dark:text-neutral-400">
+                <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+                  <div>
+                    <h2 className="flex items-center gap-2 text-base font-medium text-gray-950 dark:text-neutral-50">
+                      {search.name}
+                      <span className="rounded-full bg-gray-950 px-1.5 py-px text-[11px] font-medium text-white dark:bg-neutral-100 dark:text-neutral-900">{personIds.length}</span>
+                    </h2>
+                    <div className="mt-1.5">
+                      <CriteriaPills filters={search.filters} compact />
+                    </div>
+                  </div>
+                  <p className="text-xs text-gray-400 dark:text-neutral-500">
                     {describeSchedule(search.schedule)} · last run {formatRunTime(search.lastRunAt)}
                   </p>
                 </div>
-                <ul className="mt-3 divide-y divide-gray-100 overflow-hidden rounded-2xl border border-gray-200 bg-white dark:divide-neutral-800 dark:border-neutral-700 dark:bg-neutral-900">
-                  {personIds.map((id) => (
-                    <BriefingRow key={id} personId={id} reason={hits.find((h) => h.personId === id)?.reasons[0]} source={search.name} />
-                  ))}
-                </ul>
+                <ResultsTable title={search.name} hits={groupHits} source={search.name} showHeader={false} pageSize={6} />
               </section>
             );
           })}
@@ -67,61 +71,3 @@ export function BriefingView({ onOpenSearches }: { onOpenSearches: () => void })
     </div>
   );
 }
-
-function BriefingRow({ personId, reason, source }: { personId: string; reason?: string; source: string }) {
-  const person = getPerson(personId);
-  const openProfile = useOpenProfile();
-  const [confirmSend, setConfirmSend] = useState(false);
-  if (!person) return null;
-  return (
-    <li className="flex items-center gap-3 px-4 py-3">
-      <button type="button" onClick={() => openProfile(personId)} className="shrink-0 cursor-pointer">
-        <PersonAvatar name={person.name} size="sm" />
-      </button>
-      <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-2">
-          <button type="button" onClick={() => openProfile(personId)} className="cursor-pointer text-sm font-semibold text-gray-950 hover:underline dark:text-neutral-50">
-            {person.name}
-          </button>
-          <SignalPill type={person.signal.type} date={person.signal.date} />
-        </div>
-        <p className="mt-0.5 truncate text-xs text-gray-500 dark:text-neutral-400" title={reason}>
-          {person.headline} · {person.city}
-          {reason && <> · {reason}</>}
-        </p>
-      </div>
-      {confirmSend ? (
-        <span className="flex shrink-0 items-center gap-1 text-xs text-gray-600 dark:text-neutral-300">
-          Send to Inbox?
-          <button type="button" onClick={() => tools.send_to_inbox({ person_id: personId, source })} className="cursor-pointer rounded-md bg-blue-600 px-2 py-1 font-semibold text-white hover:bg-blue-700">
-            Send
-          </button>
-          <button type="button" onClick={() => setConfirmSend(false)} className="cursor-pointer rounded-md px-1.5 py-1 hover:bg-gray-100 dark:hover:bg-neutral-800">
-            Cancel
-          </button>
-        </span>
-      ) : (
-        <div className="flex shrink-0 items-center gap-1">
-          <RowButton label="Save to Shortlist" onClick={() => tools.save_to_list({ person_id: personId, list: "Shortlist" })} icon={<ListPlus className="h-4 w-4" />} />
-          <RowButton label="Send to Inbox" onClick={() => setConfirmSend(true)} icon={<Inbox className="h-4 w-4" />} />
-          <RowButton label="Dismiss" onClick={() => tools.mark_triaged({ person_id: personId, status: "dismissed" })} icon={<X className="h-4 w-4" />} />
-        </div>
-      )}
-    </li>
-  );
-}
-
-function RowButton({ label, onClick, icon }: { label: string; onClick: () => void; icon: ReactNode }) {
-  return (
-    <button
-      type="button"
-      title={label}
-      aria-label={label}
-      onClick={onClick}
-      className="cursor-pointer rounded-lg border border-gray-200 p-1.5 text-gray-600 hover:bg-gray-50 hover:text-gray-900 dark:border-neutral-700 dark:text-neutral-300 dark:hover:bg-neutral-800"
-    >
-      {icon}
-    </button>
-  );
-}
-

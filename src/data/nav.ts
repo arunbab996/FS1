@@ -33,7 +33,7 @@ export interface NavItem {
 
 export const navItems: NavItem[] = [
   { label: "My View", icon: CircleUserRound, badge: "5", view: "inbox-v2" },
-  { label: "AI Associate", icon: Sparkles, view: "associate" },
+  { label: "Doriot", icon: Sparkles, view: "associate" },
   { label: "Inbox", icon: Inbox, view: "inbox" },
   { label: "Dashboard", icon: LayoutDashboard },
   { label: "Equity Signals", icon: Radar, view: "equity-signals" },
