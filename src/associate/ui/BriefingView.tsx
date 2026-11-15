@@ -5,7 +5,7 @@ import { describeSchedule, formatRunTime } from "../jobs/schedule";
 import { searchPeople } from "../search/search";
 import * as tools from "../tools";
 import { CriteriaPills } from "./CriteriaPills";
-import { DoriotMark } from "./DoriotMark";
+import { AgentMark } from "./AgentMark";
 import { ResultsTable } from "./ResultsTable";
 
 /**
@@ -23,7 +23,7 @@ export function BriefingView({ onOpenSearches }: { onOpenSearches: () => void })
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto max-w-[960px] px-6 py-10">
         <div className="flex items-start gap-4">
-          <DoriotMark size={36} />
+          <AgentMark size={36} />
           <div>
             <p className="text-sm text-gray-400 dark:text-neutral-500">{today} · Morning briefing</p>
             <h1 className="mt-1 text-[26px] font-medium tracking-tight text-gray-950 dark:text-neutral-50">

@@ -10,7 +10,7 @@ import { criterionTone } from "../criteria";
 import { getPerson, useAssociateDb } from "../db/store";
 import { SCHEDULE_OPTIONS, describeSchedule, scheduleInSentence, scheduleKey } from "../jobs/schedule";
 import { pending_matches } from "../tools";
-import { DoriotMark } from "./DoriotMark";
+import { AgentMark } from "./AgentMark";
 import { PersonCard } from "./PersonCard";
 import { ResultsTable } from "./ResultsTable";
 import { AskContext, GoToTabContext } from "./context";
@@ -58,7 +58,7 @@ export function ChatPanel() {
       <AskContext.Provider value={submit}>
         <div className="min-h-0 flex-1 overflow-y-auto">
           <div className="mx-auto flex min-h-full max-w-[720px] flex-col items-center justify-center px-6 py-12">
-            <DoriotMark size={46} />
+            <AgentMark size={46} />
             <h1 className="mt-5 text-center text-[26px] font-medium tracking-tight text-gray-900 dark:text-neutral-50">
               Hey {firstName}, who are we looking for?
             </h1>
@@ -272,7 +272,7 @@ function Message({ message, streaming, onEdit, onAsk }: { message: ChatMessage; 
   return (
     <div className="flex gap-3">
       <span className="mt-0.5 shrink-0">
-        <DoriotMark size={22} active={streaming} />
+        <AgentMark size={22} active={streaming} />
       </span>
       <div className="min-w-0 flex-1">
         <StreamedBlocks id={message.id} blocks={message.blocks ?? []} streaming={streaming} onAsk={onAsk} />

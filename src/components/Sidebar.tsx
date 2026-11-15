@@ -1,5 +1,6 @@
 import { ChevronDown, Command, LogOut, Moon, Search, Sun, UserRound } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { AGENT_NAME } from "../associate/brand";
 import { navItems, type NavView } from "../data/nav";
 import { CURRENT_USER_NAME, useCurrentUserAvatarUrl } from "../utils/currentUser";
 
@@ -181,7 +182,7 @@ export function Sidebar({
             </label>
             <label className="flex cursor-pointer items-center justify-between gap-3 rounded-lg px-1 py-1.5">
               <span className="text-sm text-gray-700 dark:text-neutral-200">
-                Show Doriot, AI Associate (preview)
+                Show {AGENT_NAME}, AI Associate (preview)
               </span>
               <MiniToggle checked={showAssociate} onChange={onToggleShowAssociate} />
             </label>
