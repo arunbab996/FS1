@@ -1,12 +1,13 @@
-import { Activity, Users } from "lucide-react";
+import { Activity, Newspaper, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { getPerson } from "../../associate/db/store";
 import { personToSignal } from "../../associate/ui/adapters";
 import { ProfileDrawer } from "../../components/ProfileDrawer";
 import { ActivityFeed } from "./ActivityFeed";
 import { InvestorDirectory } from "./InvestorDirectory";
+import { NewsFeed } from "./NewsFeed";
 
-type Screen = "activity" | "investors";
+type Screen = "activity" | "news" | "investors";
 
 /**
  * Investor Tracking: what the investors you track are doing on X (Activity), and who you track
@@ -30,12 +31,13 @@ export function InvestorTrackingView() {
       <header className="relative mx-auto flex w-full max-w-[860px] shrink-0 flex-wrap items-center justify-between gap-4 px-8 pt-8 pb-4">
         <div>
           <h1 className="text-[26px] font-medium tracking-tight text-gray-950 dark:text-neutral-50">Investor Tracking</h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-neutral-400">See who the investors you follow are following on X, before the round is announced.</p>
+          <p className="mt-1 text-sm text-gray-500 dark:text-neutral-400">Follow what the investors you track are doing on X, and what their firms are announcing.</p>
         </div>
         <div className="flex rounded-xl bg-gray-100 p-1 dark:bg-neutral-800">
           {(
             [
               { id: "activity", label: "Activity", icon: Activity },
+              { id: "news", label: "News", icon: Newspaper },
               { id: "investors", label: "Investors", icon: Users },
             ] as const
           ).map(({ id, label, icon: Icon }) => (
@@ -59,6 +61,8 @@ export function InvestorTrackingView() {
       <div className="relative min-h-0 flex-1 overflow-y-auto">
         {screen === "activity" ? (
           <ActivityFeed onOpenProfile={openProfile} onManage={() => setScreen("investors")} />
+        ) : screen === "news" ? (
+          <NewsFeed onOpenProfile={openProfile} onManage={() => setScreen("investors")} />
         ) : (
           <InvestorDirectory />
         )}
