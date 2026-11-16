@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { ProfileDrawer } from "../../components/ProfileDrawer";
+import { clearChat } from "../agent/chatStore";
 import { AGENT_NAME, AGENT_TAGLINE } from "../brand";
 import { getPerson, useAssociateDb } from "../db/store";
 import { get_briefing } from "../tools";
@@ -46,11 +47,20 @@ export function AssociateView({ initialTab = "chat", toast, onToast }: { initial
           {/* Soft pastel wash behind the header, as on Synaptic's product tabs. */}
           <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(60%_100%_at_20%_0%,rgba(147,197,253,0.22),transparent),radial-gradient(50%_100%_at_85%_0%,rgba(196,181,253,0.22),transparent)]" />
           <header className="relative flex shrink-0 items-end justify-between gap-6 border-b border-gray-100 px-6 dark:border-neutral-800">
-            <div className="flex items-center gap-2.5 py-3.5">
+            {/* The logo goes home: the Search tab with a fresh conversation. */}
+            <button
+              type="button"
+              onClick={() => {
+                clearChat();
+                setTab("chat");
+              }}
+              title={`${AGENT_NAME} home`}
+              className="flex cursor-pointer items-center gap-2.5 rounded-lg py-3.5 hover:opacity-80"
+            >
               <AgentMark size={24} />
               <span className="text-[15px] font-semibold tracking-tight text-gray-950 dark:text-neutral-50">{AGENT_NAME}</span>
               <span className="text-xs text-gray-400 dark:text-neutral-500">{AGENT_TAGLINE}</span>
-            </div>
+            </button>
             <nav className="flex gap-6">
               {tabs.map(({ id, label, count }) => (
                 <button
