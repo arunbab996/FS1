@@ -19,4 +19,5 @@ export const SUGGESTIONS: { label: string; prompt: string; dot: string }[] = [
   { label: "India founders with investor interest", prompt: SUGGESTED_PROMPTS[3], dot: "bg-pink-500" },
   { label: "Gojek & Tokopedia devtools engineers", prompt: SUGGESTED_PROMPTS[4], dot: "bg-indigo-500" },
   { label: "Singapore ML researchers in stealth", prompt: SUGGESTED_PROMPTS[5], dot: "bg-emerald-500" },
+  { label: "Market map: last 30 days", prompt: "Show me a market map of the companies in the last 30 days", dot: "bg-gray-900" },
 ];

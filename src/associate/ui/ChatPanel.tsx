@@ -11,6 +11,7 @@ import { getPerson, useAssociateDb } from "../db/store";
 import { SCHEDULE_OPTIONS, describeSchedule, scheduleInSentence, scheduleKey } from "../jobs/schedule";
 import { pending_matches } from "../tools";
 import { AgentMark } from "./AgentMark";
+import { MarketMap } from "./MarketMap";
 import { PersonCard } from "./PersonCard";
 import { ResultsTable } from "./ResultsTable";
 import { AskContext, GoToTabContext } from "./context";
@@ -394,6 +395,8 @@ function BlockView({ block, running, onAsk }: { block: Block; running: boolean; 
       return <ActionCard actionId={block.actionId} />;
     case "searches":
       return <SearchList ids={block.ids} onAsk={onAsk} />;
+    case "marketmap":
+      return <MarketMap title={block.title} map={block.map} filters={block.filters} />;
     case "suggestions":
       return (
         <div className="flex flex-wrap gap-2">
