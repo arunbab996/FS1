@@ -1,4 +1,4 @@
-import { Activity, Newspaper, Users } from "lucide-react";
+import { Activity, Newspaper, Radar, Users } from "lucide-react";
 import { useMemo, useState } from "react";
 import { getPerson } from "../../associate/db/store";
 import { personToSignal } from "../../associate/ui/adapters";
@@ -6,8 +6,9 @@ import { ProfileDrawer } from "../../components/ProfileDrawer";
 import { ActivityFeed } from "./ActivityFeed";
 import { InvestorDirectory } from "./InvestorDirectory";
 import { NewsFeed } from "./NewsFeed";
+import { RadarView } from "./RadarView";
 
-type Screen = "activity" | "news" | "investors";
+type Screen = "activity" | "news" | "radar" | "investors";
 
 /**
  * Investor Tracking: what the investors you track are doing on X (Activity), and who you track
@@ -38,6 +39,7 @@ export function InvestorTrackingView() {
             [
               { id: "activity", label: "Activity", icon: Activity },
               { id: "news", label: "News", icon: Newspaper },
+              { id: "radar", label: "Radar", icon: Radar },
               { id: "investors", label: "Investors", icon: Users },
             ] as const
           ).map(({ id, label, icon: Icon }) => (
@@ -63,6 +65,8 @@ export function InvestorTrackingView() {
           <ActivityFeed onOpenProfile={openProfile} onManage={() => setScreen("investors")} />
         ) : screen === "news" ? (
           <NewsFeed onOpenProfile={openProfile} onManage={() => setScreen("investors")} />
+        ) : screen === "radar" ? (
+          <RadarView onOpenProfile={openProfile} />
         ) : (
           <InvestorDirectory />
         )}
