@@ -3,7 +3,7 @@ import { AGENT_NAME } from "../brand";
 import { INCOMING_BATCHES } from "../data/seed";
 import { getDb, getPeople, getPerson, updateDb } from "../db/store";
 import { nextRunAfter } from "../jobs/schedule";
-import { findSimilar as rankSimilar, searchPeople } from "../search/search";
+import { findSimilar as rankSimilar, passesFilters, searchPeople } from "../search/search";
 import type {
   Person,
   SavedSearch,
@@ -229,6 +229,64 @@ export function release_new_signals(): { released: number; remaining: number } {
   return { released: getPeople().length - before, remaining: INCOMING_BATCHES - released - 1 };
 }
 
+// ── Market maps ──────────────────────────────────────────────────────────────
+
+export interface MapCompany {
+  personId: string;
+  /** The company name, or "Stealth" when the founder hasn't named it yet. */
+  company: string;
+  founder: string;
+  city: string;
+  country: string;
+  signalType: string;
+  signalDate: string;
+  stealth: boolean;
+}
+
+export interface MarketMap {
+  groupBy: "sector" | "country";
+  total: number;
+  groups: { label: string; companies: MapCompany[] }[];
+}
+
+/**
+ * A market map of the startups in FirstSignal: everyone who has founded something (a named company
+ * or a stealth one) and passes the filters, grouped by sector or country, biggest group first.
+ */
+export function market_map(args: { filters?: SearchFilters; group_by?: "sector" | "country" }): MarketMap {
+  const groupBy = args.group_by ?? "sector";
+  const filters = args.filters ?? {};
+  const companies: MapCompany[] = [];
+  for (const p of getPeople()) {
+    if (!passesFilters(p, filters)) continue;
+    const role = p.roles.find((r) => r.endYear === null && /founder/i.test(r.title));
+    if (!role) continue;
+    companies.push({
+      personId: p.id,
+      company: role.company,
+      founder: p.name,
+      city: p.city,
+      country: p.country,
+      signalType: p.signal.type,
+      signalDate: p.signal.date,
+      stealth: role.company === "Stealth",
+    });
+  }
+  const groups = new Map<string, MapCompany[]>();
+  for (const c of companies) {
+    const person = getPerson(c.personId)!;
+    const keys = groupBy === "country" ? [c.country] : filters.sectors?.length ? person.sectors.filter((s) => filters.sectors!.includes(s)) : [person.sectors[0]];
+    for (const key of keys) groups.set(key, [...(groups.get(key) ?? []), c]);
+  }
+  return {
+    groupBy,
+    total: companies.length,
+    groups: [...groups.entries()]
+      .map(([label, list]) => ({ label, companies: list.sort((a, b) => Number(a.stealth) - Number(b.stealth) || a.company.localeCompare(b.company)) }))
+      .sort((a, b) => b.companies.length - a.companies.length),
+  };
+}
+
 // ── Schemas, in Anthropic tool-use format (also usable as MCP tool schemas) ──
 
 const filtersSchema = {
@@ -308,6 +366,15 @@ export const toolDefinitions = [
         },
       },
       required: ["name", "query", "filters", "schedule"],
+      additionalProperties: false,
+    },
+  },
+  {
+    name: "market_map",
+    description: "Build a market map of the startups in FirstSignal (named or stealth) that pass the filters, grouped by sector or country.",
+    input_schema: {
+      type: "object",
+      properties: { filters: filtersSchema, group_by: { enum: ["sector", "country"] } },
       additionalProperties: false,
     },
   },

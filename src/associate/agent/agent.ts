@@ -32,7 +32,8 @@ export type Block =
   | { kind: "profile"; personId: string }
   | { kind: "action"; actionId: string }
   | { kind: "searches"; ids: string[] }
-  | { kind: "suggestions"; items: string[] };
+  | { kind: "suggestions"; items: string[] }
+  | { kind: "marketmap"; title: string; map: tools.MarketMap; filters: SearchFilters };
 
 export interface AgentContext {
   lastSearch?: { query: string; filters: SearchFilters; chips: string[]; hits: SearchHit[] };
@@ -325,6 +326,57 @@ function understandChips(filters: SearchFilters): string[] {
   return chips;
 }
 
+const MAP_WORDS = /\bmarket ?maps?\b|\blandscape\b|\bmap (of|out)\b/i;
+
+/** "Show me a market map of the companies in the last 30 days" → a grouped map of startups. */
+function marketMapTurn(text: string, ctx: AgentContext): AgentTurn {
+  const byCountry = /\bby (country|countries|geography|location|region|market)\b/i.test(text);
+  const cleaned = text
+    .replace(MAP_WORDS, " ")
+    .replace(/\bby (country|countries|geography|location|region|market|sector|sectors|space|category)\b/gi, " ")
+    .replace(/\b(show me|give me|make|build|draw|create|a|the|of|companies|company|startups|startup)\b/gi, " ");
+  const { filters } = understandQuery(cleaned);
+  const map = tools.market_map({ filters, group_by: byCountry ? "country" : "sector" });
+  const criteriaCount = Object.keys(filters).length;
+  const scope = describeGroup(filters, map.total).replace(/^(people|person)/, "").trim();
+  const steps: Block = {
+    kind: "steps",
+    seconds: 1.4,
+    steps: [
+      criteriaCount ? `Read your request · ${criteriaCount} ${criteriaCount === 1 ? "criterion" : "criteria"}` : "Read your request",
+      `Found founders with a company or stealth project in ${getPeople().length} profiles`,
+      `Grouped them by ${map.groupBy}`,
+      "Laid out the map",
+    ],
+  };
+  if (map.total === 0) {
+    return {
+      blocks: [steps, { kind: "text", text: `I couldn't find any startups ${scope || "matching that"} yet. Try a wider time window or fewer filters.` }],
+      context: ctx,
+      actions: [],
+    };
+  }
+  const [first, second] = map.groups;
+  const stealth = new Set(map.groups.flatMap((g) => g.companies.filter((c) => c.stealth).map((c) => c.personId))).size;
+  const reply = [
+    `Here's a market map of ${map.total} ${map.total === 1 ? "startup" : "startups"}${scope ? ` ${scope}` : " in FirstSignal"}, grouped by ${map.groupBy}.`,
+    second ? `${first.label} is the busiest with ${first.companies.length}, then ${second.label} with ${second.companies.length}.` : "",
+    stealth ? `${stealth} ${stealth === 1 ? "is" : "are"} still in stealth.` : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const title = [describeWithinTitle(filters), filters.countries?.length && filters.countries.length <= 3 ? filters.countries.join(", ") : "", filters.sectors?.join(", ") ?? ""].filter(Boolean).join(" · ");
+  return {
+    blocks: [steps, { kind: "text", text: reply }, { kind: "marketmap", title: title || "All startups", map, filters }],
+    context: ctx,
+    actions: [],
+  };
+}
+
+function describeWithinTitle(f: SearchFilters): string {
+  return f.withinDays ? describeWithin(f.withinDays) : "";
+}
+
 export function respond(input: string, ctx: AgentContext): AgentTurn {
   const text = input.trim();
   const lower = text.toLowerCase();
@@ -334,7 +386,10 @@ export function respond(input: string, ctx: AgentContext): AgentTurn {
     return { blocks: [], context: { ...ctx, pendingActionId: undefined }, actions: [], resolve: { actionId: ctx.pendingActionId, confirm: YES.test(text) } };
   }
 
-  // 2. Scheduling the last search: "run this every Monday", "save this as a daily search".
+  // 2. Market maps: "show me a market map of the companies in the last 30 days".
+  if (MAP_WORDS.test(lower)) return marketMapTurn(text, ctx);
+
+  // 3. Scheduling the last search: "run this every Monday", "save this as a daily search".
   const schedule = understandSchedule(lower);
   if (ctx.lastSearch && (schedule || /\b(save|schedule|watch|track|keep (an eye|watching))\b.*\b(this|it|search)\b/.test(lower))) {
     const offer = proposeSchedule(ctx, schedule ?? DEFAULT_SCHEDULE)!;
