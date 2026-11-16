@@ -49,7 +49,7 @@ export function AssociateView({ initialTab = "chat", toast, onToast }: { initial
             <div className="flex items-center gap-2.5 py-3.5">
               <AgentMark size={24} />
               <span className="text-[15px] font-semibold tracking-tight text-gray-950 dark:text-neutral-50">{AGENT_NAME}</span>
-              <span className="text-xs text-gray-400 dark:text-neutral-500">{AGENT_TAGLINE} · demo data</span>
+              <span className="text-xs text-gray-400 dark:text-neutral-500">{AGENT_TAGLINE}</span>
             </div>
             <nav className="flex gap-6">
               {tabs.map(({ id, label, count }) => (
